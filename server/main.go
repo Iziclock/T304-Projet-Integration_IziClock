@@ -41,7 +41,7 @@ func main() {
 	defer db.Close()
 
 	r := gin.Default()
-	if os.Getenv("PROFILE") != "prod" {
+	if os.Getenv("PROFILE") == "dev" {
 		r.Use(cors.New(cors.Config{
 			AllowOrigins:     []string{"http://localhost:8100"},
 			AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE"},

@@ -26,15 +26,16 @@ func MigrateDatabase(db Database) error { // Migrer la base de données
 }
 
 func InsertMockedAlarms(db Database) error { // Insérer des alarmes mockées dans la base de données
-	var count int64
-	db.db.Model(&models.Alarm{}).Count(&count) // Compter le nombre d'alarmes dans la base de données
-	if count == 0 {                            // Si aucun élément dans la db, Ajouter les alarmes mockées
-		alarms := mocks.ALARM_LIST     // Récupérer la liste d'alarmes mockées
-		for _, alarm := range alarms { // Pour chaque alarme de la liste d'alarmes
-			err := db.db.Create(&alarm).Error // Créer l'alarme dans la base de données
-			if err != nil {                   // Vérification d'une erreur lors de la création de l'alarme
-				return err
-			}
+	err := db.db.Where("1 = 1").Delete(models.Alarm{}).Error // Effece toutes les alarmes mockées pour les regénérer.
+	if err != nil {
+		return err
+	}
+
+	alarms := mocks.ALARM_LIST     // Récupérer la liste d'alarmes mockées
+	for _, alarm := range alarms { // Pour chaque alarme de la liste d'alarmes
+		err := db.db.Create(&alarm).Error // Créer l'alarme dans la base de données
+		if err != nil {                   // Vérification d'une erreur lors de la création de l'alarme
+			return err
 		}
 	}
 	return nil

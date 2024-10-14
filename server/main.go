@@ -4,42 +4,30 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"server/db"
+	"server/initializers"
+	"server/mocks"
 	"server/models"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	initializers.InitEnv()
+	initializers.ConnectDB()
+	initializers.SyncDB()
+	mocks.InsertMockedAlarms() // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
-func connectDB() *db.Database {
-	postgres, err := db.NewDatabase()
-	if err != nil {
-		log.Fatalf("Could not initialize DB connection: %s", err)
-	}
-	log.Println("DB connection initialized", postgres.GetDB())
-	return postgres
-}
-
-func getAlarms(db *db.Database) ([]models.Alarm, error) {
+func getAlarms() ([]models.Alarm, error) {
 	var alarms []models.Alarm
-	if err := db.GetDB().Order("ring_date asc").Find(&alarms).Error; err != nil {
+	if err := initializers.DB.Order("ring_date asc").Find(&alarms).Error; err != nil {
 		return nil, err
 	}
 	return alarms, nil
 }
 
 func main() {
-	db := connectDB()
-	defer db.Close()
-
 	r := gin.Default()
 	if os.Getenv("PROFILE") == "dev" {
 		r.Use(cors.New(cors.Config{
@@ -67,7 +55,7 @@ func main() {
 	})
 
 	r.GET("/alarms", func(c *gin.Context) {
-		alarms, err := getAlarms(db)
+		alarms, err := getAlarms()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

@@ -11,6 +11,13 @@ func Routes(route *gin.Engine) {
 	}
 }
 
+// send_ping return a "pong" message
+// @Summary Send a ping
+// @Description Return a 'pong' message
+// @Tags Ping
+// @Produce json
+// @Success 200 "Ping Pong"
+// @Router /ping [get]
 func send_ping(context *gin.Context) {
 	context.JSON(200, gin.H{
 		"message": "pong",

@@ -1,0 +1,84 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is Swagger Documentation for IziClock API",
+        "title": "IziClock API Documentation",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/alarms": {
+            "get": {
+                "description": "Retrieve a list of all alarms from DB and return it sorted by ascending ring date",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Alarms"
+                ],
+                "summary": "Get all alarms",
+                "responses": {
+                    "200": {
+                        "description": "Alarms send successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Alarm"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ping": {
+            "get": {
+                "description": "Return a 'pong' message",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ping"
+                ],
+                "summary": "Send a ping",
+                "responses": {
+                    "200": {
+                        "description": "Ping Pong"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Alarm": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ringDate": {
+                    "type": "string"
+                },
+                "ringtone": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -53,7 +53,7 @@ PROFILE=dev
 
 * Installer go : [Go](https://go.dev/)
 * Installer les dépendances du projet : ```go mod tidy```
-* Installer go-migrate (CLI pour migration de DB) : ```go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest```
+* Installer Swag (générateur automatique de documentation) : ```go install github.com/swaggo/swag/cmd/swag@latest```
 * Créer un nouveau fichier de migration : ```migrate create -ext sql -dir db/migrations <fileName>```
 * Démarrer l'application : ```go run main.go```
 * Raccourci Make :
@@ -62,3 +62,4 @@ PROFILE=dev
     * CLI postgres : ```make postgres```
     * Ajouté les migrations : ```make migrateup```
     * Supprimé les migrations : ```make migratedown```
+* Mettre à jour la documentation ```swag init```

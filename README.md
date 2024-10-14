@@ -33,9 +33,9 @@ Types de commits :
 * Installer NodeJS : [NodeJS](https://nodejs.org/fr/)
 * Installer Ionic : ```npm install -g @ionic/cli```
 * Installer les dépendances du projet : ```npm install```
-* Créer un nouveau component : ```ionic generate component <componentName>```
+* Créer un nouveau component : ```ionic generate component components/<componentName>```
 * Créer une nouvelle page : ```ionic generate page <pageName>```
-* Créer un nouveau service : ```ionic generate service <serviceName>```
+* Créer un nouveau service : ```ionic generate service services/<serviceName>```
 * Démarrer l'application : ```ionic serve```
 
 **Mode d'emploi d'utilisation go :**
@@ -48,11 +48,12 @@ POSTGRES_PASSWORD=password
 POSTGRES_DB=alarm-clock
 POSTGRES_PORT=5432
 POSTGRES_HOST=postgres
+PROFILE=dev
 ```
 
 * Installer go : [Go](https://go.dev/)
 * Installer les dépendances du projet : ```go mod tidy```
-* Installer go-migrate (CLI pour migration de DB) : ```go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest```
+* Installer Swag (générateur automatique de documentation) : ```go install github.com/swaggo/swag/cmd/swag@latest```
 * Créer un nouveau fichier de migration : ```migrate create -ext sql -dir db/migrations <fileName>```
 * Démarrer l'application : ```go run main.go```
 * Raccourci Make :
@@ -61,3 +62,4 @@ POSTGRES_HOST=postgres
     * CLI postgres : ```make postgres```
     * Ajouté les migrations : ```make migrateup```
     * Supprimé les migrations : ```make migratedown```
+* Mettre à jour la documentation ```swag init```

@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlarmService {
-  API_url = 'http://localhost:8080';
-
+  
   constructor(private http: HttpClient) { }
 
   getAlarms() {
-    return this.http.get(`${this.API_url}/alarms`);
+    return this.http.get(`${environment.api}/alarms`);
   }
 }

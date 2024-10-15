@@ -10,7 +10,11 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
+  },  {
+    path: 'calendars',
+    loadChildren: () => import('./calendars/calendars.module').then( m => m.CalendarsPageModule)
   },
+
 ];
 
 @NgModule({

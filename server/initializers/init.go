@@ -25,7 +25,12 @@ func ConnectDB() {
 	password := os.Getenv("POSTGRES_PASSWORD")
 	dbname := os.Getenv("POSTGRES_DB")
 	port := os.Getenv("POSTGRES_PORT")
-	host := "localhost" // os.Getenv("POSTGRES_HOST")
+	var host string
+	if os.Getenv("PROFILE") == "prod" {
+		host = os.Getenv("POSTGRES_HOST")
+	} else {
+		host = "localhost"
+	}
 	sslmode := "disable"
 	timezone := "Europe/Paris"
 	dsn := "postgresql://" + user + ":" + password + "@" + host + ":" + port + "/" + dbname + "?sslmode=" + sslmode + "&TimeZone=" + timezone

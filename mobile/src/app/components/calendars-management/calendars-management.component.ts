@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { calendar } from 'src/app/classes/calendars';
 import { Calendar } from 'src/app/interfaces/calendars';
+import { CalendarService } from 'src/app/services/calendar.service';
 
 @Component({
   selector: 'app-calendars-management',
@@ -7,27 +9,25 @@ import { Calendar } from 'src/app/interfaces/calendars';
   styleUrls: ['./calendars-management.component.scss'],
 })
 export class CalendarsManagementComponent  implements OnInit {
+  calendars: Calendar[] = [];
 
-  calendars: Calendar[] = [
-    {
-      id: 1,
-      name: 'example@hotmail.com',
-      url: 'https://example.com/calendar1'
-    },
-    {
-      id: 2,
-      name: 'example@gmail.com',
-      url: 'https://example.com/calendar2'
-    },
-    {
-      id: 3,
-      name: 'example@skynet.com',
-      url: 'https://example.com/calendar3'
-    }
-  ];
+  constructor(private calendarService: CalendarService) {
 
-  constructor() {}
+  }
+  
+  setCalendars(){
+    this.calendarService.getCalendars().subscribe((data: any) => {
+      console.log(data);
+      for (let calendarData of data) {
+        let newCalendar: Calendar = new calendar(calendarData);
+        this.calendars.push(newCalendar);
+      }
+      console.log(this.calendars);
+    });
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.setCalendars();
+  }
 
 }

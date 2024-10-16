@@ -37,7 +37,9 @@ Types de commits :
 * Créer une nouvelle page : ```ionic generate page <pageName>```
 * Créer un nouveau service : ```ionic generate service services/<serviceName>```
 * Démarrer l'application : ```ionic serve```
-
+  
+**Application** : http://localhost:8100 
+  
 **Mode d'emploi d'utilisation go :**
 
 * Il faut créer un fichier .env dans le dossier server avec les clés suivante :
@@ -63,3 +65,6 @@ PROFILE=dev
     * Ajouté les migrations : ```make migrateup```
     * Supprimé les migrations : ```make migratedown```
 * Mettre à jour la documentation ```swag init```
+  
+**API** : http://localhost:8080  
+**Documentation de l'API** : http://localhost:8080/swagger/index.html 

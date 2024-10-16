@@ -22,7 +22,7 @@ func init() {
 
 // @title IziClock API Documentation
 // @version 1.0
-// @description This is Swagger Documentation for IziClock API
+// @description Il s'agit de la documentation de l'API IziClock.
 // @host localhost:8080
 // @BasePath /
 func main() {

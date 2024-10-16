@@ -36,6 +36,7 @@ Types de commits :
 * Créer un nouveau component : ```ionic generate component components/<componentName>```
 * Créer une nouvelle page : ```ionic generate page <pageName>```
 * Créer un nouveau service : ```ionic generate service services/<serviceName>```
+* Créer un nouveau pipe : ```ionic generate pipe pipes/<pipeName>```
 * Démarrer l'application : ```ionic serve```
   
 **Application** : http://localhost:8100 

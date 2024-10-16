@@ -49,9 +49,9 @@ func ConnectDB() {
 	log.Println("DB connection initialized", DB)
 }
 
-func SyncDB() { // Ajoute les tables à la base de données
-	err := DB.AutoMigrate(&models.Alarm{})
+func SyncDB() {
+	err := DB.AutoMigrate(&models.Alarm{}) // Ajoute les tables à la base de données
 	if err != nil {
-		log.Fatal("Could not migrate alarms table :", err)
+		log.Fatal("Could not migrate tables :", err)
 	}
 }

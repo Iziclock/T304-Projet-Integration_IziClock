@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { calendar } from 'src/app/classes/calendars';
 import { Calendar } from 'src/app/interfaces/calendars';
 import { CalendarService } from 'src/app/services/calendar.service';
@@ -11,7 +12,7 @@ import { CalendarService } from 'src/app/services/calendar.service';
 export class CalendarsManagementComponent  implements OnInit {
   calendars: Calendar[] = [];
 
-  constructor(private calendarService: CalendarService) {
+  constructor(private calendarService: CalendarService, private alertController: AlertController) {
 
   }
   
@@ -26,10 +27,35 @@ export class CalendarsManagementComponent  implements OnInit {
     });
   }
 
-  deleteCalendar(id: number){
-    this.calendars = this.calendars.filter(calendar => calendar.id !== id);
+  async deleteAlert(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Êtes-vous sûr de vouloir supprimer ce calendrier ?',
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'Cancel'
+        },
+        {
+          text: 'Confirmer',
+          handler: () => {
+            this.calendars = this.calendars.filter(calendar => calendar.id !== id);
 
-    this.calendarService.deleteCalendar(id).subscribe();
+            this.calendarService.deleteCalendar(id).subscribe({
+              error: (err) => {
+                console.error(`Error deleting calendar with ID ${id}:`, err);
+              }
+            });
+          }
+        }
+      ]
+    });
+    
+    await alert.present();
+  }
+
+  deleteCalendar(id: number) {
+    this.deleteAlert(id);
   }
 
   ngOnInit() {

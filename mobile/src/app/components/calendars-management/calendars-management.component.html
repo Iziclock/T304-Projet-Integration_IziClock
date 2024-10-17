@@ -2,7 +2,7 @@
 <ion-list>
   <ion-item-sliding *ngFor="let calendar of calendars; index as i">
     <ion-item>
-      <ion-checkbox [checked]="calendar?.isActive">
+      <ion-checkbox [checked]="calendar?.isActive" (ionChange)="changeIsActiveState(calendar.id)">
         <ion-label>{{ calendar?.name }}</ion-label>
       </ion-checkbox>
     </ion-item>

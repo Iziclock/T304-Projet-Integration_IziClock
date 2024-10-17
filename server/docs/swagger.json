@@ -61,6 +61,41 @@
                 }
             }
         },
+        "/calendars/state/{id}": {
+            "put": {
+                "description": "Toggle the IsActive field of a calendar by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calendars"
+                ],
+                "summary": "Toggle IsActive field of a calendar",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Calendar ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Calendar updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/models.Calendar"
+                        }
+                    },
+                    "404": {
+                        "description": "Calendar not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/calendars/{id}": {
             "delete": {
                 "description": "Delete a calendar by ID from DB",

@@ -58,6 +58,14 @@ export class CalendarsManagementComponent  implements OnInit {
     this.deleteAlert(id);
   }
 
+  changeIsActiveState(id: number) {
+    this.calendarService.changeIsActiveState(id).subscribe({
+      error: (err) => {
+        console.error(`Error changing state of calendar with ID ${id}:`, err);
+      }
+    });
+  }
+
   ngOnInit() {
     this.setCalendars();
   }

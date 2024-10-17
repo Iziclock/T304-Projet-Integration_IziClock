@@ -14,6 +14,7 @@ func Routes(route *gin.Engine) {
 	{
 		calendars.GET("", get_calendars)
 		calendars.DELETE("/:id", delete_calendar)
+		calendars.PUT("/state/:id", change_IsActive_state)
 	}
 }
 
@@ -55,4 +56,37 @@ func delete_calendar(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{"message": "Calendar deleted successfully"})
+}
+
+// change_IsActive_state toggles the IsActive field of a calendar by ID
+// @Summary Toggle IsActive field of a calendar
+// @Description Toggle the IsActive field of a calendar by ID
+// @Tags Calendars
+// @Produce json
+// @Param id path int true "Calendar ID"
+// @Success 200 {object} models.Calendar "Calendar updated successfully"
+// @Failure 404 "Calendar not found"
+// @Failure 500 "Internal Server Error"
+// @Router /calendars/state/{id} [put]
+func change_IsActive_state(context *gin.Context) {
+	id := context.Param("id")
+	var calendar models.Calendar
+
+	if err := initializers.DB.First(&calendar, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			context.JSON(http.StatusNotFound, gin.H{"error": "Calendar not found"})
+		} else {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	calendar.IsActive = !calendar.IsActive
+
+	if err := initializers.DB.Save(&calendar).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, calendar)
 }

@@ -97,6 +97,29 @@ paths:
       summary: Delete a calendar
       tags:
       - Calendars
+  /calendars/state/{id}:
+    put:
+      description: Toggle the IsActive field of a calendar by ID
+      parameters:
+      - description: Calendar ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendar updated successfully
+          schema:
+            $ref: '#/definitions/models.Calendar'
+        "404":
+          description: Calendar not found
+        "500":
+          description: Internal Server Error
+      summary: Toggle IsActive field of a calendar
+      tags:
+      - Calendars
   /ping:
     get:
       description: Return a 'pong' message

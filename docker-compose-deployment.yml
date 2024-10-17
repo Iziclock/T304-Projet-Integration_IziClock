@@ -1,6 +1,6 @@
 services:
   reverse:
-    image: correba/iziclock-reverse
+    image: correba/iziclock_reverse
     container_name: reverse
     hostname: reverse
     restart: always
@@ -25,7 +25,7 @@ services:
       - reverse
     command: certonly --webroot -w /var/www/certbot --force-renewal --email m.verbiest@students.ephec.be -d www.iziclock.be --agree-tos
   go:
-    image: correba/iziclock-server
+    image: correba/iziclock_server
     container_name: server
     hostname: server
     restart: always

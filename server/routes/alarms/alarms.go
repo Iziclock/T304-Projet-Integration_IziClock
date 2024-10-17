@@ -12,6 +12,7 @@ func Routes(route *gin.Engine) {
 	alarms := route.Group("/alarms")
 	{
 		alarms.GET("", get_alarms)
+		alarms.PUT("/:id", update_alarms)
 	}
 }
 
@@ -30,4 +31,23 @@ func get_alarms(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusOK, alarms)
+}
+
+func update_alarms(context *gin.Context) {
+	id := context.Param("id")
+	var alarm models.Alarm
+
+	if err := initializers.DB.First(&alarm, id).Error; err != nil {
+		context.JSON(http.StatusNotFound, gin.H{"error": "Alarm not found"})
+		return
+	}
+
+	alarm.IsActive = !alarm.IsActive
+
+	if err := initializers.DB.Save(&alarm).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, alarm)
 }

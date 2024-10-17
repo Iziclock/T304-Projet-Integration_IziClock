@@ -1,9 +1,6 @@
 services:
   reverse:
-    build:
-      context: .
-      dockerfile: Dockerfile-reverse
-    image: iziclock/reverse
+    image: correba/iziclock-reverse
     container_name: reverse
     hostname: reverse
     restart: always
@@ -28,10 +25,7 @@ services:
       - reverse
     command: certonly --webroot -w /var/www/certbot --force-renewal --email m.verbiest@students.ephec.be -d www.iziclock.be --agree-tos
   go:
-    build:
-      context: .
-      dockerfile: Dockerfile-server
-    image: iziclock/server
+    image: correba/iziclock-server
     container_name: server
     hostname: server
     restart: always
@@ -75,6 +69,15 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 reverse server
 
 networks:
   reverse:

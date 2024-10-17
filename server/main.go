@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"server/config"
 	_ "server/docs"
 	"server/initializers"
@@ -14,7 +15,9 @@ import (
 )
 
 func init() {
-	initializers.InitEnv()
+	if os.Getenv("PROFILE") != "prod" {
+		initializers.InitEnv()
+	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
 	mocks.InsertMockedAlarms() // VALEURS MOCKEES : A RETIRER EN PROD !!!

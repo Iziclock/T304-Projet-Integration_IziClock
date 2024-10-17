@@ -1,0 +1,56 @@
+basePath: /
+definitions:
+  models.Alarm:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      location:
+        type: string
+      name:
+        type: string
+      ringDate:
+        type: string
+      ringtone:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is Swagger Documentation for IziClock API
+  title: IziClock API Documentation
+  version: "1.0"
+paths:
+  /alarms:
+    get:
+      description: Retrieve a list of all alarms from DB and return it sorted by ascending
+        ring date
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Alarms send successfully
+          schema:
+            items:
+              $ref: '#/definitions/models.Alarm'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all alarms
+      tags:
+      - Alarms
+  /ping:
+    get:
+      description: Return a 'pong' message
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ping Pong
+      summary: Send a ping
+      tags:
+      - Ping
+swagger: "2.0"

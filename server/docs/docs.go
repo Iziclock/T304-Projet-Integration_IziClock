@@ -41,6 +41,67 @@ const docTemplate = `{
                 }
             }
         },
+        "/calendars": {
+            "get": {
+                "description": "Retrieve a list of all calendars from DB",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calendars"
+                ],
+                "summary": "Get all calendars",
+                "responses": {
+                    "200": {
+                        "description": "Calendars send successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Calendar"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/calendars/{id}": {
+            "delete": {
+                "description": "Delete a calendar by ID from DB",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calendars"
+                ],
+                "summary": "Delete a calendar",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Calendar ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Calendar deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Calendar not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "description": "Return a 'pong' message",
@@ -83,6 +144,29 @@ const docTemplate = `{
                 },
                 "ringtone": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Calendar": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "integer"
                 }
             }
         }

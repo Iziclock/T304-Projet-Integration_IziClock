@@ -1,8 +1,15 @@
 <h1>Calendriers connectés</h1>
 <ion-list>
-  <ion-item *ngFor="let calendar of calendars; index as i">
-    <ion-checkbox [checked]="calendar?.isActive">
-      <ion-label>{{ calendar?.name }}</ion-label>
-    </ion-checkbox>
-  </ion-item>
+  <ion-item-sliding *ngFor="let calendar of calendars; index as i">
+    <ion-item>
+      <ion-checkbox [checked]="calendar?.isActive">
+        <ion-label>{{ calendar?.name }}</ion-label>
+      </ion-checkbox>
+    </ion-item>
+    <ion-item-options side="end">
+      <ion-item-option (click)="deleteCalendar(calendar.id)">
+        Supprimer
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
 </ion-list>

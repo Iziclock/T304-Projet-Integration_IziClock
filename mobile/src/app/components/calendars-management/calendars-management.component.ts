@@ -26,6 +26,12 @@ export class CalendarsManagementComponent  implements OnInit {
     });
   }
 
+  deleteCalendar(id: number){
+    this.calendars = this.calendars.filter(calendar => calendar.id !== id);
+
+    this.calendarService.deleteCalendar(id).subscribe();
+  }
+
   ngOnInit() {
     this.setCalendars();
   }

@@ -12,4 +12,8 @@ export class CalendarService {
   getCalendars() {
     return this.http.get(`${environment.api}/calendars`);
   }
+
+  deleteCalendar(id: number) {
+    return this.http.delete(`${environment.api}/calendars/${id}`);
+  }
 }

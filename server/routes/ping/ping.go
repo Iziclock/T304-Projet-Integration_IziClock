@@ -11,9 +11,9 @@ func Routes(route *gin.Engine) {
 	}
 }
 
-// send_ping return a "pong" message
-// @Summary Send a ping
-// @Description Return a 'pong' message
+// send_ping renvoie un message 'pong'
+// @Summary Envoie un ping
+// @Description Renvoie un message 'pong' pour vérifier que le serveur est en ligne
 // @Tags Ping
 // @Produce json
 // @Success 200 "Ping Pong"

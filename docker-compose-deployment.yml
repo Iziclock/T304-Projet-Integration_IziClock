@@ -1,0 +1,84 @@
+services:
+  reverse:
+    image: correba/iziclock_reverse
+    container_name: reverse
+    hostname: reverse
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - reverse
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+    depends_on:
+      go:
+        condition: service_healthy
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt/:rw
+      - ./certbot/www:/var/www/certbot/:rw
+    depends_on:
+      - reverse
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email m.verbiest@students.ephec.be -d www.iziclock.be --agree-tos
+  go:
+    image: correba/iziclock_server
+    container_name: server
+    hostname: server
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      PROFILE: prod
+    networks:
+      - db
+      - reverse
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    shm_size: 256M
+    container_name: ${POSTGRES_HOST}
+    hostname: ${POSTGRES_HOST}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    networks:
+      - db
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 reverse server
+
+networks:
+  reverse:
+  db:

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"server/config"
 	_ "server/docs"
 	"server/initializers"
@@ -15,7 +16,9 @@ import (
 )
 
 func init() {
-	initializers.InitEnv()
+	if os.Getenv("PROFILE") != "prod" {
+		initializers.InitEnv()
+	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
 	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
@@ -24,7 +27,7 @@ func init() {
 
 // @title IziClock API Documentation
 // @version 1.0
-// @description This is Swagger Documentation for IziClock API
+// @description Il s'agit de la documentation de l'API IziClock.
 // @host localhost:8080
 // @BasePath /
 func main() {

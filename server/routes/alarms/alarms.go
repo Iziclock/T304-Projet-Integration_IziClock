@@ -15,10 +15,10 @@ func Routes(route *gin.Engine) {
 	}
 }
 
-// get_alarms retrieve and return a list of all alarms sorted by ascending ring date
-// @Summary Get all alarms
-// @Description Retrieve a list of all alarms from DB and return it sorted by ascending ring date
-// @Tags Alarms
+// get_alarms récupère et retourne toutes les alarmes de la base de données
+// @Summary Récupère toutes les alarmes
+// @Description Récupère une liste de toutes les alarmes et les renvoie dans l'ordre de leur date de sonnerie
+// @Tags Alarmes
 // @Produce json
 // @Success 200 {array} models.Alarm "Alarms send successfully"
 // @Failure 500 "Internal Server Error"

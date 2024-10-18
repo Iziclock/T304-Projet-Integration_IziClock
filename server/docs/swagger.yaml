@@ -2,6 +2,10 @@ basePath: /
 definitions:
   models.Alarm:
     properties:
+      calendar:
+        $ref: '#/definitions/models.Calendar'
+      calendarID:
+        type: integer
       createdAt:
         type: string
       id:

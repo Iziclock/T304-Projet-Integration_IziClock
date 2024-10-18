@@ -25,9 +25,12 @@ func Routes(route *gin.Engine) {
 // @Router /alarms [get]
 func get_alarms(context *gin.Context) {
 	var alarms []models.Alarm
-	if err := initializers.DB.Order("ring_date asc").Find(&alarms).Error; err != nil {
+
+	// Récupère toutes les alarmes triées par date de sonnerie
+	if err := initializers.DB.Joins("JOIN calendars ON calendars.id = alarms.calendar_id").Where("calendars.is_active = true").Order("ring_date asc").Find(&alarms).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	context.JSON(http.StatusOK, alarms)
 }

@@ -159,6 +159,12 @@ const docTemplate = `{
         "models.Alarm": {
             "type": "object",
             "properties": {
+                "calendar": {
+                    "$ref": "#/definitions/models.Calendar"
+                },
+                "calendarID": {
+                    "type": "integer"
+                },
                 "createdAt": {
                     "type": "string"
                 },

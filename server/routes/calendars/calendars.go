@@ -28,10 +28,13 @@ func Routes(route *gin.Engine) {
 // @Router /calendars [get]
 func get_calendars(context *gin.Context) {
 	var calendars []models.Calendar
+
+	// Récupère tous les calendriers triés par date de création
 	if err := initializers.DB.Order("created_at asc").Find(&calendars).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	context.JSON(http.StatusOK, calendars)
 }
 
@@ -47,6 +50,8 @@ func get_calendars(context *gin.Context) {
 // @Router /calendars/{id} [delete]
 func delete_calendar(context *gin.Context) {
 	id := context.Param("id")
+
+	// Supprime le calendrier à partir de son ID
 	if err := initializers.DB.Delete(&models.Calendar{}, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			context.JSON(http.StatusNotFound, gin.H{"error": "Calendar not found"})
@@ -55,6 +60,7 @@ func delete_calendar(context *gin.Context) {
 		}
 		return
 	}
+
 	context.JSON(http.StatusOK, gin.H{"message": "Calendar deleted successfully"})
 }
 
@@ -72,6 +78,7 @@ func change_IsActive_state(context *gin.Context) {
 	id := context.Param("id")
 	var calendar models.Calendar
 
+	// Récupère le calendrier à partir de son ID
 	if err := initializers.DB.First(&calendar, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			context.JSON(http.StatusNotFound, gin.H{"error": "Calendar not found"})
@@ -81,8 +88,10 @@ func change_IsActive_state(context *gin.Context) {
 		return
 	}
 
+	// Inverse l'état IsActive du calendrier
 	calendar.IsActive = !calendar.IsActive
 
+	// Sauvegarde les modifications
 	if err := initializers.DB.Save(&calendar).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

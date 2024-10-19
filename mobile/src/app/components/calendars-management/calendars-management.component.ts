@@ -42,6 +42,9 @@ export class CalendarsManagementComponent  implements OnInit {
             this.calendars = this.calendars.filter(calendar => calendar.id !== id);
 
             this.calendarService.deleteCalendar(id).subscribe({
+              next: () => {
+                window.location.reload(); // Recharge la page pour mettre à jour les données affichées
+              },
               error: (err) => {
                 console.error(`Error deleting calendar with ID ${id}:`, err);
               }

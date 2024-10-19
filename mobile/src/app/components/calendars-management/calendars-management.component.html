@@ -1,6 +1,6 @@
 <h1>Calendriers connectés</h1>
 <ion-list>
-  <ion-item-sliding *ngFor="let calendar of calendars; index as i">
+  <ion-item-sliding *ngFor="let calendar of calendars; index as i" [ngClass]="{'active-calendar': calendar.isActive}">
     <ion-item>
       <ion-checkbox [checked]="calendar?.isActive" (ionChange)="changeIsActiveState(calendar.id)">
         <ion-label>{{ calendar?.name }}</ion-label>

@@ -29,8 +29,8 @@ func Routes(route *gin.Engine) {
 func get_calendars(context *gin.Context) {
 	var calendars []models.Calendar
 
-	// Récupère tous les calendriers triés par date de création
-	if err := initializers.DB.Order("created_at asc").Find(&calendars).Error; err != nil {
+	// Récupère tous les calendriers triés par leur état d'activité et ensuite par date de création
+	if err := initializers.DB.Order("is_active desc, created_at asc").Find(&calendars).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

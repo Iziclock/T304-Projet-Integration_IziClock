@@ -7,6 +7,7 @@ import (
 	"server/initializers"
 	"server/mocks"
 	"server/routes/alarms"
+	"server/routes/calendars"
 	"server/routes/ping"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,8 @@ func init() {
 	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
-	mocks.InsertMockedAlarms() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation
@@ -35,6 +37,7 @@ func main() {
 	// Groupes de routes
 	ping.Routes(router)
 	alarms.Routes(router)
+	calendars.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run() // listen and serve on localhost:8080

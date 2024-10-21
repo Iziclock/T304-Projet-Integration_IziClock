@@ -1,7 +1,32 @@
 .active-alarm {
-    border: 5px solid green;
+    background-color: #F0F8FF; /* Blanc cassé */
+    border: none;
 }
-  
+
 .inactive-alarm {
-    border: 5px solid red;
+    background-color: #A9A9A9; /* Gris clair */
+    border: none;
+}
+
+ion-card {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 8px; /* Ajoute un peu de courbure aux coins */
+}
+
+.toggle-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+ion-card-subtitle {
+    font-size: 1rem;
+    color: grey;
 }

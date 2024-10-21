@@ -1,0 +1,8 @@
+FROM golang:1.22.3 AS builder
+WORKDIR /app
+COPY ./server .
+RUN apt-get update && apt-get install -y curl
+RUN go build -o server
+FROM golang:1.22.3
+COPY --from=builder /app/server /
+CMD ["/server"]

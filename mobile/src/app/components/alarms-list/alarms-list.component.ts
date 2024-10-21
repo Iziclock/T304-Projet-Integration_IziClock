@@ -18,7 +18,7 @@ export class AlarmsListComponent implements OnInit {
   setAlarms(){
     this.alarmService.getAlarms().subscribe((data: any) => {
       for (let alarmData of data) {
-        let newAlarm: Alarm = new alarm(alarmData);
+        const newAlarm: Alarm = new alarm(alarmData);
         this.alarms.push(newAlarm);
       }
     });

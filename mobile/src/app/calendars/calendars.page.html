@@ -1,14 +1,14 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Calendriers</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <div class="div-logo">
+      <img src="../../assets/iziclock_logo.png" alt="Logo" class="logo">
+    </div>    
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h1>Calendriers connectés</h1>
-  <ion-list>
-    <ion-item *ngFor="let calendar of calendars; index as i">
-      <ion-checkbox checked="true"><ion-label>{{ calendar?.name }}</ion-label></ion-checkbox>
-    </ion-item>
-  </ion-list>
+  <app-calendars-management></app-calendars-management>
 </ion-content>

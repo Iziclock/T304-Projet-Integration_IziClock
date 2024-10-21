@@ -2,6 +2,7 @@ import { Alarm, AlarmData } from "../interfaces/alarms";
 
 export class alarm implements Alarm{
     id: number;
+    calendarId: number;
     name: string;
     ringDate: Date;
     createdAt: Date;
@@ -11,6 +12,7 @@ export class alarm implements Alarm{
 
     constructor(alarmData: AlarmData){
         this.id = alarmData.ID;
+        this.calendarId = alarmData.CalendarID;
         this.name = alarmData.Name;
         this.ringDate = new Date(alarmData.RingDate);
         this.createdAt = new Date(alarmData.CreatedAt);

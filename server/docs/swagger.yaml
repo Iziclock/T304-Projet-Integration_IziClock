@@ -2,6 +2,10 @@ basePath: /
 definitions:
   models.Alarm:
     properties:
+      calendar:
+        $ref: '#/definitions/models.Calendar'
+      calendarID:
+        type: integer
       createdAt:
         type: string
       id:
@@ -16,6 +20,21 @@ definitions:
         type: string
       ringtone:
         type: string
+    type: object
+  models.Calendar:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      name:
+        type: string
+      url:
+        type: string
+      userID:
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -42,6 +61,69 @@ paths:
       summary: Get all alarms
       tags:
       - Alarms
+  /calendars:
+    get:
+      description: Retrieve a list of all calendars from DB
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendars send successfully
+          schema:
+            items:
+              $ref: '#/definitions/models.Calendar'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Get all calendars
+      tags:
+      - Calendars
+  /calendars/{id}:
+    delete:
+      description: Delete a calendar by ID from DB
+      parameters:
+      - description: Calendar ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendar deleted successfully
+          schema:
+            type: string
+        "404":
+          description: Calendar not found
+        "500":
+          description: Internal Server Error
+      summary: Delete a calendar
+      tags:
+      - Calendars
+  /calendars/state/{id}:
+    put:
+      description: Toggle the IsActive field of a calendar by ID
+      parameters:
+      - description: Calendar ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendar updated successfully
+          schema:
+            $ref: '#/definitions/models.Calendar'
+        "404":
+          description: Calendar not found
+        "500":
+          description: Internal Server Error
+      summary: Toggle IsActive field of a calendar
+      tags:
+      - Calendars
   /ping:
     get:
       description: Return a 'pong' message

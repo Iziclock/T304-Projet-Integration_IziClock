@@ -1,3 +1,15 @@
-h1 {
-    margin-left: 15px;
+.div-logo {
+    display: flex;
+    justify-content: center;
+}
+  
+.logo {
+    max-width: 200px;
+    max-height: 200px;
+    margin-right: 50px;
+}
+
+ion-back-button {
+    color: black;
+    margin-left: 20px;
 }

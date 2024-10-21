@@ -25,7 +25,12 @@ func ConnectDB() {
 	password := os.Getenv("POSTGRES_PASSWORD")
 	dbname := os.Getenv("POSTGRES_DB")
 	port := os.Getenv("POSTGRES_PORT")
-	host := "localhost" // os.Getenv("POSTGRES_HOST")
+	var host string
+	if os.Getenv("PROFILE") == "prod" {
+		host = os.Getenv("POSTGRES_HOST")
+	} else {
+		host = "localhost"
+	}
 	sslmode := "disable"
 	timezone := "Europe/Paris"
 	dsn := "postgresql://" + user + ":" + password + "@" + host + ":" + port + "/" + dbname + "?sslmode=" + sslmode + "&TimeZone=" + timezone
@@ -50,8 +55,8 @@ func ConnectDB() {
 }
 
 func SyncDB() { // Ajoute les tables à la base de données
-	err := DB.AutoMigrate(&models.Alarm{})
+	err := DB.AutoMigrate(&models.Alarm{}, &models.Calendar{})
 	if err != nil {
-		log.Fatal("Could not migrate alarms table :", err)
+		log.Fatal("Could not migrate tables :", err)
 	}
 }

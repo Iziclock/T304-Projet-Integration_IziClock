@@ -1,0 +1,42 @@
+h1 {
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+ion-list {
+    margin: 15px 20px;
+    background-color: #f5f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+    ion-item-sliding {
+      margin: 5px 0;
+      border-radius: 10px;
+  
+      ion-item {
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+  
+        ion-checkbox {
+          margin-right: 10px;
+
+          ion-label {
+            font-size: 16px;
+          }
+        }
+      }
+  
+      ion-item-options {
+        ion-item-option {
+          --background: #ff3b30;
+          color: #ffffff;
+          font-weight: bold;
+        }
+      }
+    }
+}
+
+.active-calendar {
+    background-color: #e7e4e4;
+}

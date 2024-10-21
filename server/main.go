@@ -1,11 +1,13 @@
 package main
 
 import (
+	"os"
 	"server/config"
 	_ "server/docs"
 	"server/initializers"
 	"server/mocks"
 	"server/routes/alarms"
+	"server/routes/calendars"
 	"server/routes/ping"
 
 	"github.com/gin-gonic/gin"
@@ -14,15 +16,18 @@ import (
 )
 
 func init() {
-	initializers.InitEnv()
+	if os.Getenv("PROFILE") != "prod" {
+		initializers.InitEnv()
+	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
-	mocks.InsertMockedAlarms() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation
 // @version 1.0
-// @description This is Swagger Documentation for IziClock API
+// @description Il s'agit de la documentation de l'API IziClock.
 // @host localhost:8080
 // @BasePath /
 func main() {
@@ -32,6 +37,7 @@ func main() {
 	// Groupes de routes
 	ping.Routes(router)
 	alarms.Routes(router)
+	calendars.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run() // listen and serve on localhost:8080

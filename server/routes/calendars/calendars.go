@@ -18,10 +18,10 @@ func Routes(route *gin.Engine) {
 	}
 }
 
-// get_calendars retrieve and return a list of all calendars
-// @Summary Get all calendars
-// @Description Retrieve a list of all calendars from DB
-// @Tags Calendars
+// get_calendars récupère et retourne tous les calendriers de la base de données
+// @Summary Récupère tous les calendriers
+// @Description Récupère une liste de toutes les alarmes depuis la DB
+// @Tags Calendriers
 // @Produce json
 // @Success 200 {array} models.Calendar "Calendars send successfully"
 // @Failure 500 "Internal Server Error"
@@ -38,10 +38,10 @@ func get_calendars(context *gin.Context) {
 	context.JSON(http.StatusOK, calendars)
 }
 
-// delete_calendar deletes a calendar by ID
-// @Summary Delete a calendar
-// @Description Delete a calendar by ID from DB
-// @Tags Calendars
+// delete_calendar Efface un calendrier via son ID
+// @Summary Efface un calendrier
+// @Description Efface un calendrier via son ID
+// @Tags Calendriers
 // @Produce json
 // @Param id path int true "Calendar ID"
 // @Success 200 {string} string "Calendar deleted successfully"
@@ -64,10 +64,10 @@ func delete_calendar(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "Calendar deleted successfully"})
 }
 
-// change_IsActive_state toggles the IsActive field of a calendar by ID
-// @Summary Toggle IsActive field of a calendar
-// @Description Toggle the IsActive field of a calendar by ID
-// @Tags Calendars
+// change_IsActive_state change l'attribut d'activité d'un calendrier
+// @Summary Change l'attribut d'activité d'un calendrier
+// @Description Change l'attribut d'activité d'un calendrier via l'identifiant de celui-ci
+// @Tags Calendriers
 // @Produce json
 // @Param id path int true "Calendar ID"
 // @Success 200 {object} models.Calendar "Calendar updated successfully"

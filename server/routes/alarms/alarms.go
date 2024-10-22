@@ -39,7 +39,7 @@ func get_alarms(context *gin.Context) {
 // update_alarms met à jour l'état actif d'une alarme
 // @Summary Update alarm status
 // @Description Met à jour l'état IsActive d'une alarme spécifiée par son ID
-// @Tags Alarms
+// @Tags Alarmes
 // @Param id path int true "Alarm ID"
 // @Produce json
 // @Success 200 {object} models.Alarm

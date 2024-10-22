@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is Swagger Documentation for IziClock API",
+        "description": "Il s'agit de la documentation de l'API IziClock.",
         "title": "IziClock API Documentation",
         "contact": {},
         "version": "1.0"
@@ -11,14 +11,14 @@
     "paths": {
         "/alarms": {
             "get": {
-                "description": "Retrieve a list of all alarms from DB and return it sorted by ascending ring date",
+                "description": "Récupère une liste de toutes les alarmes et les renvoie dans l'ordre de leur date de sonnerie",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Alarms"
+                    "Alarmes"
                 ],
-                "summary": "Get all alarms",
+                "summary": "Récupère toutes les alarmes",
                 "responses": {
                     "200": {
                         "description": "Alarms send successfully",
@@ -35,16 +35,63 @@
                 }
             }
         },
-        "/calendars": {
-            "get": {
-                "description": "Retrieve a list of all calendars from DB",
+        "/alarms/state/{id}": {
+            "put": {
+                "description": "Met à jour l'état IsActive d'une alarme spécifiée par son ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Calendars"
+                    "Alarmes"
                 ],
-                "summary": "Get all calendars",
+                "summary": "Update alarm status",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Alarm ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Alarm"
+                        }
+                    },
+                    "404": {
+                        "description": "Alarm not found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/calendars": {
+            "get": {
+                "description": "Récupère une liste de toutes les alarmes depuis la DB",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calendriers"
+                ],
+                "summary": "Récupère tous les calendriers",
                 "responses": {
                     "200": {
                         "description": "Calendars send successfully",
@@ -63,14 +110,14 @@
         },
         "/calendars/state/{id}": {
             "put": {
-                "description": "Toggle the IsActive field of a calendar by ID",
+                "description": "Change l'attribut d'activité d'un calendrier via l'identifiant de celui-ci",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Calendars"
+                    "Calendriers"
                 ],
-                "summary": "Toggle IsActive field of a calendar",
+                "summary": "Change l'attribut d'activité d'un calendrier",
                 "parameters": [
                     {
                         "type": "integer",
@@ -98,14 +145,14 @@
         },
         "/calendars/{id}": {
             "delete": {
-                "description": "Delete a calendar by ID from DB",
+                "description": "Efface un calendrier via son ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Calendars"
+                    "Calendriers"
                 ],
-                "summary": "Delete a calendar",
+                "summary": "Efface un calendrier",
                 "parameters": [
                     {
                         "type": "integer",
@@ -133,14 +180,14 @@
         },
         "/ping": {
             "get": {
-                "description": "Return a 'pong' message",
+                "description": "Renvoie un message 'pong' pour vérifier que le serveur est en ligne",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Ping"
                 ],
-                "summary": "Send a ping",
+                "summary": "Envoie un ping",
                 "responses": {
                     "200": {
                         "description": "Ping Pong"

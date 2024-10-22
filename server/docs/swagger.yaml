@@ -39,14 +39,14 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: This is Swagger Documentation for IziClock API
+  description: Il s'agit de la documentation de l'API IziClock.
   title: IziClock API Documentation
   version: "1.0"
 paths:
   /alarms:
     get:
-      description: Retrieve a list of all alarms from DB and return it sorted by ascending
-        ring date
+      description: Récupère une liste de toutes les alarmes et les renvoie dans l'ordre
+        de leur date de sonnerie
       produces:
       - application/json
       responses:
@@ -58,12 +58,43 @@ paths:
             type: array
         "500":
           description: Internal Server Error
-      summary: Get all alarms
+      summary: Récupère toutes les alarmes
       tags:
-      - Alarms
+      - Alarmes
+  /alarms/state/{id}:
+    put:
+      description: Met à jour l'état IsActive d'une alarme spécifiée par son ID
+      parameters:
+      - description: Alarm ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Alarm'
+        "404":
+          description: Alarm not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Erreur interne du serveur
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update alarm status
+      tags:
+      - Alarmes
   /calendars:
     get:
-      description: Retrieve a list of all calendars from DB
+      description: Récupère une liste de toutes les alarmes depuis la DB
       produces:
       - application/json
       responses:
@@ -75,12 +106,12 @@ paths:
             type: array
         "500":
           description: Internal Server Error
-      summary: Get all calendars
+      summary: Récupère tous les calendriers
       tags:
-      - Calendars
+      - Calendriers
   /calendars/{id}:
     delete:
-      description: Delete a calendar by ID from DB
+      description: Efface un calendrier via son ID
       parameters:
       - description: Calendar ID
         in: path
@@ -98,12 +129,13 @@ paths:
           description: Calendar not found
         "500":
           description: Internal Server Error
-      summary: Delete a calendar
+      summary: Efface un calendrier
       tags:
-      - Calendars
+      - Calendriers
   /calendars/state/{id}:
     put:
-      description: Toggle the IsActive field of a calendar by ID
+      description: Change l'attribut d'activité d'un calendrier via l'identifiant
+        de celui-ci
       parameters:
       - description: Calendar ID
         in: path
@@ -121,18 +153,18 @@ paths:
           description: Calendar not found
         "500":
           description: Internal Server Error
-      summary: Toggle IsActive field of a calendar
+      summary: Change l'attribut d'activité d'un calendrier
       tags:
-      - Calendars
+      - Calendriers
   /ping:
     get:
-      description: Return a 'pong' message
+      description: Renvoie un message 'pong' pour vérifier que le serveur est en ligne
       produces:
       - application/json
       responses:
         "200":
           description: Ping Pong
-      summary: Send a ping
+      summary: Envoie un ping
       tags:
       - Ping
 swagger: "2.0"

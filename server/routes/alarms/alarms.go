@@ -12,7 +12,7 @@ func Routes(route *gin.Engine) {
 	alarms := route.Group("/alarms")
 	{
 		alarms.GET("", get_alarms)
-		alarms.PUT("/:id", update_alarms)
+		alarms.PUT("/state/:id", update_alarms)
 	}
 }
 
@@ -36,6 +36,16 @@ func get_alarms(context *gin.Context) {
 	context.JSON(http.StatusOK, alarms)
 }
 
+// update_alarms met à jour l'état actif d'une alarme
+// @Summary Update alarm status
+// @Description Met à jour l'état IsActive d'une alarme spécifiée par son ID
+// @Tags Alarms
+// @Param id path int true "Alarm ID"
+// @Produce json
+// @Success 200 {object} models.Alarm
+// @Failure 404 {object} map[string]string "Alarm not found"
+// @Failure 500 {object} map[string]string "Erreur interne du serveur"
+// @Router /alarms/state/{id} [put]
 func update_alarms(context *gin.Context) {
 	id := context.Param("id")
 	var alarm models.Alarm

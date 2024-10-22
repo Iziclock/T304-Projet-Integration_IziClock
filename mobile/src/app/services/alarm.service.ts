@@ -15,6 +15,6 @@ export class AlarmService {
   }
 
   updateAlarmState(alarm: Alarm) {
-    return this.http.put(`${environment.api}/alarms/${alarm.id}`, {});
+    return this.http.put(`${environment.api}/alarms/state/${alarm.id}`, {});
   }
 }

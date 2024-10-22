@@ -8,11 +8,16 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'connexion',
     pathMatch: 'full'
-  },  {
+  },
+  {
     path: 'calendars',
     loadChildren: () => import('./calendars/calendars.module').then( m => m.CalendarsPageModule)
+  },
+  {
+    path: 'connexion',
+    loadChildren: () => import('./connexion/connexion.module').then( m => m.ConnexionPageModule)
   },
 
 ];

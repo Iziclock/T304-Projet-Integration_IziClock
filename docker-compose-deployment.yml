@@ -76,6 +76,14 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 60 reverse go
 
 networks:
   reverse:

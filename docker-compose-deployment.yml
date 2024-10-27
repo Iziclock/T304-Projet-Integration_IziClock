@@ -15,7 +15,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt/:ro
       - ./certbot/www:/var/www/certbot/:ro
-      - /home/iziclock/iziclock/ringtones:/ringtones:ro
+      - ../ringtones:/ringtones:ro
     depends_on:
       go:
         condition: service_healthy

@@ -7,10 +7,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div>
-    <audio #audioPlayer src="http://localhost:7000/ringtones/default-ringtone.mp3"></audio>
-    <button (click)="toggleAudio(audioPlayer)">
+  <h1>Sonneries</h1>
+  <div class="audio-container">
+    <audio #audioPlayer src="https://www.iziclock.be/ringtones/default-ringtone.mp3"></audio>
+    <button (click)="toggleAudio(audioPlayer)" class="play-button">
       <ion-icon [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
     </button>
+    <span>Alarme par défaut</span>
   </div>
 </ion-content>

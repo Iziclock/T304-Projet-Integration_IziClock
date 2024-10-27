@@ -21,5 +21,4 @@ export class RingtonesPage implements OnInit {
 
   ngOnInit() {
   }
-
 }

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="div-logo">
+      <img src="../../assets/iziclock_logo.png" alt="Logo" class="logo">
+    </div>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div>
+    <audio #audioPlayer src="http://localhost:7000/ringtones/default-ringtone.mp3"></audio>
+    <button (click)="toggleAudio(audioPlayer)">
+      <ion-icon [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
+    </button>
+  </div>
+</ion-content>

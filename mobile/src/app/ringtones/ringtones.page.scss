@@ -1,0 +1,19 @@
+.div-logo {
+    display: flex;
+    justify-content: center;
+}
+  
+.logo {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+button {
+    background: none;
+    color: black;
+    font-size: 50px;
+}
+  
+button:hover {
+    color: #007bff; 
+}

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <div class="div-logo">
-      <img src="../../assets/iziclock_logo.png" alt="Logo" class="logo">
+      <img src="../../assets/logo/iziclock-logo.png" alt="Logo" class="logo">
     </div>    
   </ion-toolbar>
 </ion-header>
@@ -9,7 +9,7 @@
 <ion-content [fullscreen]="true">
   <h1>Sonneries</h1>
   <div class="audio-container">
-    <audio #audioPlayer src="https://www.iziclock.be/ringtones/default-ringtone.mp3"></audio>
+    <audio #audioPlayer src="../../assets/ringtones/kalash-booba-kaaris.mp3"></audio>
     <button (click)="toggleAudio(audioPlayer)" class="play-button">
       <ion-icon [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
     </button>

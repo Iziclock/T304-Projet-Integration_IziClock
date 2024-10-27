@@ -7,37 +7,34 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-	"google.golang.org/api/calendar/v3"
-	"google.golang.org/api/option"
 )
 
 // Retrieve a Token, Saves the Token, then returns the generated client.
-func GetClient(config *oauth2.Config) *http.Client {
+func GetClient(config *oauth2.Config, code string) *http.Client {
 	tokFile := "token.json"
 	tok, err := TokenFromFile(tokFile)
 	if err != nil {
-		tok = GetTokenFromWeb(config)
+		tok = GetTokenFromWeb(config, code)
 		SaveToken(tokFile, tok)
 	}
 	return config.Client(context.Background(), tok)
 }
 
 // Request a Token from the web, then returns the retrieved Token.
-func GetTokenFromWeb(config *oauth2.Config) *oauth2.Token {
+func GetTokenFromWeb(config *oauth2.Config, code string) *oauth2.Token {
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
 	fmt.Printf("Go to the following link in your browser then type the "+
 		"authorization code: \n%v\n", authURL)
 
-	var authCode string
-	if _, err := fmt.Scan(&authCode); err != nil {
+	//var authCode string
+	/*if _, err := fmt.Scan(&authCode); err != nil {
 		log.Fatalf("Unable to read authorization code: %v", err)
-	}
+	}*/
 
+	authCode := code //test
 	tok, err := config.Exchange(context.TODO(), authCode)
 	if err != nil {
 		log.Fatalf("Unable to retrieve token from web: %v", err)
@@ -93,7 +90,7 @@ func IndexHandler(c *gin.Context) {
 }
 
 // Handler pour la route "/events"
-func EventsHandler(c *gin.Context) {
+/*func EventsHandler(c *gin.Context) {
 	ctx := context.Background()
 	b, err := os.ReadFile("credentials.json")
 	if err != nil {
@@ -105,7 +102,7 @@ func EventsHandler(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
-	client := GetClient(config)
+	client := GetClient(config,code)
 
 	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
@@ -136,4 +133,4 @@ func EventsHandler(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, gin.H{"events": eventList})
 	}
-}
+}*/

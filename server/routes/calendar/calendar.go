@@ -33,7 +33,8 @@ func get_calendar(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
-	client := middleware.GetClient(config)
+	code := c.Query("code")
+	client := middleware.GetClient(config, code)
 
 	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {

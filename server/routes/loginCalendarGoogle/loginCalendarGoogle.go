@@ -19,6 +19,15 @@ func Routes(route *gin.Engine) {
 	}
 }
 
+// get_login
+// @Summary Génère un lien d'autorisation Google
+// @Description Fournit un lien permettant à l'utilisateur de se connecter et d'autoriser l'accès en lecture seule à son calendrier Google.
+// @Tags Authentification
+// @Accept json
+// @Produce plain
+// @Success 200 {string} string "URL d'autorisation Google pour l'utilisateur"
+// @Failure 500 {object} map[string]string "Erreur interne du serveur"
+// @Router /loginCalendar [get]
 func get_login(c *gin.Context) {
 	b, err := os.ReadFile("credentials.json")
 	if err != nil {

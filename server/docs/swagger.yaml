@@ -1,26 +1,5 @@
 basePath: /
 definitions:
-  models.Alarm:
-    properties:
-      calendar:
-        $ref: '#/definitions/models.Calendar'
-      calendarID:
-        type: integer
-      createdAt:
-        type: string
-      id:
-        type: integer
-      isActive:
-        type: boolean
-      location:
-        type: string
-      name:
-        type: string
-      ringDate:
-        type: string
-      ringtone:
-        type: string
-    type: object
   models.Calendar:
     properties:
       createdAt:
@@ -43,42 +22,31 @@ info:
   title: IziClock API Documentation
   version: "1.0"
 paths:
-  /alarms:
-    get:
-      description: Récupère une liste de toutes les alarmes et les renvoie dans l'ordre
-        de leur date de sonnerie
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Alarms send successfully
-          schema:
-            items:
-              $ref: '#/definitions/models.Alarm'
-            type: array
-        "500":
-          description: Internal Server Error
-      summary: Récupère toutes les alarmes
-      tags:
-      - Alarmes
   /alarms/state/{id}:
     put:
-      description: Met à jour l'état IsActive d'une alarme spécifiée par son ID
+      responses: {}
+  /calendar:
+    get:
+      consumes:
+      - application/json
+      description: Récupère une liste des événements à venir depuis le calendrier
+        Google de l'utilisateur.
       parameters:
-      - description: Alarm ID
-        in: path
-        name: id
+      - description: Code d'autorisation pour l'API Google
+        in: query
+        name: code
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Liste des événements
           schema:
-            $ref: '#/definitions/models.Alarm'
-        "404":
-          description: Alarm not found
+            additionalProperties: true
+            type: object
+        "400":
+          description: Requête incorrecte
           schema:
             additionalProperties:
               type: string
@@ -89,9 +57,9 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Update alarm status
+      summary: Récupère les événements du calendrier
       tags:
-      - Alarmes
+      - Calendrier
   /calendars:
     get:
       description: Récupère une liste de toutes les alarmes depuis la DB
@@ -156,6 +124,28 @@ paths:
       summary: Change l'attribut d'activité d'un calendrier
       tags:
       - Calendriers
+  /loginCalendar:
+    get:
+      consumes:
+      - application/json
+      description: Fournit un lien permettant à l'utilisateur de se connecter et d'autoriser
+        l'accès en lecture seule à son calendrier Google.
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: URL d'autorisation Google pour l'utilisateur
+          schema:
+            type: string
+        "500":
+          description: Erreur interne du serveur
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Génère un lien d'autorisation Google
+      tags:
+      - Authentification
   /ping:
     get:
       description: Renvoie un message 'pong' pour vérifier que le serveur est en ligne

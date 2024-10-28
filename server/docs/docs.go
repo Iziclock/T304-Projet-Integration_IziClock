@@ -15,60 +15,43 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/alarms": {
-            "get": {
-                "description": "Récupère une liste de toutes les alarmes et les renvoie dans l'ordre de leur date de sonnerie",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Alarmes"
-                ],
-                "summary": "Récupère toutes les alarmes",
-                "responses": {
-                    "200": {
-                        "description": "Alarms send successfully",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Alarm"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
         "/alarms/state/{id}": {
             "put": {
-                "description": "Met à jour l'état IsActive d'une alarme spécifiée par son ID",
+                "responses": {}
+            }
+        },
+        "/calendar": {
+            "get": {
+                "description": "Récupère une liste des événements à venir depuis le calendrier Google de l'utilisateur.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Alarmes"
+                    "Calendrier"
                 ],
-                "summary": "Update alarm status",
+                "summary": "Récupère les événements du calendrier",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Alarm ID",
-                        "name": "id",
-                        "in": "path",
+                        "type": "string",
+                        "description": "Code d'autorisation pour l'API Google",
+                        "name": "code",
+                        "in": "query",
                         "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Liste des événements",
                         "schema": {
-                            "$ref": "#/definitions/models.Alarm"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     },
-                    "404": {
-                        "description": "Alarm not found",
+                    "400": {
+                        "description": "Requête incorrecte",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -184,6 +167,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/loginCalendar": {
+            "get": {
+                "description": "Fournit un lien permettant à l'utilisateur de se connecter et d'autoriser l'accès en lecture seule à son calendrier Google.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Génère un lien d'autorisation Google",
+                "responses": {
+                    "200": {
+                        "description": "URL d'autorisation Google pour l'utilisateur",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "description": "Renvoie un message 'pong' pour vérifier que le serveur est en ligne",
@@ -203,38 +218,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.Alarm": {
-            "type": "object",
-            "properties": {
-                "calendar": {
-                    "$ref": "#/definitions/models.Calendar"
-                },
-                "calendarID": {
-                    "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "isActive": {
-                    "type": "boolean"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "ringDate": {
-                    "type": "string"
-                },
-                "ringtone": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Calendar": {
             "type": "object",
             "properties": {
@@ -271,6 +254,7 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "Il s'agit de la documentation de l'API IziClock.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
+
 }
 
 func init() {

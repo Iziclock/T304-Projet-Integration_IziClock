@@ -21,6 +21,17 @@ func Routes(route *gin.Engine) {
 	}
 }
 
+// get_calendar
+// @Summary Récupère les événements du calendrier
+// @Description Récupère une liste des événements à venir depuis le calendrier Google de l'utilisateur.
+// @Tags Calendrier
+// @Accept json
+// @Produce json
+// @Param code query string true "Code d'autorisation pour l'API Google"
+// @Success 200 {object} map[string]interface{} "Liste des événements"
+// @Failure 400 {object} map[string]string "Requête incorrecte"
+// @Failure 500 {object} map[string]string "Erreur interne du serveur"
+// @Router /calendar [get]
 func get_calendar(c *gin.Context) {
 	ctx := context.Background()
 	b, err := os.ReadFile("credentials.json")

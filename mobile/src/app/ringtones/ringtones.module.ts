@@ -8,6 +8,7 @@ import { RingtonesPageRoutingModule } from './ringtones-routing.module';
 
 import { RingtonesPage } from './ringtones.page';
 import { DefaultRingtonesComponent } from '../components/default-ringtones/default-ringtones.component';
+import { AddRingtoneComponent } from '../components/add-ringtone/add-ringtone.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { DefaultRingtonesComponent } from '../components/default-ringtones/defau
     IonicModule,
     RingtonesPageRoutingModule
   ],
-  declarations: [RingtonesPage, DefaultRingtonesComponent]
+  declarations: [RingtonesPage, DefaultRingtonesComponent, AddRingtoneComponent]
 })
 export class RingtonesPageModule {}

@@ -1,3 +1,30 @@
-<p>
-  bluetooth-connexions works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      BLE Scanner
+    </ion-title>
+    <ion-button (click)="Scan()" slot="end">
+      <ion-icon name="Bluetooth"></ion-icon>
+      <p>Scan</p>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card-content ion-item *ngFor="let device of devices">
+      <p>{{device.name || 'Unnamed'}}</p>
+      <p>{{device.id}}</p>
+      <p> RSSI: {{device.rssi}}</p>
+      <ion-button (click)="connect(device.id)">Connect</ion-button>
+    </ion-card-content>
+  </ion-list>
+</ion-content>
+
+<ion-footer *ngIf="connectedDeviceId">
+  <ion-toolbar>
+    <ion-button (click)="disconnect(connectedDeviceId)">
+      Déconnexion
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

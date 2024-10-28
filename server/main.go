@@ -7,7 +7,9 @@ import (
 	"server/initializers"
 	"server/mocks"
 	"server/routes/alarms"
+	"server/routes/calendar"
 	"server/routes/calendars"
+	logincalendargoogle "server/routes/loginCalendarGoogle"
 	"server/routes/ping"
 
 	"github.com/gin-gonic/gin"
@@ -38,6 +40,8 @@ func main() {
 	ping.Routes(router)
 	alarms.Routes(router)
 	calendars.Routes(router)
+	calendar.Routes(router)
+	logincalendargoogle.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run() // listen and serve on localhost:8080

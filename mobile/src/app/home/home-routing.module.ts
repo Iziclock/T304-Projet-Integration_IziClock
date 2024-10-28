@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },
+  {
+    path: 'alarm-details/:id',
+    loadChildren: () => import('../alarm-details/alarm-details.module').then( m => m.AlarmDetailsPageModule)
   }
 ];
 

@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'alarm-details/:id',
     loadChildren: () => import('./alarm-details/alarm-details.module').then( m => m.AlarmDetailsPageModule)
   },
+  {
+    path: 'ringtones',
+    loadChildren: () => import('./ringtones/ringtones.module').then( m => m.RingtonesPageModule)
+  },
 ];
 
 @NgModule({

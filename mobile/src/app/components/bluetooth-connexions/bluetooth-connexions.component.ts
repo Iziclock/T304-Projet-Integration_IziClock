@@ -1,3 +1,6 @@
+import { Plugins } from '@capacitor/core';
+const { Permissions } = Plugins;
+
 import { Component, OnInit, NgZone } from '@angular/core';
 import { BLE } from '@ionic-native/ble/ngx';
 
@@ -7,11 +10,25 @@ import { BLE } from '@ionic-native/ble/ngx';
   templateUrl: './bluetooth-connexions.component.html',
   styleUrls: ['./bluetooth-connexions.component.scss'],
 })
-export class BluetoothConnexionsComponent {
+export class BluetoothConnexionsComponent implements OnInit {
   devices: any[] = [];
   connectedDeviceId: string | null = null;
 
+  async requestBluetoothPermissions() {
+    const permissions = await Permissions['requestPermissions']({
+      permissions: [
+        'android.permission.BLUETOOTH_SCAN',
+        'android.permission.BLUETOOTH_CONNECT',
+        'android.permission.ACCESS_FINE_LOCATION',
+      ],
+    });
+    console.log('Permissions Bluetooth :', permissions);
+  }
+
   constructor(private ble:BLE, private NgZone:NgZone) { }
+  ngOnInit(): void {
+    this.requestBluetoothPermissions();
+  }
   
   Scan() {
     this.devices = [];
@@ -37,22 +54,25 @@ export class BluetoothConnexionsComponent {
   }
   
   onConnected(peripheral: any) {
-    alert('Connecté à' + peripheral);
+    let alerte = ""
+    for(let i in peripheral.characteristics){
+      alerte += "Connecté à \n" + "Service : " + peripheral.characteristics[i].service + "\n Characteristic_Id = " + peripheral.characteristics[i].characteristic + "\n properties : " + peripheral.characteristics[i].properties + "\n"
+    }
+    alert(alerte);
     this.connectedDeviceId = peripheral.id;
 
-  //   // Remplacez ces UUID par ceux spécifiques à votre casque
-  // const serviceUUID = 'FD2A'; // Exemple pour le service d'informations sur le périphérique
-  // const characteristicUUID = '1300 01F4 050F 0000 0100 00FD FD36 B100 00'; // Exemple pour la caractéristique de nom
+  // Essayer de lire des services standards
+  const serviceId = '1800';
+  const charId = '2a01';
 
-  // // Essayez de lire une caractéristique pour vérifier la connexion
-  // this.ble.read(peripheral.id, serviceUUID, characteristicUUID).then(
-  //   data => {
-  //     // Convertir les données en texte ou en format lisible
-  //     const name = this.bytesToString(data);
-  //     alert('Nom du périphérique:' + name);
-  //   },
-  //   error => console.error('Erreur lors de la lecture de la caractéristique', error)
-  // );
+  this.ble.read(this.connectedDeviceId!, serviceId, charId).then(
+    data => {
+      alert('Nom du fabricant:' + this.bytesToString(data));
+    },
+    error => alert('Erreur lors de la lecture de la caractéristique du nom du fabricant : ' + error)
+  );
+
+
   }
 
   disconnect(deviceId: string) {

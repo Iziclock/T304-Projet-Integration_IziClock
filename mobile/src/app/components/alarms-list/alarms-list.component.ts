@@ -24,6 +24,19 @@ export class AlarmsListComponent implements OnInit {
     });
   }
 
+  onToggleChanged(alarm: Alarm, event: any) {
+    const newState = event.detail.checked;
+    alarm.active = newState;
+
+    this.alarmService.updateAlarmState(alarm).subscribe(
+      (updatedAlarm) => {
+      },
+      (error) => {
+        console.error('Erreur lors de la mise à jour de l\'alarme:', error);
+      }
+    );
+  }
+
   ngOnInit() {
     this.setAlarms();
   }

@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  models.Alarm:
+  models.Calendar:
     properties:
       createdAt:
         type: string
@@ -8,49 +8,153 @@ definitions:
         type: integer
       isActive:
         type: boolean
-      location:
-        type: string
       name:
         type: string
-      ringDate:
+      url:
         type: string
-      ringtone:
-        type: string
+      userID:
+        type: integer
     type: object
 host: localhost:8080
 info:
   contact: {}
-  description: This is Swagger Documentation for IziClock API
+  description: Il s'agit de la documentation de l'API IziClock.
   title: IziClock API Documentation
   version: "1.0"
 paths:
-  /alarms:
+  /alarms/state/{id}:
+    put:
+      responses: {}
+  /calendar:
     get:
-      description: Retrieve a list of all alarms from DB and return it sorted by ascending
-        ring date
+      consumes:
+      - application/json
+      description: Récupère une liste des événements à venir depuis le calendrier
+        Google de l'utilisateur.
+      parameters:
+      - description: Code d'autorisation pour l'API Google
+        in: query
+        name: code
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: Alarms send successfully
+          description: Liste des événements
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Requête incorrecte
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Erreur interne du serveur
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Récupère les événements du calendrier
+      tags:
+      - Calendrier
+  /calendars:
+    get:
+      description: Récupère une liste de toutes les alarmes depuis la DB
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendars send successfully
           schema:
             items:
-              $ref: '#/definitions/models.Alarm'
+              $ref: '#/definitions/models.Calendar'
             type: array
         "500":
           description: Internal Server Error
-      summary: Get all alarms
+      summary: Récupère tous les calendriers
       tags:
-      - Alarms
+      - Calendriers
+  /calendars/{id}:
+    delete:
+      description: Efface un calendrier via son ID
+      parameters:
+      - description: Calendar ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendar deleted successfully
+          schema:
+            type: string
+        "404":
+          description: Calendar not found
+        "500":
+          description: Internal Server Error
+      summary: Efface un calendrier
+      tags:
+      - Calendriers
+  /calendars/state/{id}:
+    put:
+      description: Change l'attribut d'activité d'un calendrier via l'identifiant
+        de celui-ci
+      parameters:
+      - description: Calendar ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendar updated successfully
+          schema:
+            $ref: '#/definitions/models.Calendar'
+        "404":
+          description: Calendar not found
+        "500":
+          description: Internal Server Error
+      summary: Change l'attribut d'activité d'un calendrier
+      tags:
+      - Calendriers
+  /loginCalendar:
+    get:
+      consumes:
+      - application/json
+      description: Fournit un lien permettant à l'utilisateur de se connecter et d'autoriser
+        l'accès en lecture seule à son calendrier Google.
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: URL d'autorisation Google pour l'utilisateur
+          schema:
+            type: string
+        "500":
+          description: Erreur interne du serveur
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Génère un lien d'autorisation Google
+      tags:
+      - Authentification
   /ping:
     get:
-      description: Return a 'pong' message
+      description: Renvoie un message 'pong' pour vérifier que le serveur est en ligne
       produces:
       - application/json
       responses:
         "200":
           description: Ping Pong
-      summary: Send a ping
+      summary: Envoie un ping
       tags:
       - Ping
 swagger: "2.0"

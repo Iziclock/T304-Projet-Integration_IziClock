@@ -2,6 +2,10 @@ basePath: /
 definitions:
   models.Alarm:
     properties:
+      calendar:
+        $ref: '#/definitions/models.Calendar'
+      calendarID:
+        type: integer
       createdAt:
         type: string
       id:
@@ -17,17 +21,32 @@ definitions:
       ringtone:
         type: string
     type: object
+  models.Calendar:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      name:
+        type: string
+      url:
+        type: string
+      userID:
+        type: integer
+    type: object
 host: localhost:8080
 info:
   contact: {}
-  description: This is Swagger Documentation for IziClock API
+  description: Il s'agit de la documentation de l'API IziClock.
   title: IziClock API Documentation
   version: "1.0"
 paths:
   /alarms:
     get:
-      description: Retrieve a list of all alarms from DB and return it sorted by ascending
-        ring date
+      description: Récupère une liste de toutes les alarmes et les renvoie dans l'ordre
+        de leur date de sonnerie
       produces:
       - application/json
       responses:
@@ -39,18 +58,113 @@ paths:
             type: array
         "500":
           description: Internal Server Error
-      summary: Get all alarms
+      summary: Récupère toutes les alarmes
       tags:
-      - Alarms
+      - Alarmes
+  /alarms/state/{id}:
+    put:
+      description: Met à jour l'état IsActive d'une alarme spécifiée par son ID
+      parameters:
+      - description: Alarm ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Alarm'
+        "404":
+          description: Alarm not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Erreur interne du serveur
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update alarm status
+      tags:
+      - Alarmes
+  /calendars:
+    get:
+      description: Récupère une liste de toutes les alarmes depuis la DB
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendars send successfully
+          schema:
+            items:
+              $ref: '#/definitions/models.Calendar'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Récupère tous les calendriers
+      tags:
+      - Calendriers
+  /calendars/{id}:
+    delete:
+      description: Efface un calendrier via son ID
+      parameters:
+      - description: Calendar ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendar deleted successfully
+          schema:
+            type: string
+        "404":
+          description: Calendar not found
+        "500":
+          description: Internal Server Error
+      summary: Efface un calendrier
+      tags:
+      - Calendriers
+  /calendars/state/{id}:
+    put:
+      description: Change l'attribut d'activité d'un calendrier via l'identifiant
+        de celui-ci
+      parameters:
+      - description: Calendar ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendar updated successfully
+          schema:
+            $ref: '#/definitions/models.Calendar'
+        "404":
+          description: Calendar not found
+        "500":
+          description: Internal Server Error
+      summary: Change l'attribut d'activité d'un calendrier
+      tags:
+      - Calendriers
   /ping:
     get:
-      description: Return a 'pong' message
+      description: Renvoie un message 'pong' pour vérifier que le serveur est en ligne
       produces:
       - application/json
       responses:
         "200":
           description: Ping Pong
-      summary: Send a ping
+      summary: Envoie un ping
       tags:
       - Ping
 swagger: "2.0"

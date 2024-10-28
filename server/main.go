@@ -22,7 +22,8 @@ func init() {
 	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
-	mocks.InsertMockedAlarms() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation
@@ -39,7 +40,6 @@ func main() {
 	alarms.Routes(router)
 	calendar.Routes(router)
 	logincalendargoogle.Routes(router)
-
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run() // listen and serve on localhost:8080

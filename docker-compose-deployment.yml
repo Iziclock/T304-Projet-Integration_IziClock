@@ -79,15 +79,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 60 reverse server
 
-  watchtower:
-    container_name: watchtower
-    image: containrrr/watchtower
-    environment:
-      - WATCHTOWER_CLEANUP=true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 reverse server
-
 networks:
   reverse:
   db:

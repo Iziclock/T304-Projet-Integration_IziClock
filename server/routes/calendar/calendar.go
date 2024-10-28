@@ -28,7 +28,6 @@ func get_calendar(c *gin.Context) {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
 
-	// If modifying these scopes, delete your previously saved token.json.
 	config, err := google.ConfigFromJSON(b, calendar.CalendarReadonlyScope)
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
@@ -41,28 +40,45 @@ func get_calendar(c *gin.Context) {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
-	t := time.Now().Format(time.RFC3339)
-	events, err := srv.Events.List("primary").ShowDeleted(false).
-		SingleEvents(true).TimeMin(t).MaxResults(10).OrderBy("startTime").Do()
+	calendarList, err := srv.CalendarList.List().Do()
 	if err != nil {
-		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
+		log.Fatalf("Unable to retrieve calendar list: %v", err)
 	}
 
-	if len(events.Items) == 0 {
-		c.JSON(http.StatusOK, gin.H{"message": "No upcoming events found."})
-	} else {
-		var eventList []gin.H
-		for _, item := range events.Items {
-			date := item.Start.DateTime
-			if date == "" {
-				date = item.Start.Date
-			}
-			event := gin.H{
-				"summary": item.Summary,
-				"date":    date,
-			}
-			eventList = append(eventList, event)
+	t := time.Now().Format(time.RFC3339)
+	var allEvents []gin.H
+
+	for _, calendarItem := range calendarList.Items {
+		events, err := srv.Events.List(calendarItem.Id).
+			ShowDeleted(false).
+			SingleEvents(true).
+			TimeMin(t).
+			MaxResults(10).
+			OrderBy("startTime").Do()
+		if err != nil {
+			log.Printf("Unable to retrieve events for calendar %s: %v", calendarItem.Id, err)
+			continue
 		}
-		c.JSON(http.StatusOK, gin.H{"events": eventList})
+
+		// Vérifie s'il y a des événements dans ce calendrier
+		if len(events.Items) == 0 {
+			log.Printf("No upcoming events found for calendar %s", calendarItem.Summary)
+		} else {
+			// Récupère les événements et ajoute le nom du calendrier pour différencier
+			for _, item := range events.Items {
+				date := item.Start.DateTime
+				if date == "" {
+					date = item.Start.Date
+				}
+				event := gin.H{
+					"calendar": calendarItem.Summary,
+					"summary":  item.Summary,
+					"date":     date,
+				}
+				allEvents = append(allEvents, event)
+			}
+		}
 	}
+
+	c.JSON(http.StatusOK, gin.H{"events": allEvents})
 }

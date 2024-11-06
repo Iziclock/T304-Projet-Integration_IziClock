@@ -5,7 +5,6 @@ import (
 	"server/config"
 	_ "server/docs"
 	"server/initializers"
-	"server/mocks"
 	"server/routes/alarms"
 	"server/routes/calendar"
 	"server/routes/calendars"
@@ -23,8 +22,8 @@ func init() {
 	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
-	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
-	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	//mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	//mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation

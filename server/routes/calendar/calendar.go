@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"server/middleware"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/oauth2/google"
@@ -56,11 +55,12 @@ func get_calendar(c *gin.Context) {
 		log.Fatalf("Unable to retrieve calendar list: %v", err)
 	}
 
-	t := time.Now().Format(time.RFC3339)
-	var allEvents []gin.H
+	//t := time.Now().Format(time.RFC3339) //test pour louis
+	//var allEvents []gin.H //test pour Louis
+	var allCalendar []gin.H
 
 	for _, calendarItem := range calendarList.Items {
-		events, err := srv.Events.List(calendarItem.Id).
+		/*events, err := srv.Events.List(calendarItem.Id).
 			ShowDeleted(false).
 			SingleEvents(true).
 			TimeMin(t).
@@ -88,8 +88,17 @@ func get_calendar(c *gin.Context) {
 				}
 				allEvents = append(allEvents, event)
 			}
+		}*/
+		calendar := gin.H{
+			"idGoogle":    calendarItem.Id,
+			"summary":     calendarItem.Summary,
+			"description": calendarItem.Description,
+			"location":    calendarItem.Location,
 		}
+		allCalendar = append(allCalendar, calendar)
 	}
 
-	c.JSON(http.StatusOK, gin.H{"events": allEvents})
+	//c.JSON(http.StatusOK, gin.H{"events": allEvents}) //Test pour Louis
+	c.JSON(http.StatusOK, gin.H{"calendars": allCalendar})
+
 }

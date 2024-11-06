@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  api: "http://localhost:8080"
+  api: "http://localhost:8080",
+  googleMapsKey: "AIzaSyAd5A_mD4mMLw4_v1EYcKmKxSKD0MqiiL4"
 };
 
 /*

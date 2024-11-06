@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AlarmDetailsPage implements OnInit {
   alarmId: number = 0;
-
+  
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {

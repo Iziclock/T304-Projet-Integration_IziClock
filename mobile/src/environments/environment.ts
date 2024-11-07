@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //api: "http://localhost:8080"
-  api: "https://www.iziclock.be"
+  api: "http://localhost:8080"
+  //api: "https://www.iziclock.be"
 };
 
 /*

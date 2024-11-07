@@ -5,6 +5,7 @@ import (
 	"server/config"
 	_ "server/docs"
 	"server/initializers"
+	"server/middleware"
 	"server/mocks"
 	"server/routes/alarms"
 	"server/routes/calendar"
@@ -36,6 +37,8 @@ func init() {
 func main() {
 	router := gin.Default()
 	config.SetCORS(router)
+
+	router.Use(middleware.CORSMiddleware())
 
 	// Groupes de routes
 	ping.Routes(router)

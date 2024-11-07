@@ -37,6 +37,8 @@ func main() {
 	router := gin.Default()
 	config.SetCORS(router)
 
+	router.MaxMultipartMemory = 100 << 20
+
 	// Groupes de routes
 	ping.Routes(router)
 	alarms.Routes(router)

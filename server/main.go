@@ -11,6 +11,7 @@ import (
 	"server/routes/calendars"
 	logincalendargoogle "server/routes/loginCalendarGoogle"
 	"server/routes/ping"
+	"server/routes/ringtones"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
@@ -42,6 +43,7 @@ func main() {
 	calendars.Routes(router)
 	calendar.Routes(router)
 	logincalendargoogle.Routes(router)
+	ringtones.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run() // listen and serve on localhost:8080

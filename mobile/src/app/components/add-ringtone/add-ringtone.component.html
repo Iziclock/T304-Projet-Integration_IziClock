@@ -4,10 +4,5 @@
   <input id="fileUpload" type="file" accept="audio/*" (change)="onFileSelected($event)">
   <span *ngIf="selectedFileName" class="file-name">{{ selectedFileName }}</span>
   <button (click)="uploadRingtone()">Ajouter</button>
-  <!-- <div *ngIf="ringtone">
-    <audio #audioPlayer [src]="ringtone"></audio>
-    <button (click)="toggleAudio(audioPlayer)" class="play-button">
-      <ion-icon [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
-    </button>
-  </div> -->
+  <p>{{ uploadMessage }}</p>
 </div>

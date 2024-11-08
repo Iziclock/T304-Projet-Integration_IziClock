@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { RingtoneService } from 'src/app/services/ringtone.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -10,8 +11,9 @@ import { environment } from 'src/environments/environment';
 export class AddRingtoneComponent {
   selectedFile: File | null = null;
   selectedFileName: string = '';
+  uploadMessage: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private ringtoneService: RingtoneService) {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -24,12 +26,20 @@ export class AddRingtoneComponent {
       const formData = new FormData();
       formData.append('file', this.selectedFile, this.selectedFile.name);
 
-      this.http.post(`${environment.api}/ringtones/upload`, formData).subscribe({
-        next: (response) => console.log('Upload successful', response),
-        error: (error) => console.error('Upload failed', error)
+      this.ringtoneService.uploadRingtone(formData).subscribe({
+        next: (response) => {
+          console.log('Upload successful', response);
+          this.uploadMessage = 'Sonnerie correctement ajoutée';
+        },
+        error: (error) => {
+          console.error('Upload failed', error);
+          this.uploadMessage = 'Erreur lors de l\'ajout de la sonnerie';
+        }
       });
+      this.uploadMessage = 'Sonnerie correctement ajoutée';
     } else {
       console.error('No file selected');
+      this.uploadMessage = 'Aucun fichier sélectionné';
     }
   }
 }

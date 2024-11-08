@@ -1,6 +1,8 @@
+<h1>Ajouter une sonnerie</h1>
 <div>
-  <h1>Ajouter une sonnerie</h1>
-  <input type="file" accept="audio/*" (change)="onFileSelected($event)">
+  <label for="fileUpload">Choisir un fichier audio</label>
+  <input id="fileUpload" type="file" accept="audio/*" (change)="onFileSelected($event)">
+  <span *ngIf="selectedFileName" class="file-name">{{ selectedFileName }}</span>
   <button (click)="uploadRingtone()">Ajouter</button>
   <!-- <div *ngIf="ringtone">
     <audio #audioPlayer [src]="ringtone"></audio>

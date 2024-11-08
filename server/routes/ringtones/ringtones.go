@@ -21,7 +21,7 @@ func upload_ringtone(context *gin.Context) {
 		return
 	}
 
-	savePath := filepath.Join("../../ringtones", file.Filename)
+	savePath := filepath.Join("../../audio", file.Filename)
 	if err := context.SaveUploadedFile(file, savePath); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to save the file"})
 		return

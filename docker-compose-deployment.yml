@@ -40,6 +40,8 @@ services:
     networks:
       - db
       - reverse
+    volumes:
+      - ../ringtones:/ringtones:rw
     depends_on:
       postgres:
         condition: service_healthy

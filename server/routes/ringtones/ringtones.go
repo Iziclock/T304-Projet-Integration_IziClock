@@ -3,6 +3,8 @@ package ringtones
 import (
 	"net/http"
 	"path/filepath"
+	"server/initializers"
+	"server/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,8 +12,20 @@ import (
 func Routes(route *gin.Engine) {
 	alarms := route.Group("/ringtones")
 	{
+		alarms.GET("", get_ringtones)
 		alarms.POST("/upload", upload_ringtone)
 	}
+}
+
+func get_ringtones(context *gin.Context) {
+	var ringtones []models.Ringtone
+
+	if err := initializers.DB.Order("created_at asc").Find(&ringtones).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, ringtones)
 }
 
 func upload_ringtone(context *gin.Context) {
@@ -21,20 +35,19 @@ func upload_ringtone(context *gin.Context) {
 		return
 	}
 
-	savePath := filepath.Join("../../ringtones", file.Filename)
+	filename := file.Filename
+	savePath := filepath.Join("../../ringtones", filename)
 	if err := context.SaveUploadedFile(file, savePath); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to save the file"})
 		return
 	}
 
-	// vpsPath := "iziclock@185.216.27.36:/home/iziclock/iziclock/ringtones"
-	// scpCommand := fmt.Sprintf("scp -P 53152 %s %s", savePath, vpsPath)
-
-	// cmd := exec.Command("sh", "-c", scpCommand)
-	// if err := cmd.Run(); err != nil {
-	// 	context.JSON(http.StatusInternalServerError, gin.H{"error": "Error transferring file to VPS"})
-	// 	return
-	// }
+	url := "https://www.iziclock.be/audio/" + filename
+	ringtone := models.Ringtone{Url: url}
+	if err := initializers.DB.Create(&ringtone).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to save the ringtone in the database"})
+		return
+	}
 
 	context.JSON(http.StatusOK, gin.H{"message": "File uploaded and transferred successfully"})
 }

@@ -9,11 +9,13 @@ import { environment } from 'src/environments/environment';
 })
 export class AddRingtoneComponent {
   selectedFile: File | null = null;
+  selectedFileName: string = '';
 
   constructor(private http: HttpClient) {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
+    this.selectedFileName = event.target.files[0].name;
     console.log('Selected file:', this.selectedFile);
   }
 

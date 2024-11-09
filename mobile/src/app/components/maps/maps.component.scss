@@ -1,5 +1,11 @@
-capacitor-google-map {
-    display: inline-block;
-    width: 275px;
-    height: 400px;
+.container {
+    width: 80%;
+    height: 60%;
+    margin: 0 auto;
+
+    capacitor-google-map {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+    }
 }

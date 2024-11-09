@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 
@@ -7,19 +7,17 @@ import { environment } from 'src/environments/environment';
   templateUrl: './maps.component.html',
   styleUrls: ['./maps.component.scss'],
 })
-export class MapsComponent  implements OnInit {
+export class MapsComponent  implements AfterViewInit {
 
-  map?: GoogleMap;
+  map!: GoogleMap;
   mapRefEl!: HTMLElement;
 
-  @ViewChild('mapRef')
+  @ViewChild('map')
   set mapRef(ref: ElementRef<HTMLElement>) {
     this.mapRefEl = ref.nativeElement;
   }
 
   constructor() { }
-
-  ngOnInit() {}
 
   ngAfterViewInit() {
     this.createMap(this.mapRefEl);
@@ -27,16 +25,16 @@ export class MapsComponent  implements OnInit {
 
   async createMap(ref: HTMLElement) {
     this.map = await GoogleMap.create({
-      id: 'map-test',
+      id: 'google-map',
       element: ref,
       apiKey: environment.googleMapsKey,
       forceCreate: true,
       config: {
         center: {
-          lat: 33.6,
-          lng: -117.9,
+          lat: 50.66621288861961,
+          lng: 4.612289912685951,
         },
-        zoom: 8,
+        zoom: 17,
       }
     });
   }

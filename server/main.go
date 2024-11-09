@@ -6,7 +6,6 @@ import (
 	_ "server/docs"
 	"server/initializers"
 	"server/routes/alarms"
-	"server/routes/calendar"
 	"server/routes/calendars"
 	logincalendargoogle "server/routes/loginCalendarGoogle"
 	"server/routes/ping"
@@ -39,7 +38,6 @@ func main() {
 	ping.Routes(router)
 	alarms.Routes(router)
 	calendars.Routes(router)
-	calendar.Routes(router)
 	logincalendargoogle.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

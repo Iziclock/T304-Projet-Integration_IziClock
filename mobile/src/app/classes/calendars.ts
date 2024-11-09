@@ -6,9 +6,8 @@ export class calendar implements Calendar{
     name: string;
     //url: string;
     idGoogle: string;
-    //description: string;
- //   location: string;
-    //createdAt: Date;
+    description: string;
+    createdAt: Date;
     isActive: boolean;
 
     constructor(calendarData: CalendarData){
@@ -17,9 +16,8 @@ export class calendar implements Calendar{
         this.name = calendarData.Name;
         //this.url = calendarData.Url;
         this.idGoogle = calendarData.IDGoogle
-        //this.description = calendarData.Description;
-//      this.location = calendarData.Location;
-        //this.createdAt = new Date(calendarData.CreatedAt);
+        this.description = calendarData.Description;
+        this.createdAt = new Date(calendarData.CreatedAt);
         this.isActive = calendarData.IsActive;
     }
 

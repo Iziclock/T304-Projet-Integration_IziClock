@@ -3,10 +3,10 @@ export interface Calendar{
     userId: number;
     name: string;
     //url: string;
-    idGoogle: string;
-    //description: string;
+    idGoogle: string; //retiré et remplace l'ID
+    description: string;
 //    location: string;
-    //createdAt: Date;
+    createdAt: Date;
     isActive: boolean;
 }
 
@@ -16,8 +16,8 @@ export interface CalendarData{
     Name: string;
     //Url: string;
     IDGoogle: string;
-    //Description: string;
+    Description: string;
 //    Location: string;
-    //CreatedAt: string;
+    CreatedAt: string;
     IsActive: boolean;
 }

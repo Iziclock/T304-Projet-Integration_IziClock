@@ -16,9 +16,14 @@ export class AddRingtoneComponent {
   constructor(private ringtoneService: RingtoneService) {}
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    this.selectedFileName = event.target.files[0].name;
-    console.log('Selected file:', this.selectedFile);
+    const file: File = event.target.files[0];
+    if (file && file.type.startsWith('audio/')) {
+      this.selectedFile = file;
+      this.selectedFileName = file.name;
+      console.log('Selected file:', this.selectedFile);
+    } else {
+      this.uploadMessage = 'Veuillez sélectionner un fichier audio';
+    }
   }
 
   uploadRingtone() {

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { CalendarsManagementComponent } from './calendars-management.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CalendarsManagementComponent', () => {
   let component: CalendarsManagementComponent;
@@ -10,7 +11,7 @@ describe('CalendarsManagementComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CalendarsManagementComponent ],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot(), HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CalendarsManagementComponent);

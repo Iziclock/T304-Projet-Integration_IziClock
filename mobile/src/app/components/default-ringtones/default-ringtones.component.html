@@ -1,8 +1,8 @@
 <h1>Sonneries par défaut</h1>
 <div *ngFor="let defaultRingtone of defaultRingtones; index as i" class="audio-container">
-  <audio #audioPlayer src="{{ defaultRingtone.src }}"></audio>
+  <audio #audioPlayer [src]="defaultRingtone.src"></audio>
   <button (click)="toggleAudio(audioPlayer, i)" class="play-button">
     <ion-icon [name]="defaultRingtone.isPlaying ? 'pause' : 'play'"></ion-icon>
   </button>
-  <span>{{ defaultRingtone?.name }}</span>
+  <span>{{ defaultRingtone.name }}</span>
 </div>

@@ -22,6 +22,15 @@ export class RingtonesListComponent  implements OnInit {
     });
   }
 
+  toggleAudio(audio: HTMLAudioElement, index: number) {
+    if (this.ringtones[index].isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    this.ringtones[index].isPlaying = !this.ringtones[index].isPlaying;
+  }
+
   ngOnInit() {
     this.getRingtones();
   }

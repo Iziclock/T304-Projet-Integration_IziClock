@@ -7,7 +7,13 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-default-ringtones></app-default-ringtones>
-  <br>
-  <app-add-ringtone></app-add-ringtone>
+  <div class="component">
+    <app-default-ringtones></app-default-ringtones>
+  </div>
+  <div class="component">
+    <app-ringtones-list></app-ringtones-list>
+  </div>
+  <div>
+    <app-add-ringtone></app-add-ringtone>
+  </div>
 </ion-content>

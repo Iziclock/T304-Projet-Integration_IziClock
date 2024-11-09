@@ -33,7 +33,11 @@ export class AddRingtoneComponent {
         },
         error: (error) => {
           console.error('Upload failed', error);
-          this.uploadMessage = 'Erreur lors de l\'ajout de la sonnerie';
+          if (error.status === 409) {
+            this.uploadMessage = 'Erreur : cette sonnerie a déjà été ajoutée';
+          } else {
+            this.uploadMessage = 'Erreur lors de l\'ajout de la sonnerie';
+          }
         }
       });
       this.uploadMessage = 'Sonnerie correctement ajoutée';

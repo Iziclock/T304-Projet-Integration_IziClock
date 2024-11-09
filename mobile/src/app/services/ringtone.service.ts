@@ -9,6 +9,10 @@ export class RingtoneService {
 
   constructor(private http: HttpClient) { }
 
+  getRingtones() {
+    return this.http.get(`${environment.api}/ringtones`);
+  }
+  
   uploadRingtone(formData: FormData) {
     return this.http.post(`${environment.api}/ringtones/upload`, formData);
   }

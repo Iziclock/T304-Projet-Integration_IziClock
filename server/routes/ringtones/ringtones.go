@@ -36,13 +36,20 @@ func upload_ringtone(context *gin.Context) {
 	}
 
 	filename := file.Filename
+	url := "https://www.iziclock.be/audio/" + filename
+
+	var existingRingtone models.Ringtone
+	if err := initializers.DB.Where("url = ?", url).First(&existingRingtone).Error; err == nil {
+		context.JSON(http.StatusConflict, gin.H{"error": "Ringtone already exists"})
+		return
+	}
+
 	savePath := filepath.Join("../../ringtones", filename)
 	if err := context.SaveUploadedFile(file, savePath); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to save the file"})
 		return
 	}
 
-	url := "https://www.iziclock.be/audio/" + filename
 	ringtone := models.Ringtone{Url: url}
 	if err := initializers.DB.Create(&ringtone).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to save the ringtone in the database"})

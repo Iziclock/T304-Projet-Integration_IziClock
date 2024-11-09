@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"server/initializers"
 	"server/models"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -23,9 +24,7 @@ func Routes(route *gin.Engine) {
 	calendars := route.Group("/calendars")
 	{
 		calendars.GET("", get_calendars)
-		//calendars.GET("/api", get_calendar_api)
 		calendars.GET("/api", get_calendar_api)
-		calendars.GET("/test", test_calendar_api)
 		calendars.GET("/login", get_login)
 		calendars.DELETE("/:id", delete_calendar)
 		calendars.PUT("/state/:id", change_IsActive_state)
@@ -50,81 +49,6 @@ func get_calendars(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, calendars)
-}
-
-func get_calendar_api(c *gin.Context) {
-	var calendars []models.Calendar
-	ctx := context.Background()
-	b, err := os.ReadFile("credentials.json")
-	if err != nil {
-		log.Fatalf("Unable to read client secret file: %v", err)
-	}
-
-	config, err := google.ConfigFromJSON(b, calendar.CalendarReadonlyScope)
-	if err != nil {
-		log.Fatalf("Unable to parse client secret file to config: %v", err)
-	}
-	code := c.Query("code")
-	client := middleware.GetClient(config, code)
-
-	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
-	if err != nil {
-		log.Fatalf("Unable to retrieve Calendar client: %v", err)
-	}
-
-	calendarList, err := srv.CalendarList.List().Do()
-	if err != nil {
-		log.Fatalf("Unable to retrieve calendar list: %v", err)
-	}
-
-	for _, calendarItem := range calendarList.Items {
-		/*events, err := srv.Events.List(calendarItem.Id).
-			ShowDeleted(false).
-			SingleEvents(true).
-			TimeMin(t).
-			MaxResults(10).
-			OrderBy("startTime").Do()
-		if err != nil {
-			log.Printf("Unable to retrieve events for calendar %s: %v", calendarItem.Id, err)
-			continue
-		}
-
-		// Vérifie s'il y a des événements dans ce calendrier
-		if len(events.Items) == 0 {
-			log.Printf("No upcoming events found for calendar %s", calendarItem.Summary)
-		} else {
-			// Récupère les événements et ajoute le nom du calendrier pour différencier
-			for _, item := range events.Items {
-				date := item.Start.DateTime
-				if date == "" {
-					date = item.Start.Date
-				}
-				event := gin.H{
-					"calendar": calendarItem.Summary,
-					"summary":  item.Summary,
-					"date":     date,
-				}
-				allEvents = append(allEvents, event)
-			}
-		}*/
-		calendar := models.Calendar{
-			UserID:      1,
-			Name:        calendarItem.Summary,
-			IDGoogle:    calendarItem.Id,
-			Description: calendarItem.Description,
-			IsActive:    true,
-			//	Location:    calendarItem.Location,
-		}
-		calendars = append(calendars, calendar)
-		err := initializers.DB.Create(&calendar).Error
-		if err != nil {
-			log.Fatal("Could not create calendar :", err)
-		}
-	}
-
-	//c.JSON(http.StatusOK, gin.H{"events": allEvents}) //Test pour Louis
-	c.JSON(http.StatusOK, calendars)
-
 }
 
 // delete_calendar Efface un calendrier via son ID
@@ -165,6 +89,7 @@ func delete_calendar(context *gin.Context) {
 // @Router /calendars/state/{id} [put]
 func change_IsActive_state(context *gin.Context) {
 	id := context.Param("id")
+	log.Print("L'id récup des params du gin context :", id)
 	var calendar models.Calendar
 
 	// Récupère le calendrier à partir de son ID
@@ -189,7 +114,7 @@ func change_IsActive_state(context *gin.Context) {
 	context.JSON(http.StatusOK, calendar)
 }
 
-// get_calendar_api
+// events_from_api
 // @Summary Récupère les événements du calendrier
 // @Description Récupère une liste des événements à venir depuis le calendrier Google de l'utilisateur.
 // @Tags Calendrier
@@ -200,7 +125,7 @@ func change_IsActive_state(context *gin.Context) {
 // @Failure 400 {object} map[string]string "Requête incorrecte"
 // @Failure 500 {object} map[string]string "Erreur interne du serveur"
 // @Router /calendar [get]
-func test_calendar_api(c *gin.Context) {
+func events_from_api(c *gin.Context) {
 	ctx := context.Background()
 	b, err := os.ReadFile("credentials.json")
 	if err != nil {
@@ -224,52 +149,67 @@ func test_calendar_api(c *gin.Context) {
 		log.Fatalf("Unable to retrieve calendar list: %v", err)
 	}
 
-	//t := time.Now().Format(time.RFC3339) //test pour louis
-	//var allEvents []gin.H //test pour Louis
-	var allCalendar []gin.H
+	t := time.Now().Format(time.RFC3339)
+	var allEvents []models.Alarm
 
 	for _, calendarItem := range calendarList.Items {
-		/*events, err := srv.Events.List(calendarItem.Id).
+		events, err := srv.Events.List(calendarItem.Id).
 			ShowDeleted(false).
 			SingleEvents(true).
 			TimeMin(t).
 			MaxResults(10).
 			OrderBy("startTime").Do()
+
 		if err != nil {
 			log.Printf("Unable to retrieve events for calendar %s: %v", calendarItem.Id, err)
 			continue
 		}
 
-		// Vérifie s'il y a des événements dans ce calendrier
 		if len(events.Items) == 0 {
 			log.Printf("No upcoming events found for calendar %s", calendarItem.Summary)
 		} else {
-			// Récupère les événements et ajoute le nom du calendrier pour différencier
 			for _, item := range events.Items {
-				date := item.Start.DateTime
-				if date == "" {
-					date = item.Start.Date
+				//date := item.Start.DateTime
+				log.Printf("date time de google :%v", item.Start.DateTime)
+				date, err := time.Parse(time.DateTime, item.Start.DateTime)
+				log.Printf("date time :%v", date)
+				if date.IsZero() {
+					date, err = time.Parse(time.DateOnly, item.Start.Date)
+					log.Printf("date:%v", date)
+					if err != nil {
+						log.Printf("Erreur de parsing de date : %v", err)
+					}
 				}
-				event := gin.H{
-					"calendar": calendarItem.Summary,
-					"summary":  item.Summary,
-					"date":     date,
+				if err != nil {
+					log.Printf("Erreur de parsing de date time: %v", err)
 				}
+
+				var calendar models.Calendar
+				initializers.DB.Where("id_google = ?", calendarItem.Id).First(&calendar)
+				log.Print("Calendrier actuel de la boucle:", calendarItem.Id)
+				log.Print("calndar:", calendar)
+				log.Print("calendar.ID:", calendar.ID)
+				event := models.Alarm{
+					CalendarID:  calendar.ID,
+					Name:        item.Summary,
+					Description: item.Description,
+					RingDate:    date,
+					Location:    item.Location,
+					Ringtone:    "",
+					IsActive:    true,
+				}
+				errA := initializers.DB.Create(&event).Error
+				if errA != nil {
+					log.Fatal("Could not create alarm :", err)
+				}
+
 				allEvents = append(allEvents, event)
 			}
-		}*/
-		calendar := gin.H{
-			"idGoogle":    calendarItem.Id,
-			"summary":     calendarItem.Summary,
-			"description": calendarItem.Description,
-			"location":    calendarItem.Location,
 		}
-		allCalendar = append(allCalendar, calendar)
+
 	}
 
-	//c.JSON(http.StatusOK, gin.H{"events": allEvents}) //Test pour Louis
-	c.JSON(http.StatusOK, gin.H{"calendars": allCalendar})
-
+	c.JSON(http.StatusOK, gin.H{"events": allEvents})
 }
 
 // get_login
@@ -297,4 +237,107 @@ func get_login(c *gin.Context) {
 
 	c.String(http.StatusOK, authURL)
 
+}
+
+func get_calendar_api(c *gin.Context) {
+	var calendars []models.Calendar
+	ctx := context.Background()
+	b, err := os.ReadFile("credentials.json")
+	if err != nil {
+		log.Fatalf("Unable to read client secret file: %v", err)
+	}
+
+	config, err := google.ConfigFromJSON(b, calendar.CalendarReadonlyScope)
+	if err != nil {
+		log.Fatalf("Unable to parse client secret file to config: %v", err)
+	}
+	code := c.Query("code")
+	client := middleware.GetClient(config, code)
+
+	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
+	if err != nil {
+		log.Fatalf("Unable to retrieve Calendar client: %v", err)
+	}
+
+	calendarList, err := srv.CalendarList.List().Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve calendar list: %v", err)
+	}
+	t := time.Now().Format(time.RFC3339)
+	var allEvents []models.Alarm
+
+	for _, calendarItem := range calendarList.Items {
+		calendar := models.Calendar{
+			UserID:      1,
+			Name:        calendarItem.Summary,
+			IDGoogle:    calendarItem.Id,
+			Description: calendarItem.Description,
+			IsActive:    true,
+		}
+		calendars = append(calendars, calendar)
+		err := initializers.DB.Create(&calendar).Error
+		if err != nil {
+			log.Fatal("Could not create calendar :", err)
+		}
+
+		events, err := srv.Events.List(calendarItem.Id).
+			ShowDeleted(false).
+			SingleEvents(true).
+			TimeMin(t).
+			MaxResults(10).
+			OrderBy("startTime").Do()
+
+		if err != nil {
+			log.Printf("Unable to retrieve events for calendar %s: %v", calendarItem.Id, err)
+			continue
+		}
+
+		if len(events.Items) == 0 {
+			log.Printf("No upcoming events found for calendar %s", calendarItem.Summary)
+		} else {
+			for _, item := range events.Items {
+				log.Printf("date time de google :%v", item.Start.DateTime)
+				date, err := time.Parse(time.DateTime, item.Start.DateTime)
+				log.Printf("date time :%v", date)
+				if date.IsZero() {
+					date, err = time.Parse(time.DateOnly, item.Start.Date)
+					log.Printf("date:%v", date)
+					if err != nil {
+						log.Printf("Erreur de parsing de date : %v", err)
+					}
+				}
+				if err != nil {
+					log.Printf("Erreur de parsing de date time: %v", err)
+				}
+
+				var calendar models.Calendar
+				initializers.DB.Where("id_google = ?", calendarItem.Id).First(&calendar)
+				log.Print("Calendrier actuel de la boucle:", calendarItem.Id)
+				log.Print("calndar:", calendar)
+				log.Print("calendar.ID:", calendar.ID)
+				event := models.Alarm{
+					CalendarID:  calendar.ID,
+					Name:        item.Summary,
+					Description: item.Description,
+					RingDate:    date,
+					Location:    item.Location,
+					Ringtone:    "",
+					IsActive:    true,
+				}
+				errA := initializers.DB.Create(&event).Error
+				if errA != nil {
+					log.Fatal("Could not create alarm :", err)
+				}
+
+				allEvents = append(allEvents, event)
+			}
+
+		}
+		if err := initializers.DB.Order("is_active desc, created_at asc").Find(&calendars).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"calendars": calendars, "events": allEvents})
+
+	}
 }

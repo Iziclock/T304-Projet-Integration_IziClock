@@ -110,6 +110,7 @@ func change_IsActive_state(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	//var alarm []models.Alarm
 
 	context.JSON(http.StatusOK, calendar)
 }
@@ -337,7 +338,10 @@ func get_calendar_api(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"calendars": calendars, "events": allEvents})
+		//c.JSON(http.StatusOK, gin.H{"calendars":calendars,"events":allEvents,"token":tokenForUser})
 
 	}
+	tokenForUser, err := os.ReadFile("token.json")
+	c.JSON(http.StatusOK, gin.H{"token": tokenForUser})
+
 }

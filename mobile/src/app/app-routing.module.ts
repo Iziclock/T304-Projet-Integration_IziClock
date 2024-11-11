@@ -23,6 +23,11 @@ const routes: Routes = [
     path: 'ringtones',
     loadChildren: () => import('./ringtones/ringtones.module').then( m => m.RingtonesPageModule)
   },
+  {
+    path: 'middleware',
+    loadChildren: () => import('./middleware/middleware.module').then( m => m.MiddlewarePageModule)
+  },
+
 ];
 
 @NgModule({

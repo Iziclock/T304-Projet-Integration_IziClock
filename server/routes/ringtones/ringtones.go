@@ -3,10 +3,14 @@ package ringtones
 import (
 	"net/http"
 	"path/filepath"
+	"regexp"
 	"server/initializers"
 	"server/models"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 func Routes(route *gin.Engine) {
@@ -64,7 +68,17 @@ func upload_ringtone(context *gin.Context) {
 		return
 	}
 
-	ringtone := models.Ringtone{Url: url}
+	re := regexp.MustCompile(`[-_]|(\.\w+$)`)
+	name := re.ReplaceAllString(filename, " ")
+
+	c := cases.Title(language.Und)
+	words := strings.Fields(name)
+	for i, word := range words {
+		words[i] = c.String(word)
+	}
+	name = strings.Join(words, " ")
+
+	ringtone := models.Ringtone{Url: url, Name: name}
 	if err := initializers.DB.Create(&ringtone).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to save the ringtone in the database"})
 		return

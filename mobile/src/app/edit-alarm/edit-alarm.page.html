@@ -1,13 +1,26 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>edit-alarm</ion-title>
+    <ion-title>Modifier l'alarme</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">edit-alarm</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <form (ngSubmit)="saveAlarm()">
+    <ion-item>
+      <ion-label position="floating">Nom</ion-label>
+      <ion-input [(ngModel)]="alarmDetails.name" name="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Lieu</ion-label>
+      <ion-input [(ngModel)]="alarmDetails.location" name="location"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Date de sonnerie</ion-label>
+      <ion-datetime [(ngModel)]="alarmDetails.ringDate" name="ringDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Active</ion-label>
+      <ion-toggle [(ngModel)]="alarmDetails.active" name="active"></ion-toggle>
+    </ion-item>
+    <ion-button expand="full" type="submit">Enregistrer</ion-button>
+  </form>
 </ion-content>

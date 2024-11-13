@@ -21,6 +21,8 @@ definitions:
         type: string
       id:
         type: integer
+      name:
+        type: string
       url:
         type: string
     type: object
@@ -183,10 +185,31 @@ paths:
       summary: Récupère toutes les sonneries
       tags:
       - Sonneries
+  /ringtones/name/{id}:
+    put:
+      description: Modifie le nom d'une sonnerie en DB à partir de son ID
+      parameters:
+      - description: Ringtone ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ringtone updated successfully
+          schema:
+            $ref: '#/definitions/models.Ringtone'
+        "404":
+          description: Ringtone not found
+        "500":
+          description: Internal Server Error
+      summary: Modifie le nom d'une sonnerie
+      tags:
+      - Sonneries
   /ringtones/upload:
     post:
-      consumes:
-      - multipart/form-data
       description: Upload une nouvelle sonnerie et sauve son url dans la base de données
       parameters:
       - description: Fichier audio de la sonnerie à upload

@@ -242,12 +242,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/ringtones/name/{id}": {
+            "put": {
+                "description": "Modifie le nom d'une sonnerie en DB à partir de son ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sonneries"
+                ],
+                "summary": "Modifie le nom d'une sonnerie",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Ringtone ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ringtone updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/models.Ringtone"
+                        }
+                    },
+                    "404": {
+                        "description": "Ringtone not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/ringtones/upload": {
             "post": {
                 "description": "Upload une nouvelle sonnerie et sauve son url dans la base de données",
-                "consumes": [
-                    "multipart/form-data"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -313,6 +345,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "url": {
                     "type": "string"

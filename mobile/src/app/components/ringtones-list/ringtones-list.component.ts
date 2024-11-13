@@ -19,9 +19,14 @@ export class RingtonesListComponent implements OnInit {
     this.ringtoneService.getRingtones().subscribe((data: any) => {
       for (let ringtoneData of data) {
         const newRingtone: Ringtone = new ringtone(ringtoneData);
+        newRingtone.isEditing = false; // Ajouter une propriété pour l'état de modification
         this.ringtones.push(newRingtone);
       }
     });
+  }
+
+  ngOnInit() {
+    this.getRingtones();
   }
 
   toggleAudio(audio: HTMLAudioElement, index: number) {
@@ -43,7 +48,20 @@ export class RingtonesListComponent implements OnInit {
     this.ringtones[index].isPlaying = !this.ringtones[index].isPlaying;
   }
 
-  ngOnInit() {
-    this.getRingtones();
+  updateRingtoneName(id: number) {
+    const ringtone = this.ringtones.find(r => r.id === id);
+    if (ringtone) {
+      if (ringtone.isEditing) {
+        this.ringtoneService.updateRingtoneName(id, ringtone.name).subscribe({
+          next: (response) => {
+            console.log('Ringtone updated successfully', response);
+          },
+          error: (error) => {
+            console.error('Error updating ringtone', error);
+          }
+        });
+      }
+      ringtone.isEditing = !ringtone.isEditing;
+    }
   }
 }

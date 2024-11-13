@@ -4,5 +4,7 @@
   <button (click)="toggleAudio(audioPlayer, i)" class="play-button">
     <ion-icon [name]="ringtone.isPlaying ? 'pause' : 'play'"></ion-icon>
   </button>
-  <span>{{ ringtone.name }}</span>
+  <span *ngIf="!ringtone.isEditing">{{ ringtone.name }}</span>
+  <input *ngIf="ringtone.isEditing" [(ngModel)]="ringtone.name" />
+  <button (click)="updateRingtoneName(ringtone.id)" class="update-ringtone-name">{{ ringtone.isEditing ? 'Enregistrer' : 'Modifier' }}</button>
 </div>

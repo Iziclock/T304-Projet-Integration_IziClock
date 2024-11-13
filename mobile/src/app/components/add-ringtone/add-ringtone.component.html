@@ -4,5 +4,5 @@
   <input id="fileUpload" type="file" accept="audio/*" (change)="onFileSelected($event)">
   <span *ngIf="selectedFileName" class="file-name">{{ selectedFileName }}</span>
   <button (click)="uploadRingtone()">Ajouter</button>
-  <p>{{ uploadMessage }}</p>
+  <p [ngClass]="{'success-message': messageType === 'success', 'error-message': messageType === 'error'}">{{ uploadMessage }}</p>
 </div>

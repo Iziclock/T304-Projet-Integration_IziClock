@@ -4,6 +4,7 @@ export interface Ringtone{
     url: string;
     createdAt: Date;
     isPlaying: boolean;
+    isEditing: boolean;
 }
 
 export interface RingtoneData{

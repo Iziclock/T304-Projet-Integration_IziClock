@@ -20,11 +20,27 @@ h1 {
     height: 40px;
 }
 
-.play-button:hover {
-    background-color: #007bff; 
-}
-
 span {
     font-size: 20px; 
     color: black; 
+}
+
+input {
+    font-size: 20px;
+    padding: 5px 10px;
+    border: 2px solid darkblue;
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 150px;
+    background-color: white;
+}
+
+.update-ringtone-name {
+    background-color: darkblue;
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-left: 20px;
+    font-size: 15px;
 }

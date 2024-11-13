@@ -14,10 +14,11 @@ import (
 )
 
 func Routes(route *gin.Engine) {
-	alarms := route.Group("/ringtones")
+	ringtones := route.Group("/ringtones")
 	{
-		alarms.GET("", get_ringtones)
-		alarms.POST("/upload", upload_ringtone)
+		ringtones.GET("", get_ringtones)
+		ringtones.POST("/upload", upload_ringtone)
+		ringtones.PUT("/name/:id", update_ringtone_name)
 	}
 }
 
@@ -44,7 +45,6 @@ func get_ringtones(context *gin.Context) {
 // @Summary Upload une sonnerie
 // @Description Upload une nouvelle sonnerie et sauve son url dans la base de données
 // @Tags Sonneries
-// @Accept mpfd
 // @Produce json
 // @Param file formData file true "Fichier audio de la sonnerie à upload"
 // @Success 200 "File uploaded and transferred successfully"
@@ -91,4 +91,42 @@ func upload_ringtone(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{"message": "File uploaded and transferred successfully"})
+}
+
+// update_ringtone_name modifie le nom d'une sonnerie à partir de son ID
+// @Summary Modifie le nom d'une sonnerie
+// @Description Modifie le nom d'une sonnerie en DB à partir de son ID
+// @Tags Sonneries
+// @Produce json
+// @Param id path int true "Ringtone ID"
+// @Success 200 {object} models.Ringtone "Ringtone updated successfully"
+// @Failure 404 "Ringtone not found"
+// @Failure 500 "Internal Server Error"
+// @Router /ringtones/name/{id} [put]
+func update_ringtone_name(context *gin.Context) {
+	var ringtone models.Ringtone
+	id := context.Param("id")
+
+	if err := initializers.DB.First(&ringtone, id).Error; err != nil {
+		context.JSON(http.StatusNotFound, gin.H{"error": "Ringtone not found"})
+		return
+	}
+
+	var input struct {
+		Name string `json:"name"`
+	}
+
+	if err := context.ShouldBindJSON(&input); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ringtone.Name = input.Name
+
+	if err := initializers.DB.Save(&ringtone).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "Ringtone updated successfully"})
 }

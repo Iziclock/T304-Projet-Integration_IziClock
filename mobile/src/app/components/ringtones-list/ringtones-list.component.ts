@@ -12,6 +12,7 @@ export class RingtonesListComponent implements OnInit {
   ringtones: Ringtone[] = [];
   currentAudio: HTMLAudioElement | null = null;
   currentIndex: number | null = null;
+  errorMessage: string = '';
 
   constructor(private ringtoneService: RingtoneService) { }
 
@@ -58,6 +59,7 @@ export class RingtonesListComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error updating ringtone', error);
+            this.errorMessage = 'Erreur : nom de sonnerie déjà pris';
           }
         });
       }

@@ -327,7 +327,7 @@ func get_calendar_api(c *gin.Context) {
 				}
 				errA := initializers.DB.Create(&event).Error
 				if errA != nil {
-					log.Fatal("Could not create alarm :", err)
+					log.Print("Could not create alarm :", err)
 				}
 
 				allEvents = append(allEvents, event)

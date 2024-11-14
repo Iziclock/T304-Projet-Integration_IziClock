@@ -12,6 +12,7 @@ var ALARM_LIST = []models.Alarm{
 	{CalendarID: 1, Name: "Projet d'intégration", RingDate: time.Now().Add(24 * time.Hour), Location: "EPHEC", Ringtone: "Ringtone 1", IsActive: true},
 	{CalendarID: 2, Name: "Sécurité des réseaux (Théorie)", RingDate: time.Now().Add(48 * time.Hour), Location: "EPHEC", Ringtone: "Ringtone 2", IsActive: false},
 	{CalendarID: 3, Name: "Sécurité des réseaux (Pratique)", RingDate: time.Now().Add(72 * time.Hour), Location: "EPHEC", Ringtone: "Ringtone 3", IsActive: true},
+	{CalendarID: 3, Name: "Sécurité des réseaux (Pratique)", RingDate: time.Now().Add(time.Hour), Location: "EPHEC", Ringtone: "Ringtone 3", IsActive: true},
 }
 
 func InsertMockedAlarms() { // VALEURS MOCKEES : A RETIRER EN PROD !!!

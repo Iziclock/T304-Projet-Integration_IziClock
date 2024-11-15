@@ -320,8 +320,15 @@ const docTemplate = `{
                 "createdAt": {
                     "type": "string"
                 },
+                "description": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
+                },
+                "idgoogle": {
+                    "description": "Url       string    ` + "`" + `gorm:\"size:255; not null; uniqueIndex:idx_calendar_url\"` + "`" + `",
+                    "type": "string"
                 },
                 "isActive": {
                     "type": "boolean"
@@ -329,10 +336,8 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "url": {
-                    "type": "string"
-                },
                 "userID": {
+                    "description": "ID string ` + "`" + `gorm:\"primaryKey;size 255;\"` + "`" + ` test abandonné\nUserID uint   ` + "`" + `gorm:\"not null; uniqueIndex:idx_calendar_name; uniqueIndex:idx_calendar_idgoogle\"` + "`" + `",
                     "type": "integer"
                 }
             }

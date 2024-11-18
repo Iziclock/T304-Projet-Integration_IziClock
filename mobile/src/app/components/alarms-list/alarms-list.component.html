@@ -1,9 +1,9 @@
 <div class="date-navigation">
-  <button (click)="previousDay()">
+  <button (click)="previousDay()" [disabled]="disablePrevious">
     <ion-icon name="chevron-back-outline"></ion-icon>
   </button>
   <span>{{ selectedDate | date: 'fullDate' }}</span>
-  <button (click)="nextDay()">
+  <button (click)="nextDay()" [disabled]="disableNext">
     <ion-icon name="chevron-forward-outline"></ion-icon>
   </button>
 </div>

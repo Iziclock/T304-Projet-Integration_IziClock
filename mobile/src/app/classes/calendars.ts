@@ -4,7 +4,9 @@ export class calendar implements Calendar{
     id: number;
     userId: number;
     name: string;
-    url: string;
+    //url: string;
+    idGoogle: string;
+    description: string;
     createdAt: Date;
     isActive: boolean;
 
@@ -12,7 +14,9 @@ export class calendar implements Calendar{
         this.id = calendarData.ID;
         this.userId = calendarData.UserID;
         this.name = calendarData.Name;
-        this.url = calendarData.Url;
+        //this.url = calendarData.Url;
+        this.idGoogle = calendarData.IDGoogle
+        this.description = calendarData.Description;
         this.createdAt = new Date(calendarData.CreatedAt);
         this.isActive = calendarData.IsActive;
     }

@@ -10,5 +10,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-calendars-management></app-calendars-management>
+  <app-calendars-management *ngIf="loggedIn==true"></app-calendars-management>
+  <app-login-google *ngIf="loggedIn==false"></app-login-google>
 </ion-content>

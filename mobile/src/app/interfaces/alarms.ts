@@ -1,6 +1,6 @@
 export interface Alarm{
     id: number;
-    calendarId: number;
+    calendarId: string;
     name: string;
     ringDate: Date;
     createdAt: Date;
@@ -11,8 +11,9 @@ export interface Alarm{
 
 export interface AlarmData{
     ID: number;
-    CalendarID: number;
+    CalendarID: string;
     Name: string;
+    Description: string;
     RingDate: string;
     CreatedAt: string;
     Location: string;

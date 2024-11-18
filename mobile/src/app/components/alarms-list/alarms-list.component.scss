@@ -51,3 +51,9 @@ ion-card-subtitle {
 .date-navigation span {
     text-align: center;
 }
+
+button:disabled {
+    ion-icon {
+        color: grey;
+    }
+}

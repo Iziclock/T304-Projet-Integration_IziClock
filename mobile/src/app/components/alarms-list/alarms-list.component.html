@@ -1,13 +1,24 @@
-<ion-card *ngFor="let alarm of alarms; index as i" [ngClass]="{'active-alarm': alarm.active, 'inactive-alarm': !alarm.active}">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="9" [routerLink]="['/alarm-details', alarm.id]" class="clickable">
-        <ion-card-title>{{ alarm?.name }}</ion-card-title>
-        <ion-card-subtitle>{{ alarm?.ringDate | ringdate }}</ion-card-subtitle>
-      </ion-col>
-      <ion-col size="3" class="toggle-col">
-        <ion-toggle [(ngModel)]="alarm.active" (ionChange)="onToggleChanged(alarm, $event)" color="primary"></ion-toggle>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-card>
+<div class="date-navigation">
+  <button (click)="previousDay()" [disabled]="disablePrevious">
+    <ion-icon name="chevron-back-outline"></ion-icon>
+  </button>
+  <span>{{ selectedDate | date: 'fullDate' }}</span>
+  <button (click)="nextDay()" [disabled]="disableNext">
+    <ion-icon name="chevron-forward-outline"></ion-icon>
+  </button>
+</div>
+<div>
+  <ion-card *ngFor="let alarm of alarms; index as i" [ngClass]="{'active-alarm': alarm.active, 'inactive-alarm': !alarm.active}">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="9" [routerLink]="['/alarm-details', alarm.id]" class="clickable">
+          <ion-card-title>{{ alarm?.name }}</ion-card-title>
+          <ion-card-subtitle>{{ alarm?.ringDate | ringdate }}</ion-card-subtitle>
+        </ion-col>
+        <ion-col size="3" class="toggle-col">
+          <ion-toggle [(ngModel)]="alarm.active" (ionChange)="onToggleChanged(alarm, $event)" color="primary"></ion-toggle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</div>

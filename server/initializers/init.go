@@ -55,7 +55,7 @@ func ConnectDB() {
 }
 
 func SyncDB() { // Ajoute les tables à la base de données
-	err := DB.AutoMigrate(&models.Alarm{}, &models.Calendar{})
+	err := DB.AutoMigrate(&models.Alarm{}, &models.Calendar{}, &models.Ringtone{})
 	if err != nil {
 		log.Fatal("Could not migrate tables :", err)
 	}

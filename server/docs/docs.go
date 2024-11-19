@@ -215,6 +215,102 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/ringtones": {
+            "get": {
+                "description": "Récupère une liste de toutes les sonneries depuis la DB",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sonneries"
+                ],
+                "summary": "Récupère toutes les sonneries",
+                "responses": {
+                    "200": {
+                        "description": "Ringtones send successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Ringtone"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ringtones/name/{id}": {
+            "put": {
+                "description": "Modifie le nom d'une sonnerie en DB à partir de son ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sonneries"
+                ],
+                "summary": "Modifie le nom d'une sonnerie",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Ringtone ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ringtone updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/models.Ringtone"
+                        }
+                    },
+                    "404": {
+                        "description": "Ringtone not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/ringtones/upload": {
+            "post": {
+                "description": "Upload une nouvelle sonnerie et sauve son url dans la base de données",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sonneries"
+                ],
+                "summary": "Upload une sonnerie",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Fichier audio de la sonnerie à upload",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File uploaded and transferred successfully"
+                    },
+                    "400": {
+                        "description": "No file is received"
+                    },
+                    "409": {
+                        "description": "Ringtone already exists"
+                    },
+                    "500": {
+                        "description": "Unable to save the file"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -224,8 +320,15 @@ const docTemplate = `{
                 "createdAt": {
                     "type": "string"
                 },
+                "description": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
+                },
+                "idgoogle": {
+                    "description": "Url       string    ` + "`" + `gorm:\"size:255; not null; uniqueIndex:idx_calendar_url\"` + "`" + `",
+                    "type": "string"
                 },
                 "isActive": {
                     "type": "boolean"
@@ -233,11 +336,26 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "url": {
+                "userID": {
+                    "description": "ID string ` + "`" + `gorm:\"primaryKey;size 255;\"` + "`" + ` test abandonné\nUserID uint   ` + "`" + `gorm:\"not null; uniqueIndex:idx_calendar_name; uniqueIndex:idx_calendar_idgoogle\"` + "`" + `",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Ringtone": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
                     "type": "string"
                 },
-                "userID": {
+                "id": {
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
                 }
             }
         }
@@ -254,7 +372,6 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "Il s'agit de la documentation de l'API IziClock.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-
 }
 
 func init() {

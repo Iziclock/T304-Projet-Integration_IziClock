@@ -8,7 +8,8 @@ import { CalendarsPageRoutingModule } from './calendars-routing.module';
 
 import { CalendarsPage } from './calendars.page';
 import { CalendarsManagementComponent } from '../components/calendars-management/calendars-management.component';
-
+import { LoginGoogleComponent } from '../components/login-google/login-google.component';
+import {MiddlewarePage} from '../middleware/middleware.page';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +17,6 @@ import { CalendarsManagementComponent } from '../components/calendars-management
     IonicModule,
     CalendarsPageRoutingModule
   ],
-  declarations: [CalendarsPage, CalendarsManagementComponent]
+  declarations: [CalendarsPage, CalendarsManagementComponent,LoginGoogleComponent]
 })
 export class CalendarsPageModule {}

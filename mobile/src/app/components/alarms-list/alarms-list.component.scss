@@ -30,3 +30,30 @@ ion-card-subtitle {
     font-size: 1rem;
     color: grey;
 }
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+
+.date-navigation button {
+    background-color: transparent;
+    color: darkblue;
+    font-size: 30px;
+    margin: 0 30px;
+}
+
+.date-navigation span {
+    text-align: center;
+}
+
+button:disabled {
+    ion-icon {
+        color: grey;
+    }
+}

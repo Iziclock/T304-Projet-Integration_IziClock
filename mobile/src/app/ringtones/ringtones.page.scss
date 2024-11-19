@@ -6,35 +6,14 @@
 .logo {
     max-width: 200px;
     max-height: 200px;
+    margin-right: 50px;
 }
 
-.audio-container {
-    display: flex; 
-    align-items: center; 
-    margin: 15px 20px; 
-}
-
-.play-button {
-    background-color: darkblue; 
-    border-radius: 50%; 
-    padding: 10px; 
-    color: white; 
-    margin-right: 15px; 
-    font-size: 20px;
-    width: 40px;
-    height: 40px;
-}
-
-.play-button:hover {
-    background-color: #007bff; 
-}
-
-span {
-    font-size: 20px; 
-    color: black; 
-}
-
-h1 {
+ion-back-button {
+    color: black;
     margin-left: 20px;
-    font-weight: bold;
+}
+
+.component {
+    margin-bottom: 30px;
 }

@@ -31,8 +31,10 @@ const routes: Routes = [
     path: 'edit-alarme/:id',
     loadChildren: () => import('./edit-alarme/edit-alarme.module').then(m => m.EditAlarmePageModule)
   },
-
-
+  {
+    path: 'middleware',
+    loadChildren: () => import('./middleware/middleware.module').then( m => m.MiddlewarePageModule)
+  },
 ];
 
 @NgModule({

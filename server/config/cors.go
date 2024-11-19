@@ -11,8 +11,8 @@ import (
 func SetCORS(router *gin.Engine) {
 	if os.Getenv("PROFILE") == "dev" {
 		router.Use(cors.New(cors.Config{
-			AllowOrigins:     []string{"http://localhost:8100"}, // AJOUTER NOM DE DOMAINE
-			AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
+			AllowOrigins:     []string{"http://localhost:8100", "https://www.iziclock.be"}, // AJOUTER NOM DE DOMAINE
+			AllowMethods:     []string{"GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"},
 			AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Accept", "Cache-Control", "X-Requested-With", "Set-Cookie"},
 			AllowCredentials: true,
 		}))

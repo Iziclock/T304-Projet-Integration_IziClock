@@ -5,12 +5,11 @@ import (
 	"server/config"
 	_ "server/docs"
 	"server/initializers"
-	"server/mocks"
 	"server/routes/alarms"
-	"server/routes/calendar"
 	"server/routes/calendars"
 	logincalendargoogle "server/routes/loginCalendarGoogle"
 	"server/routes/ping"
+	"server/routes/ringtones"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
@@ -23,8 +22,8 @@ func init() {
 	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
-	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
-	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	//mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	//mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation
@@ -36,12 +35,14 @@ func main() {
 	router := gin.Default()
 	config.SetCORS(router)
 
+	router.MaxMultipartMemory = 100 << 20
+
 	// Groupes de routes
 	ping.Routes(router)
 	alarms.Routes(router)
 	calendars.Routes(router)
-	calendar.Routes(router)
 	logincalendargoogle.Routes(router)
+	ringtones.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run() // listen and serve on localhost:8080

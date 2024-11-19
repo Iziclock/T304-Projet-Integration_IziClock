@@ -1,0 +1,11 @@
+<h1>Mes sonneries</h1>
+<div *ngFor="let ringtone of ringtones; index as i" class="audio-container">
+  <audio #audioPlayer [src]="ringtone.url"></audio>
+  <button (click)="toggleAudio(audioPlayer, i)" class="play-button">
+    <ion-icon [name]="ringtone.isPlaying ? 'pause' : 'play'"></ion-icon>
+  </button>
+  <span *ngIf="!ringtone.isEditing">{{ ringtone.name }}</span>
+  <input *ngIf="ringtone.isEditing" [(ngModel)]="ringtone.name" />
+  <button (click)="updateRingtoneName(ringtone.id)" class="update-ringtone-name">{{ ringtone.isEditing ? 'Enregistrer' : 'Modifier' }}</button>
+</div>
+<p class="error-message">{{ errorMessage }}</p>

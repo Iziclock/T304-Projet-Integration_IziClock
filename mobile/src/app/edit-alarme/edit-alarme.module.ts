@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { EditAlarmPageRoutingModule } from './edit-alarm-routing.module';
+import { EditAlarmePageRoutingModule } from './edit-alarme-routing.module';
 
-import { EditAlarmPage } from './edit-alarm.page';
+import { EditAlarmePage } from './edit-alarme.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EditAlarmPageRoutingModule
+    EditAlarmePageRoutingModule
   ],
-  declarations: [EditAlarmPage]
+  declarations: [EditAlarmePage]
 })
-export class EditAlarmPageModule {}
+export class EditAlarmePageModule {}

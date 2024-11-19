@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EditAlarmPage } from './edit-alarm.page';
+import { EditAlarmePage } from './edit-alarme.page';
 
-describe('EditAlarmPage', () => {
-  let component: EditAlarmPage;
-  let fixture: ComponentFixture<EditAlarmPage>;
+describe('EditAlarmePage', () => {
+  let component: EditAlarmePage;
+  let fixture: ComponentFixture<EditAlarmePage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditAlarmPage);
+    fixture = TestBed.createComponent(EditAlarmePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -7,15 +7,15 @@
   <form (ngSubmit)="saveAlarm()">
     <ion-item>
       <ion-label position="floating">Nom</ion-label>
-      <ion-input [(ngModel)]="alarmDetails.name" name="name"></ion-input>
+      <ion-input [(ngModel)]="alarmDetails.name" name="name" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Lieu</ion-label>
-      <ion-input [(ngModel)]="alarmDetails.location" name="location"></ion-input>
+      <ion-input [(ngModel)]="alarmDetails.location" name="location" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Date de sonnerie</ion-label>
-      <ion-datetime [(ngModel)]="alarmDetails.ringDate" name="ringDate"></ion-datetime>
+      <ion-datetime [(ngModel)]="alarmDetails.ringDate" name="ringDate" required></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Active</ion-label>

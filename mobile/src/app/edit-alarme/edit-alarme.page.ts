@@ -60,6 +60,8 @@ export class EditAlarmePage implements OnInit {
       (data: Alarm) => {
         console.log('Response from API:', data); // Affichez la réponse de l'API
         this.router.navigate(['/alarm-details', this.alarmId]);
+        window.location.href = `/alarm-details/${this.alarmId}`; 
+        
       },
       (error) => {
         console.error('Error updating alarm', error);

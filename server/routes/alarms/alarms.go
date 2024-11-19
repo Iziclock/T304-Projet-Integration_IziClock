@@ -14,6 +14,7 @@ func Routes(route *gin.Engine) {
         alarms.GET("", get_alarms)
         alarms.PUT("/state/:id", update_alarms)
         alarms.GET("/:id", get_alarm_by_id) // Nouvelle route pour récupérer une alarme par ID
+        alarms.PUT("/:id", update_alarm_details) // Nouvelle route pour mettre à jour les détails de l'alarme
     }
 }
 
@@ -55,6 +56,32 @@ func get_alarm_by_id(context *gin.Context) {
 
     if err := initializers.DB.First(&alarm, id).Error; err != nil {
         context.JSON(http.StatusNotFound, gin.H{"error": "Alarm not found"})
+        return
+    }
+
+    context.JSON(http.StatusOK, alarm)
+}
+
+// Nouvelle fonction pour mettre à jour les détails de l'alarme
+func update_alarm_details(context *gin.Context) {
+    id := context.Param("id")
+    var alarm models.Alarm
+
+    // Rechercher l'alarme par ID
+    if err := initializers.DB.First(&alarm, id).Error; err != nil {
+        context.JSON(http.StatusNotFound, gin.H{"error": "Alarm not found"})
+        return
+    }
+
+    // Mettre à jour les détails de l'alarme avec les données reçues
+    if err := context.ShouldBindJSON(&alarm); err != nil {
+        context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    // Sauvegarder les modifications dans la base de données
+    if err := initializers.DB.Save(&alarm).Error; err != nil {
+        context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
     }
 

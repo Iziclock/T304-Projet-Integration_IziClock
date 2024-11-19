@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  api: "http://localhost:8080"
-  // api: "https://www.iziclock.be"
+  api: "http://localhost:8080", // api: "https://www.iziclock.be"
+  geoapifyKey: "6431d6a538b141789352dd18e45e2320"
 };
 
 /*

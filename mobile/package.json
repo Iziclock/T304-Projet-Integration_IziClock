@@ -27,6 +27,8 @@
     "@capacitor/ios": "^6.1.2",
     "@capacitor/keyboard": "6.0.2",
     "@capacitor/status-bar": "6.0.1",
+    "@geoapify/angular-geocoder-autocomplete": "^2.0.2",
+    "@geoapify/geocoder-autocomplete": "^2.1.0",
     "@ionic-native/file-transfer": "^4.20.0",
     "@ionic/angular": "^8.0.0",
     "cordova-plugin-file-transfer": "^2.0.0",

@@ -6,11 +6,12 @@ import { Alarm } from 'src/app/interfaces/alarms';
 @Component({
   selector: 'app-edit-alarme',
   templateUrl: './edit-alarme.page.html',
-  styleUrls: ['./edit-alarme.page.scss'],
+  styleUrls: ['./edit-alarme.page.scss'], // Assurez-vous que le fichier SCSS est référencé ici
 })
 export class EditAlarmePage implements OnInit {
   alarmId: number = 0;
   alarmDetails: Alarm = {} as Alarm;
+  minDate: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +25,7 @@ export class EditAlarmePage implements OnInit {
       this.alarmId = +id;
       this.getAlarmDetails(this.alarmId);
     }
+    this.minDate = this.getCurrentDate();
   }
 
   getAlarmDetails(id: number) {
@@ -36,6 +38,11 @@ export class EditAlarmePage implements OnInit {
         console.error('Error fetching alarm details', error);
       }
     );
+  }
+
+  getCurrentDate(): string {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // Retourne la date au format ISO (YYYY-MM-DD)
   }
 
   saveAlarm() {
@@ -59,9 +66,7 @@ export class EditAlarmePage implements OnInit {
     this.alarmService.updateAlarmDetails(updatedAlarmDetails).subscribe(
       (data: Alarm) => {
         console.log('Response from API:', data); // Affichez la réponse de l'API
-        this.router.navigate(['/alarm-details', this.alarmId]);
-        window.location.href = `/alarm-details/${this.alarmId}`; 
-        
+        window.location.href = `/alarm-details/${this.alarmId}`; // Redirige et recharge la page
       },
       (error) => {
         console.error('Error updating alarm', error);

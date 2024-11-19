@@ -4,23 +4,27 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <form (ngSubmit)="saveAlarm()">
+  <form (ngSubmit)="saveAlarm()" #alarmForm="ngForm">
     <ion-item>
-      <ion-label position="floating">Nom</ion-label>
-      <ion-input [(ngModel)]="alarmDetails.name" name="name" required></ion-input>
+      <ion-label position="floating">Nom <span style="color: red;">*</span></ion-label>
+      <ion-input [(ngModel)]="alarmDetails.name" name="name" required maxlength="50" #name="ngModel"></ion-input>
     </ion-item>
+    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
+      <div *ngIf="name.errors?.['required']">Le champ "Nom" est obligatoire.</div>
+      <div *ngIf="name.errors?.['maxlength']">Le champ "Nom" ne doit pas dépasser 50 caractères.</div>
+    </div>
     <ion-item>
       <ion-label position="floating">Lieu</ion-label>
-      <ion-input [(ngModel)]="alarmDetails.location" name="location" required></ion-input>
+      <ion-input [(ngModel)]="alarmDetails.location" name="location" required maxlength="50"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Date de sonnerie</ion-label>
-      <ion-datetime [(ngModel)]="alarmDetails.ringDate" name="ringDate" required></ion-datetime>
+      <ion-datetime [(ngModel)]="alarmDetails.ringDate" name="ringDate" required [min]="minDate"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Active</ion-label>
       <ion-toggle [(ngModel)]="alarmDetails.active" name="active"></ion-toggle>
     </ion-item>
-    <ion-button expand="full" type="submit">Enregistrer</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="alarmForm.invalid">Enregistrer</ion-button>
   </form>
 </ion-content>

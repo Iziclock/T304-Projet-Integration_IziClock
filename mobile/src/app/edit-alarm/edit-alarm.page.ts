@@ -4,15 +4,15 @@ import { AlarmService } from 'src/app/services/alarm.service';
 import { Alarm } from 'src/app/interfaces/alarms';
 
 @Component({
-  selector: 'app-edit-alarme',
-  templateUrl: './edit-alarme.page.html',
-  styleUrls: ['./edit-alarme.page.scss'], // Assurez-vous que le fichier SCSS est référencé ici
+  selector: 'app-edit-alarm',
+  templateUrl: './edit-alarm.page.html',
+  styleUrls: ['./edit-alarm.page.scss'], // Assurez-vous que le fichier SCSS est référencé ici
 })
 export class EditAlarmePage implements OnInit {
   alarmId: number = 0;
   alarmDetails: Alarm = {} as Alarm;
   minDate: string = '';
-
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -46,8 +46,6 @@ export class EditAlarmePage implements OnInit {
   }
 
   saveAlarm() {
-    console.log('Form values before saving:', this.alarmDetails); // Affichez les valeurs du formulaire avant d'envoyer
-    console.log('Saving Alarm ID:', this.alarmDetails.id); // Affichez l'ID de l'alarme à sauvegarder
 
     // Utilisez un objet temporaire pour stocker les valeurs du formulaire
     const updatedAlarmDetails: Alarm = {
@@ -61,7 +59,6 @@ export class EditAlarmePage implements OnInit {
       active: this.alarmDetails.active
     };
 
-    console.log('Updated Alarm Details:', updatedAlarmDetails); // Affichez les valeurs mises à jour avant d'envoyer
 
     this.alarmService.updateAlarmDetails(updatedAlarmDetails).subscribe(
       (data: Alarm) => {

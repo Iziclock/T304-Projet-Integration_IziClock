@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EditAlarmePage } from './edit-alarme.page';
+import { EditAlarmePage } from './edit-alarm.page';
 
 describe('EditAlarmePage', () => {
   let component: EditAlarmePage;

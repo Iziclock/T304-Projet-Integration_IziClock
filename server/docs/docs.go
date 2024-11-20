@@ -20,6 +20,65 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/alarms/{id}": {
+            "put": {
+                "description": "Met à jour les détails d'une alarme par ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Alarmes"
+                ],
+                "summary": "Met à jour les détails de l'alarme",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de l'alarme",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Détails de l'alarme",
+                        "name": "alarm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Alarm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Alarm"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/calendar": {
             "get": {
                 "description": "Récupère une liste des événements à venir depuis le calendrier Google de l'utilisateur.",
@@ -314,6 +373,41 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Alarm": {
+            "type": "object",
+            "properties": {
+                "calendar": {
+                    "$ref": "#/definitions/models.Calendar"
+                },
+                "calendarID": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ringDate": {
+                    "type": "string"
+                },
+                "ringtone": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Calendar": {
             "type": "object",
             "properties": {

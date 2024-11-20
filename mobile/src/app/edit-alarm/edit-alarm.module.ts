@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { EditAlarmePageRoutingModule } from './edit-alarme-routing.module';
+import { EditAlarmePageRoutingModule } from './edit-alarm-routing.module';
 
-import { EditAlarmePage } from './edit-alarme.page';
+import { EditAlarmePage } from './edit-alarm.page';
 
 @NgModule({
   imports: [

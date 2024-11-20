@@ -62,7 +62,19 @@ func get_alarm_by_id(context *gin.Context) {
     context.JSON(http.StatusOK, alarm)
 }
 
-// Nouvelle fonction pour mettre à jour les détails de l'alarme
+// update_alarm_details met à jour les détails de l'alarme
+// @Summary Met à jour les détails de l'alarme
+// @Description Met à jour les détails d'une alarme par ID
+// @Tags Alarmes
+// @Accept json
+// @Produce json
+// @Param id path int true "ID de l'alarme"
+// @Param alarm body models.Alarm true "Détails de l'alarme"
+// @Success 200 {object} models.Alarm
+// @Failure 400 {object} string
+// @Failure 404 {object} string
+// @Failure 500 {object} string
+// @Router /alarms/{id} [put]
 func update_alarm_details(context *gin.Context) {
     id := context.Param("id")
     var alarm models.Alarm

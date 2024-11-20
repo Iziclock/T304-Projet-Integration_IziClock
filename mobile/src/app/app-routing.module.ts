@@ -24,8 +24,8 @@ const routes: Routes = [
     loadChildren: () => import('./ringtones/ringtones.module').then( m => m.RingtonesPageModule)
   }, 
   {
-    path: 'edit-alarme/:id', //route pour edit-alarme
-    loadChildren: () => import('./edit-alarme/edit-alarme.module').then(m => m.EditAlarmePageModule)
+    path: 'edit-alarm/:id', //route pour edit-alarm
+    loadChildren: () => import('./edit-alarm/edit-alarm.module').then(m => m.EditAlarmePageModule)
   },
   {
     path: 'middleware',

@@ -34,6 +34,6 @@ export class AlarmDetailsPage implements OnInit {
   }
 
   editAlarm() {
-    this.router.navigate(['/edit-alarme', this.alarmId]);
+    this.router.navigate(['/edit-alarm', this.alarmId]);
   }
 }

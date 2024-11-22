@@ -8,7 +8,7 @@
   </button>
 </div>
 <div>
-  <ion-card *ngFor="let alarm of alarms; index as i" [ngClass]="{'active-alarm': alarm.active, 'inactive-alarm': !alarm.active}">
+  <ion-card *ngFor="let alarm of filteredAlarms; index as i" [ngClass]="{'active-alarm': alarm.active, 'inactive-alarm': !alarm.active}">
     <ion-grid>
       <ion-row>
         <ion-col size="9" [routerLink]="['/alarm-details', alarm.id]" class="clickable">

@@ -1,0 +1,103 @@
+/* Styles pour les messages d'erreur */
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+    text-align: center;
+  }
+  
+  /* Styles pour centrer le formulaire */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  ion-item {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  ion-button {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  /* Styles pour rendre le formulaire responsive */
+  @media (max-width: 600px) {
+    ion-item {
+      --padding-start: 10px;
+      --inner-padding-end: 10px;
+    }
+  
+    ion-label {
+      font-size: 1em;
+    }
+  
+    ion-input,
+    ion-datetime,
+    ion-toggle {
+      font-size: 1em;
+    }
+  
+    .error-message {
+      font-size: 0.7em;
+    }
+  
+    ion-button {
+      font-size: 1em;
+    }
+  }
+  
+  @media (min-width: 601px) and (max-width: 1024px) {
+    ion-item {
+      --padding-start: 15px;
+      --inner-padding-end: 15px;
+    }
+  
+    ion-label {
+      font-size: 1.2em;
+    }
+  
+    ion-input,
+    ion-datetime,
+    ion-toggle {
+      font-size: 1.2em;
+    }
+  
+    .error-message {
+      font-size: 0.8em;
+    }
+  
+    ion-button {
+      font-size: 1.2em;
+    }
+  }
+  
+  @media (min-width: 1025px) {
+    ion-item {
+      --padding-start: 20px;
+      --inner-padding-end: 20px;
+    }
+  
+    ion-label {
+      font-size: 1.4em;
+    }
+  
+    ion-input,
+    ion-datetime,
+    ion-toggle {
+      font-size: 1.4em;
+    }
+  
+    .error-message {
+      font-size: 0.9em;
+    }
+  
+    ion-button {
+      font-size: 1.4em;
+    }
+  }

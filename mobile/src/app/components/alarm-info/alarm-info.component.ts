@@ -16,7 +16,6 @@ export class AlarmInfoComponent implements OnInit {
 
   ngOnInit() {
     this.getAlarmDetails(this.alarmId);
-    console.log(this.alarmDetails)
   }
 
   getAlarmDetails(id: number) {
@@ -24,7 +23,6 @@ export class AlarmInfoComponent implements OnInit {
       (data: any) => {
         const newAlarm: Alarm = new alarm(data);
         this.alarmDetails=(newAlarm);
-        console.log(this.alarmDetails)
       },
       (error) => {
         console.error('Error fetching alarm details', error);

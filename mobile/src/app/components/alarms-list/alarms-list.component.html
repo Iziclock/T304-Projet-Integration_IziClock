@@ -8,10 +8,10 @@
   </button>
 </div>
 <div>
-  <ion-card *ngFor="let alarm of filteredAlarms; index as i" [ngClass]="{'active-alarm': alarm.active, 'inactive-alarm': !alarm.active}" [routerLink]="['/alarm-details', alarm?.id]">
+  <ion-card *ngFor="let alarm of filteredAlarms; index as i" [ngClass]="{'active-alarm': alarm.active, 'inactive-alarm': !alarm.active}">
     <ion-grid>
       <ion-row>
-        <ion-col size="9">
+        <ion-col size="9" [routerLink]="['/alarm-details', alarm.id]" class="clickable">
           <ion-card-title>{{ alarm?.name }}</ion-card-title>
           <ion-card-subtitle>{{ alarm?.ringDate | ringdate }}</ion-card-subtitle>
         </ion-col>

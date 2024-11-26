@@ -22,12 +22,15 @@ const routes: Routes = [
   {
     path: 'ringtones',
     loadChildren: () => import('./ringtones/ringtones.module').then( m => m.RingtonesPageModule)
+  }, 
+  {
+    path: 'edit-alarm/:id', //route pour edit-alarm
+    loadChildren: () => import('./edit-alarm/edit-alarm.module').then(m => m.EditAlarmePageModule)
   },
   {
     path: 'middleware',
     loadChildren: () => import('./middleware/middleware.module').then( m => m.MiddlewarePageModule)
   },
-
 ];
 
 @NgModule({

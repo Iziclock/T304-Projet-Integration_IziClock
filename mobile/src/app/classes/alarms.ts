@@ -7,7 +7,8 @@ export class alarm implements Alarm{
     description: string;
     ringDate: Date;
     createdAt: Date;
-    location: string;
+    locationStart: string;
+    locationEnd: string;
     ringtone: string;
     active: boolean;
 
@@ -18,7 +19,8 @@ export class alarm implements Alarm{
         this.description = alarmData.Description
         this.ringDate = new Date(alarmData.RingDate);
         this.createdAt = new Date(alarmData.CreatedAt);
-        this.location = alarmData.Location;
+        this.locationStart = alarmData.LocationStart;
+        this.locationEnd = alarmData.LocationEnd;
         this.ringtone = alarmData.Ringtone;
         this.active = alarmData.IsActive;
     }

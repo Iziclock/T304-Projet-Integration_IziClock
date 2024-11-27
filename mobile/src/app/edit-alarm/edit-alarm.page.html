@@ -4,27 +4,31 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <form (ngSubmit)="saveAlarm()" #alarmForm="ngForm">
+  <form (ngSubmit)="onSubmit()" [formGroup]="alarmForm">
     <ion-item>
       <ion-label position="floating">Nom <span style="color: red;">*</span></ion-label>
-      <ion-input [(ngModel)]="alarmDetails.name" name="name" required maxlength="50" #name="ngModel"></ion-input>
+      <ion-input name="name" formControlName="name"></ion-input>
     </ion-item>
-    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
-      <div *ngIf="name.errors?.['required']">Le champ "Nom" est obligatoire.</div>
-      <div *ngIf="name.errors?.['maxlength']">Le champ "Nom" ne doit pas dépasser 50 caractères.</div>
+    <div *ngIf="name?.invalid" class="error-message">
+      <div *ngIf="name?.errors?.['required']">Le champ "Nom" est obligatoire.</div>
+      <div *ngIf="name?.errors?.['maxlength']">Le champ "Nom" ne doit pas dépasser 50 caractères.</div>
     </div>
     <ion-item>
-      <ion-label position="floating">Lieu</ion-label>
-      <ion-input [(ngModel)]="alarmDetails.location" name="location" required maxlength="50"></ion-input>
+      <ion-label position="floating">Lieu de départ</ion-label>
+      <app-autocomplete-address name="locationStart" (placeSelected)="alarmDetails.LocationStart" formControlName="locationStart"></app-autocomplete-address>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Lieu de déstination</ion-label>
+      <app-autocomplete-address name="locationEnd" (placeSelected)="alarmDetails.LocationEnd" formControlName="locationEnd"></app-autocomplete-address>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Date de sonnerie</ion-label>
-      <ion-datetime [(ngModel)]="alarmDetails.ringDate" name="ringDate" required [min]="minDate"></ion-datetime>
+      <ion-datetime name="ringDate" [min]="minDate" formControlName="ringDate"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Active</ion-label>
-      <ion-toggle [(ngModel)]="alarmDetails.active" name="active"></ion-toggle>
+      <ion-toggle name="active" formControlName="active"></ion-toggle>
     </ion-item>
-    <ion-button expand="full" type="submit" [disabled]="alarmForm.invalid">Enregistrer</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="!alarmForm.valid">Enregistrer</ion-button>
   </form>
 </ion-content>

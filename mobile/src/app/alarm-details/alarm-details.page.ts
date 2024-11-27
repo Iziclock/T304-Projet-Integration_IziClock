@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlarmService } from 'src/app/services/alarm.service';
-import { Alarm } from 'src/app/interfaces/alarms';
+import { Alarm, AlarmData } from 'src/app/interfaces/alarms';
 
 @Component({
   selector: 'app-alarm-details',
@@ -10,7 +10,7 @@ import { Alarm } from 'src/app/interfaces/alarms';
 })
 export class AlarmDetailsPage implements OnInit {
   alarmId: number = 0;
-  alarmDetails: Alarm = {} as Alarm;
+  alarmDetails: AlarmData = {} as AlarmData;
 
   constructor(private route: ActivatedRoute, private router: Router, private alarmService: AlarmService) {}
 
@@ -24,7 +24,7 @@ export class AlarmDetailsPage implements OnInit {
 
   getAlarmDetails(id: number) {
     this.alarmService.getAlarmById(id).subscribe(
-      (data: Alarm) => {
+      (data: AlarmData) => {
         this.alarmDetails = data;
       },
       (error) => {

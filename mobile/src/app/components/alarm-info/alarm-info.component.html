@@ -1,8 +1,12 @@
 <div *ngIf="alarmDetails" class="alarm-details">
   <h2>{{ alarmDetails.name }}</h2>
   <div class="detail">
-    <span class="label">Lieu :</span>
-    <span class="value">{{ alarmDetails.location }}</span>
+    <span class="label">Lieu de départ :</span>
+    <span class="value">{{ alarmDetails.locationStart }}</span>
+  </div>
+  <div class="detail">
+    <span class="label">Lieu de déstination :</span>
+    <span class="value">{{ alarmDetails.locationEnd }}</span>
   </div>
   <div class="detail">
     <span class="label">L'alarme est active ? :</span>

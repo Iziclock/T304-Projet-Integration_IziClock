@@ -191,13 +191,14 @@ func events_from_api(c *gin.Context) {
 				log.Print("calndar:", calendar)
 				log.Print("calendar.ID:", calendar.ID)
 				event := models.Alarm{
-					CalendarID:  calendar.ID,
-					Name:        item.Summary,
-					Description: item.Description,
-					RingDate:    date,
-					Location:    item.Location,
-					Ringtone:    "",
-					IsActive:    true,
+					CalendarID:    calendar.ID,
+					Name:          item.Summary,
+					Description:   item.Description,
+					RingDate:      date,
+					LocationStart: "",
+					LocationEnd:   item.Location,
+					Ringtone:      "",
+					IsActive:      true,
 				}
 				errA := initializers.DB.Create(&event).Error
 				if errA != nil {
@@ -321,7 +322,8 @@ func get_calendar_api(c *gin.Context) {
 					Name:        item.Summary,
 					Description: item.Description,
 					RingDate:    date,
-					Location:    item.Location,
+					LocationStart: "",
+					LocationEnd:    item.Location,
 					Ringtone:    "",
 					IsActive:    true,
 				}

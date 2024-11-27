@@ -1,5 +1,6 @@
 <div #autocompleteContainer class="autocomplete-container">
   <geoapify-geocoder-autocomplete 
+  [value]="value"
   [limit]="options.limit || 5"
   [lang]="options.lang || 'fr'"
   (placeSelect)="selectedEvent($event)" 

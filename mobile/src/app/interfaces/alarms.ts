@@ -4,7 +4,8 @@ export interface Alarm{
     name: string;
     ringDate: Date;
     createdAt: Date;
-    location: string;
+    locationStart: string;
+    locationEnd: string;
     ringtone: string;
     active: boolean;
 }
@@ -16,7 +17,8 @@ export interface AlarmData{
     Description: string;
     RingDate: string;
     CreatedAt: string;
-    Location: string;
+    LocationStart: string;
+    LocationEnd: string;
     Ringtone: string;
     IsActive: boolean;
 }

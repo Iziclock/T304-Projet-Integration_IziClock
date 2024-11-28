@@ -36,4 +36,7 @@ export class AlarmDetailsPage implements OnInit {
   editAlarm() {
     this.router.navigate(['/edit-alarm', this.alarmId]);
   }
+  goBack() {
+    this.router.navigate(['/home']); // Remplacez 'alarm-home' par le chemin correct de votre page d'accueil des alarmes
+  }
 }

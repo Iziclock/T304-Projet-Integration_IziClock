@@ -14,12 +14,14 @@
       <div *ngIf="name?.errors?.['maxlength']">Le champ "Nom" ne doit pas dépasser 50 caractères.</div>
     </div>
     <ion-item>
-      <ion-label position="floating">Lieu de départ</ion-label>
-      <app-autocomplete-address name="locationStart" (placeSelected)="alarmDetails.LocationStart" formControlName="locationStart"></app-autocomplete-address>
+      <ion-label position="floating">Lieu de départ
+        <app-autocomplete-address name="locationStart" (placeSelected)="alarmDetails.LocationStart" formControlName="locationStart"></app-autocomplete-address>
+      </ion-label>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Lieu de déstination</ion-label>
-      <app-autocomplete-address name="locationEnd" (placeSelected)="alarmDetails.LocationEnd" formControlName="locationEnd"></app-autocomplete-address>
+      <ion-label position="floating">Lieu de déstination
+        <app-autocomplete-address name="locationEnd" (placeSelected)="alarmDetails.LocationEnd" formControlName="locationEnd"></app-autocomplete-address>
+      </ion-label>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Date de sonnerie</ion-label>

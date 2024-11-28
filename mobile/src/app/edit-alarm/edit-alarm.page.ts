@@ -90,7 +90,7 @@ getAlarmDetails(id: number) {
       ID: this.alarmDetails.ID,
       CalendarID: this.alarmDetails.CalendarID,
       Name: this.alarmForm.value.name,
-      RingDate: this.alarmForm.value.ringDate,
+      RingDate: String(new Date(this.alarmForm.value.ringDate).toISOString()),
       CreatedAt: String(this.alarmDetails.CreatedAt),
       LocationStart: this.alarmForm.value.locationStart,
       LocationEnd: this.alarmForm.value.locationEnd,

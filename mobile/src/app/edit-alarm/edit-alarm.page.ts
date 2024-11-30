@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlarmService } from 'src/app/services/alarm.service';
-import { Alarm, AlarmData } from 'src/app/interfaces/alarms';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Alarm, AlarmData } from 'src/app/interfaces/alarms';
+import { AlarmService } from 'src/app/services/alarm.service';
 
 @Component({
   selector: 'app-edit-alarm',
@@ -29,7 +29,6 @@ export class EditAlarmePage implements OnInit {
     }
     this.minDate = this.getCurrentDate();
 
-    console.log('Test: ', this.alarmDetails);
     this.alarmForm = new FormGroup({
       name: new FormControl(this.alarmDetails.Name, [
         Validators.required, 
@@ -37,7 +36,6 @@ export class EditAlarmePage implements OnInit {
       ]),
       ringDate: new FormControl(this.alarmDetails.RingDate, [
         Validators.required,
-        
       ]),
       locationStart: new FormControl(this.alarmDetails.LocationStart, [
         Validators.maxLength(100)
@@ -53,12 +51,12 @@ export class EditAlarmePage implements OnInit {
     return this.alarmForm.get('name');
   }
 
-getAlarmDetails(id: number) {
+  getAlarmDetails(id: number) {
     this.alarmService.getAlarmById(id).subscribe(
       (data: AlarmData) => {
-        this.alarmDetails = data;
-        this.updateFormValues(data);
-        console.log('Alarm details:', this.alarmDetails);
+          this.alarmDetails = data;
+          this.updateFormValues(data);
+          console.log('Alarm details:', this.alarmDetails);
       },
       (error) => {
         console.error('Error fetching alarm details', error);
@@ -75,7 +73,6 @@ getAlarmDetails(id: number) {
       active: data.IsActive,
     });
   }
-
 
   getCurrentDate(): string {
     const today = new Date();

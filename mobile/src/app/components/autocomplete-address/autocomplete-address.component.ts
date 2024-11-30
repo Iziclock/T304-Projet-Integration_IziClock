@@ -16,8 +16,6 @@ import { GeocoderAutocompleteOptions } from '@geoapify/geocoder-autocomplete';
   ]
 })
 export class AutocompleteAddressComponent implements ControlValueAccessor{
-  @ViewChild('autocompleteContainer', { static: true }) autocompleteContainer!: ElementRef;
-
   value: string = '';
   @Input() options: GeocoderAutocompleteOptions = {};
 

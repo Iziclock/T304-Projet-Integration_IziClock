@@ -43,6 +43,7 @@ export class EditAlarmePage implements OnInit {
       locationEnd: new FormControl(this.alarmDetails.LocationEnd, [
         Validators.maxLength(100)
       ]),
+      transport: new FormControl('drive'),
       active: new FormControl(this.alarmDetails.IsActive),
     });
   }
@@ -66,11 +67,12 @@ export class EditAlarmePage implements OnInit {
 
   updateFormValues(data: any) {
     this.alarmForm.patchValue({
-      name: data.Name,
-      ringDate: new Date(data.RingDate).toISOString(),
-      locationStart: data.LocationStart,
-      locationEnd: data.LocationEnd,
-      active: data.IsActive,
+      name: data.Name ? data.Name : '',
+      ringDate: data.ringDate ? new Date(data.RingDate) : new Date(),
+      locationStart: data.LocationStart ? data.LocationStart : '',
+      locationEnd: data.LocationEnd ? data.LocationEnd : '',
+      transport: data.Transport ? data.Transport : 'drive',
+      active: data.IsActive ? data.IsActive : false,
     });
   }
 
@@ -92,6 +94,7 @@ export class EditAlarmePage implements OnInit {
       LocationStart: this.alarmForm.value.locationStart,
       LocationEnd: this.alarmForm.value.locationEnd,
       Ringtone: this.alarmDetails.Ringtone,
+      Transport: this.alarmForm.value.transport,
       IsActive: this.alarmForm.value.active,
     };
 

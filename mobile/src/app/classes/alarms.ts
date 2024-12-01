@@ -10,6 +10,7 @@ export class alarm implements Alarm{
     locationStart: string;
     locationEnd: string;
     ringtone: string;
+    transport: string;
     active: boolean;
 
     constructor(alarmData: AlarmData){
@@ -22,6 +23,7 @@ export class alarm implements Alarm{
         this.locationStart = alarmData.LocationStart;
         this.locationEnd = alarmData.LocationEnd;
         this.ringtone = alarmData.Ringtone;
+        this.transport = alarmData.Transport;
         this.active = alarmData.IsActive;
     }
 }

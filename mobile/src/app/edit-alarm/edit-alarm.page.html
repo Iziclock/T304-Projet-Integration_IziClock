@@ -27,6 +27,20 @@
       <ion-label position="floating">Date de sonnerie</ion-label>
       <ion-datetime name="ringDate" [min]="minDate" formControlName="ringDate"></ion-datetime>
     </ion-item>
+    <ion-segment name="transport" formControlName="transport" color="primary">
+      <ion-segment-button value="drive">
+        <ion-icon name="car"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="approximated_transit">
+        <ion-icon name="subway"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="bicycle">
+        <ion-icon name="bicycle"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="walk">
+        <ion-icon name="walk"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
     <ion-item>
       <ion-label>Active</ion-label>
       <ion-toggle name="active" formControlName="active"></ion-toggle>

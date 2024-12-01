@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Alarm, AlarmData } from 'src/app/interfaces/alarms';
 import { AlarmService } from 'src/app/services/alarm.service';
-
 @Component({
   selector: 'app-edit-alarm',
   templateUrl: './edit-alarm.page.html',
@@ -68,7 +67,7 @@ export class EditAlarmePage implements OnInit {
   updateFormValues(data: any) {
     this.alarmForm.patchValue({
       name: data.Name ? data.Name : '',
-      ringDate: data.ringDate ? new Date(data.RingDate) : new Date(),
+      ringDate: data.ringDate ? (new Date(data.RingDate).toISOString()) : new Date().toISOString(),
       locationStart: data.LocationStart ? data.LocationStart : '',
       locationEnd: data.LocationEnd ? data.LocationEnd : '',
       transport: data.Transport ? data.Transport : 'drive',
@@ -89,7 +88,7 @@ export class EditAlarmePage implements OnInit {
       ID: this.alarmDetails.ID,
       CalendarID: this.alarmDetails.CalendarID,
       Name: this.alarmForm.value.name,
-      RingDate: String(new Date(this.alarmForm.value.ringDate).toISOString()),
+      RingDate: new Date(this.alarmForm.value.ringDate).toISOString(),
       CreatedAt: String(this.alarmDetails.CreatedAt),
       LocationStart: this.alarmForm.value.locationStart,
       LocationEnd: this.alarmForm.value.locationEnd,

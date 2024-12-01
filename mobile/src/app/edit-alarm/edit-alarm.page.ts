@@ -67,7 +67,7 @@ export class EditAlarmePage implements OnInit {
   updateFormValues(data: any) {
     this.alarmForm.patchValue({
       name: data.Name,
-      ringDate: data.RingDate,
+      ringDate: new Date(data.RingDate).toISOString(),
       locationStart: data.LocationStart,
       locationEnd: data.LocationEnd,
       active: data.IsActive,

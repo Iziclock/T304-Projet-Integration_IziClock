@@ -10,11 +10,12 @@ import (
 	logincalendargoogle "server/routes/loginCalendarGoogle"
 	"server/routes/ping"
 	"server/routes/ringtones"
+	"server/routes/raspberry"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
-	"server/mocks"
+	// "server/mocks"
 )
 
 func init() {
@@ -23,9 +24,9 @@ func init() {
 	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
-	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
-	mocks.InsertMockedRingtones() // VALEURS MOCKEES : A RETIRER EN PROD !!!
-	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
+// 	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+// 	mocks.InsertMockedRingtones() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+// 	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation
@@ -45,7 +46,8 @@ func main() {
 	calendars.Routes(router)
 	logincalendargoogle.Routes(router)
 	ringtones.Routes(router)
+	raspberry.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.Run() // listen and serve on localhost:8080
+	router.Run(":8080") // listen and serve on localhost:8080
 }

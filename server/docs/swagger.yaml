@@ -14,13 +14,21 @@ definitions:
         type: integer
       isActive:
         type: boolean
-      location:
+      lastUpdate:
+        type: string
+      locationEnd:
+        type: string
+      locationStart:
         type: string
       name:
         type: string
       ringDate:
         type: string
       ringtone:
+        $ref: '#/definitions/models.Ringtone'
+      ringtoneID:
+        type: integer
+      update:
         type: string
     type: object
   models.Calendar:
@@ -48,6 +56,30 @@ definitions:
     properties:
       createdAt:
         type: string
+      id:
+        type: integer
+      name:
+        type: string
+      url:
+        type: string
+    type: object
+  raspberry.AlarmResponse:
+    properties:
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      name:
+        type: string
+      ringDate:
+        type: string
+      ringtone:
+        $ref: '#/definitions/raspberry.RingtoneBrief'
+      ringtoneID:
+        type: integer
+    type: object
+  raspberry.RingtoneBrief:
+    properties:
       id:
         type: integer
       name:
@@ -236,6 +268,27 @@ paths:
       summary: Envoie un ping
       tags:
       - Ping
+  /raspberry:
+    get:
+      consumes:
+      - application/json
+      description: Retourne une liste des alarmes mises à jour ou proches de sonner.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/raspberry.AlarmResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Récupérer les alarmes mises à jour pour le Raspberry
+      tags:
+      - Raspberry
   /ringtones:
     get:
       description: Récupère une liste de toutes les sonneries depuis la DB

@@ -275,6 +275,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/raspberry": {
+            "get": {
+                "description": "Retourne une liste des alarmes mises à jour ou proches de sonner.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Raspberry"
+                ],
+                "summary": "Récupérer les alarmes mises à jour pour le Raspberry",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/raspberry.AlarmResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/ringtones": {
             "get": {
                 "description": "Récupère une liste de toutes les sonneries depuis la DB",
@@ -394,7 +426,13 @@ const docTemplate = `{
                 "isActive": {
                     "type": "boolean"
                 },
-                "location": {
+                "lastUpdate": {
+                    "type": "string"
+                },
+                "locationEnd": {
+                    "type": "string"
+                },
+                "locationStart": {
                     "type": "string"
                 },
                 "name": {
@@ -404,6 +442,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ringtone": {
+                    "$ref": "#/definitions/models.Ringtone"
+                },
+                "ringtoneID": {
+                    "type": "integer"
+                },
+                "update": {
                     "type": "string"
                 }
             }
@@ -442,6 +486,43 @@ const docTemplate = `{
                 "createdAt": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "raspberry.AlarmResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ringDate": {
+                    "type": "string"
+                },
+                "ringtone": {
+                    "$ref": "#/definitions/raspberry.RingtoneBrief"
+                },
+                "ringtoneID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "raspberry.RingtoneBrief": {
+            "type": "object",
+            "properties": {
                 "id": {
                     "type": "integer"
                 },

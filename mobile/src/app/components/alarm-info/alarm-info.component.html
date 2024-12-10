@@ -14,7 +14,7 @@
   </div>
   <div class="detail">
     <span class="label">Transport :</span>
-    <ion-icon class="value" [name]="getTransportIcon()"></ion-icon>
+    <ion-icon class="value" [name]="getTransportIcon() ? getTransportIcon() : 'car'"></ion-icon>
   </div>
   <div class="detail">
     <span class="label">Sonne le :</span>

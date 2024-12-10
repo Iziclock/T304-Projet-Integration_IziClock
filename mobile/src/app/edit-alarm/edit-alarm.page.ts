@@ -56,7 +56,7 @@ export class EditAlarmePage implements OnInit {
       (data: AlarmData) => {
           this.alarmDetails = data;
           this.updateFormValues(data);
-          console.log('Alarm details:', this.alarmDetails);
+          //console.log('Alarm details:', this.alarmDetails);
       },
       (error) => {
         console.error('Error fetching alarm details', error);
@@ -81,7 +81,7 @@ export class EditAlarmePage implements OnInit {
   }
 
   onSubmit() {
-    console.log('Form submitted:', this.alarmForm.value);
+    //console.log('Form submitted:', this.alarmForm.value);
     // Utilisez un objet temporaire pour stocker les valeurs du formulaire
     const updatedAlarmDetails: AlarmData = {
       Description: '',
@@ -97,7 +97,7 @@ export class EditAlarmePage implements OnInit {
       IsActive: this.alarmForm.value.active,
     };
 
-    console.log('Updated alarm details:', updatedAlarmDetails);
+    //console.log('Updated alarm details:', updatedAlarmDetails);
 
     this.alarmService.updateAlarmDetails(updatedAlarmDetails).subscribe(
       (data: AlarmData) => {

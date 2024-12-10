@@ -19,19 +19,19 @@ export class AlarmService {
 
   updateAlarmState(alarm: Alarm): Observable<Alarm> {
     return this.http.put<Alarm>(`${this.baseUrl}/state/${alarm.id}`, alarm).pipe(
-      tap(data => console.log('Updated alarm:', data))
+      //tap(data => console.log('Updated alarm:', data))
     );
   }
 
   updateAlarmDetails(alarm: AlarmData): Observable<AlarmData> {
     return this.http.put<AlarmData>(`${this.baseUrl}/${alarm.ID}`, alarm).pipe(
-      tap(data => console.log('Updated alarm details:', data))
+      //tap(data => console.log('Updated alarm details:', data))
     );
   }
 
   getAlarmById(id: number): Observable<AlarmData> {
     return this.http.get<AlarmData>(`${this.baseUrl}/${id}`).pipe(
-      tap(data => console.log('Fetched alarm:', data))
+      //tap(data => console.log('Fetched alarm:', data))
     );
   }
 }

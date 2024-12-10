@@ -11,6 +11,12 @@ import { alarm } from 'src/app/classes/alarms';
 export class AlarmInfoComponent implements OnInit {
   @Input() alarmId: number = 0; // Initialisation à 0
   alarmDetails: Alarm = {} as Alarm; // Initialisation à un objet vide
+  transportModes: { [key: string] : string} = {
+    drive: 'car',
+    walk: 'walk',
+    bicycle: 'bicycle',
+    approximated_transit: 'subway',
+  };
 
   constructor(private alarmService: AlarmService) {}
 
@@ -28,5 +34,10 @@ export class AlarmInfoComponent implements OnInit {
         console.error('Error fetching alarm details', error);
       }
     );
+  }
+
+  getTransportIcon(): string {
+    //console.log(this.transportModes[this.alarmDetails.transport]);
+    return this.transportModes[this.alarmDetails.transport];
   }
 }

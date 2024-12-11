@@ -36,7 +36,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_HOST: ${POSTGRES_HOST}
-      PROFILE: prod
+      PROFILE: ${PROFILE}
     networks:
       - db
       - reverse

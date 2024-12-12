@@ -10,6 +10,12 @@ export class CalendarsPage implements OnInit {
   constructor(private router: Router) {}
   loggedIn:boolean=false
 
+  doRefresh(event: any) {
+    window.location.reload();
+
+    event.target.complete();
+  }
+
   ngOnInit() {
     console.log(localStorage.getItem("access_token"))
     if(localStorage.getItem("access_token")){

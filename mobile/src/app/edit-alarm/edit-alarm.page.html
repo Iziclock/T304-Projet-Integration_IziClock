@@ -4,6 +4,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <form (ngSubmit)="onSubmit()" [formGroup]="alarmForm">
     <ion-item>
       <ion-label position="floating">Nom <span style="color: red;">*</span></ion-label>

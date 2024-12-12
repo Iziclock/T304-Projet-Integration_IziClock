@@ -21,6 +21,12 @@ export class EditAlarmePage implements OnInit {
     private alarmService: AlarmService
   ) {}
 
+  doRefresh(event: any) {
+    window.location.reload();
+
+    event.target.complete();
+  }
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {

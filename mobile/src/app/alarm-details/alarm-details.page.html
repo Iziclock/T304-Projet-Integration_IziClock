@@ -7,6 +7,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <app-alarm-info [alarmId]="alarmId"></app-alarm-info>
   <ion-button expand="full" (click)="editAlarm()">Modifier l'alarme</ion-button>
 </ion-content>

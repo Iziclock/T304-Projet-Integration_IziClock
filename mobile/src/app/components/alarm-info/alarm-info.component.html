@@ -9,7 +9,7 @@
     <span class="value">{{ alarmDetails.locationEnd }}</span>
   </div>
   <div class="detail">
-    <span class="label">L'alarme est active ? :</span>
+    <span class="label">L'alarme est active ?</span>
     <span class="value">{{ alarmDetails.active ? 'Oui ' : 'Non ' }}</span>
   </div>
   <div class="detail">
@@ -21,5 +21,4 @@
     <span class="label">Sonne le :</span>
     <span class="value">{{ alarmDetails.ringDate | date:'fullDate' }} à {{ alarmDetails.ringDate | date:'shortTime' }}</span>
   </div>
-  <!-- Ajoutez d'autres détails de l'alarme ici -->
 </div>

@@ -1,3 +1,27 @@
+.div-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 200px;
+  max-height: 200px;
+  margin-right: 50px;
+}
+
+ion-back-button {
+  color: black;
+  margin-left: 20px;
+}
+
+.component {
+  margin-bottom: 30px;
+}
+
+ion-button {
+  --background: darkblue;
+}
+
 /* Styles pour les messages d'erreur */
 .error-message {
     color: red;

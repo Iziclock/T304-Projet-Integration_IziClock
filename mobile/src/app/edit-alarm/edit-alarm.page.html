@@ -1,12 +1,18 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/" text="" icon="chevron-back-outline"></ion-back-button>
     </ion-buttons>
-    <ion-title>Modifier l'alarme</ion-title>
+    <div class="div-logo">
+      <img src="../../assets/logo/iziclock-logo.png" alt="Logo" class="logo">
+    </div>    
   </ion-toolbar>
 </ion-header>
+
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <form (ngSubmit)="onSubmit()" [formGroup]="alarmForm">
     <ion-item>
       <ion-label position="floating">Nom <span style="color: red;">*</span></ion-label>

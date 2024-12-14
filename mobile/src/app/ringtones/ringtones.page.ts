@@ -9,6 +9,12 @@ export class RingtonesPage implements OnInit {
 
   constructor() { }
 
+  doRefresh(event: any) {
+    window.location.reload();
+
+    event.target.complete();
+  }
+
   ngOnInit() {}
 
 }

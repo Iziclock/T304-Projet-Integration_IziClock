@@ -16,7 +16,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
   retrieveTokenLazy(code:string){
-    this.http.get(`http://127.0.0.1:8080/calendars/api?code=${code}`,{ responseType: 'json' }).subscribe({
+    this.http.get(`${environment.api}/calendars/api?code=${code}`,{ responseType: 'json' }).subscribe({
       next: (response) => {
         console.log('Réponse du serveur:', response);
         localStorage.setItem("access_token",JSON.stringify(response));

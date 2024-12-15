@@ -13,12 +13,15 @@ import (
 )
 
 // Retrieve a Token, Saves the Token, then returns the generated client.
-func GetClient(config *oauth2.Config, code string) *http.Client {
+func GetClient(config *oauth2.Config) *http.Client {
 	tokFile := "token.json"
 	tok, err := TokenFromFile(tokFile)
-	if err != nil {
+	/*if err != nil {
 		tok = GetTokenFromWeb(config, code)
 		SaveToken(tokFile, tok)
+	}*/
+	if err != nil {
+		log.Print("Token inexistant")
 	}
 	return config.Client(context.Background(), tok)
 }

@@ -1,6 +1,8 @@
 package calendars
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"server/initializers"
 	"server/models"
@@ -25,9 +27,10 @@ func Routes(route *gin.Engine) {
 	{
 		calendars.GET("", get_calendars)
 		calendars.GET("/api", get_calendar_api)
-		calendars.GET("/login", get_login)
+		//calendars.GET("/login", get_login)
 		calendars.DELETE("/:id", delete_calendar)
 		calendars.PUT("/state/:id", change_IsActive_state)
+		calendars.POST("/token", get_token)
 	}
 }
 
@@ -137,8 +140,8 @@ func events_from_api(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
-	code := c.Query("code")
-	client := middleware.GetClient(config, code)
+	//code := c.Query("code")
+	client := middleware.GetClient(config)
 
 	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
@@ -191,14 +194,15 @@ func events_from_api(c *gin.Context) {
 				log.Print("calndar:", calendar)
 				log.Print("calendar.ID:", calendar.ID)
 				event := models.Alarm{
-					CalendarID:    calendar.ID,
-					Name:          item.Summary,
+					CalendarID: calendar.ID,
+					Name:       item.Summary,
+
 					Description:   item.Description,
 					RingDate:      date,
 					LocationStart: "",
 					LocationEnd:   item.Location,
-					Ringtone:      "",
-					IsActive:      true,
+					//Ringtone:      "",
+					IsActive: true,
 				}
 				errA := initializers.DB.Create(&event).Error
 				if errA != nil {
@@ -253,8 +257,8 @@ func get_calendar_api(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
-	code := c.Query("code")
-	client := middleware.GetClient(config, code)
+	//code := c.Query("code")
+	client := middleware.GetClient(config)
 
 	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
@@ -279,7 +283,7 @@ func get_calendar_api(c *gin.Context) {
 		calendars = append(calendars, calendar)
 		err := initializers.DB.Create(&calendar).Error
 		if err != nil {
-			log.Fatal("Could not create calendar :", err)
+			log.Print("Could not create calendar :", err)
 		}
 
 		events, err := srv.Events.List(calendarItem.Id).
@@ -299,7 +303,7 @@ func get_calendar_api(c *gin.Context) {
 		} else {
 			for _, item := range events.Items {
 				log.Printf("date time de google :%v", item.Start.DateTime)
-				date, err := time.Parse(time.DateTime, item.Start.DateTime)
+				date, err := time.Parse(time.RFC3339, item.Start.DateTime)
 				log.Printf("date time :%v", date)
 				if date.IsZero() {
 					date, err = time.Parse(time.DateOnly, item.Start.Date)
@@ -318,14 +322,14 @@ func get_calendar_api(c *gin.Context) {
 				log.Print("calndar:", calendar)
 				log.Print("calendar.ID:", calendar.ID)
 				event := models.Alarm{
-					CalendarID:  calendar.ID,
-					Name:        item.Summary,
-					Description: item.Description,
-					RingDate:    date,
+					CalendarID:    calendar.ID,
+					Name:          item.Summary,
+					Description:   item.Description,
+					RingDate:      date,
 					LocationStart: "",
-					LocationEnd:    item.Location,
-					Ringtone:    "",
-					IsActive:    true,
+					LocationEnd:   item.Location,
+					//Ringtone:      "",
+					IsActive: true,
 				}
 				errA := initializers.DB.Create(&event).Error
 				if errA != nil {
@@ -346,4 +350,24 @@ func get_calendar_api(c *gin.Context) {
 	tokenForUser, err := os.ReadFile("token.json")
 	c.JSON(http.StatusOK, gin.H{"token": tokenForUser})
 
+}
+
+type Token struct {
+	Access_token string `json:access_token`
+}
+
+func get_token(c *gin.Context) {
+	token := Token{Access_token: ""}
+	if err := c.BindJSON(&token.Access_token); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		log.Print("Could not bind token :", err, token)
+	}
+	log.Print("Token:", token)
+	jsonToken, _ := json.Marshal(token)
+	log.Print("jsonToken:", jsonToken)
+	err := os.WriteFile("token.json", []byte(jsonToken), 0666)
+	if err != nil {
+		log.Fatal("Could not write token :", err)
+	}
+	fmt.Println("Token saved successfully")
 }

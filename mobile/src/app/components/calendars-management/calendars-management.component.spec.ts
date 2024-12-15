@@ -3,12 +3,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { CalendarsManagementComponent } from './calendars-management.component';
 import { CalendarService } from 'src/app/services/calendar.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { Calendar } from 'src/app/interfaces/calendars';
 
 const mockCalendars: Calendar[] = [
-  { id: 1, userId: 1, name: 'Work Calendar', url: 'calendar1.com', isActive: true, createdAt: new Date() },
-  { id: 2, userId: 2, name: 'Personal Calendar', url: 'calendar2.com', isActive: false, createdAt: new Date() }
+  { id: 1, userId: 1, name: 'Work Calendar', idGoogle: 'calendar1.com', description: 'calendar 1', isActive: true, createdAt: new Date() },
+  { id: 2, userId: 2, name: 'Personal Calendar', idGoogle: 'calendar2.com', description: 'calendar 2', isActive: false, createdAt: new Date() }
 ];
 
 describe('CalendarsManagementComponent', () => {
@@ -36,6 +36,10 @@ describe('CalendarsManagementComponent', () => {
     calendarServiceSpy.getCalendars.and.returnValue(of(mockCalendars));
 
     spyOn(component, 'ngOnInit').and.callFake(() => {}); 
+
+    spyOn(component, 'reloadPage').and.callFake(() => {});
+
+    spyOn(console, 'error');
 
     fixture.detectChanges();
   });
@@ -95,5 +99,27 @@ describe('CalendarsManagementComponent', () => {
 
     expect(alertController.create).toHaveBeenCalled();
     expect(alertSpy.present).toHaveBeenCalled();
+  });
+
+  it('should reload the page on calling reloadPage', () => {
+    component.reloadPage();
+    expect(component.reloadPage).toHaveBeenCalled();
+  });
+  
+  it('should handle error when changing isActive state', () => {
+    const errorResponse = new ErrorEvent('Network error');
+    calendarServiceSpy.changeIsActiveState.and.returnValue(throwError(() => errorResponse));
+  
+    component.changeIsActiveState(1);
+  
+    expect(console.error).toHaveBeenCalled();
+  });
+
+  it('should call deleteAlert when deleteCalendar is called', () => {
+    spyOn(component, 'deleteAlert').and.callThrough();
+  
+    component.deleteCalendar(1);
+
+    expect(component.deleteAlert).toHaveBeenCalledWith(1);
   });
 });

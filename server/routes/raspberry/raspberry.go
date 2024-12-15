@@ -45,11 +45,10 @@ func get_update_data(context *gin.Context) {
     initializers.DB = initializers.DB.Debug()
     if err := initializers.DB.
         Preload("Ringtone").
-        Table("alarms"). // Spécifie explicitement la table "alarms"
+        Table("alarms").
         Select("alarms.id, alarms.name, alarms.ring_date, alarms.is_active, alarms.ringtone_id, alarms.last_update,ringtones.id as ringtone_id, ringtones.name as ringtone_name, ringtones.url as ringtone_url").
         Joins("JOIN ringtones ON ringtones.id = alarms.ringtone_id").
-        Where("is_active = true").
-        Where("update != last_update OR ring_date BETWEEN NOW() - INTERVAL '10 minute' AND NOW() + INTERVAL '10 minute'").
+        Where("update != last_update OR ring_date BETWEEN NOW() - INTERVAL '1 minute' AND NOW() + INTERVAL '10 minute'").
         Where("ring_date BETWEEN NOW() - INTERVAL '1 day' AND NOW() + INTERVAL '1 day'").
         Find(&alarms).
         Error; err != nil {

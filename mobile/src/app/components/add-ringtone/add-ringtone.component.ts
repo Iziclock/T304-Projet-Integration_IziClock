@@ -11,6 +11,7 @@ export class AddRingtoneComponent implements OnInit{
   selectedFileName: string = '';
   uploadMessage: string = '';
   messageType: 'success' | 'error' | '' = '';
+  isLoading: boolean = false;
 
   constructor(private ringtoneService: RingtoneService) {}
 
@@ -28,6 +29,7 @@ export class AddRingtoneComponent implements OnInit{
 
   uploadRingtone() {
     if (this.selectedFile) {
+      this.isLoading = true;
       const formData = new FormData();
       formData.append('file', this.selectedFile, this.selectedFile.name);
 
@@ -36,15 +38,18 @@ export class AddRingtoneComponent implements OnInit{
           console.log('Upload successful', response);
           this.uploadMessage = 'Sonnerie correctement ajoutée';
           this.messageType = 'success';
+          this.isLoading = false;
         },
         error: (error) => {
           console.error('Upload failed', error);
           if (error.status === 409) {
             this.uploadMessage = 'Erreur : cette sonnerie a déjà été ajoutée';
             this.messageType = 'error';
+            this.isLoading = false;
           } else {
             this.uploadMessage = 'Erreur lors de l\'ajout de la sonnerie';
             this.messageType = 'error';
+            this.isLoading = false;
           }
         }
       });

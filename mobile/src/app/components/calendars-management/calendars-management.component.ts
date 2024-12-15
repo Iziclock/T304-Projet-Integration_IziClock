@@ -15,6 +15,10 @@ export class CalendarsManagementComponent  implements OnInit {
   constructor(private calendarService: CalendarService, private alertController: AlertController) {
 
   }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
   
   setCalendars(){
     this.calendarService.getCalendars().subscribe((data: any) => {
@@ -43,7 +47,7 @@ export class CalendarsManagementComponent  implements OnInit {
 
             this.calendarService.deleteCalendar(id).subscribe({
               next: () => {
-                window.location.reload(); // Recharge la page pour mettre à jour les données affichées
+                this.reloadPage();
               },
               error: (err) => {
                 console.error(`Error deleting calendar with ID ${id}:`, err);
@@ -64,7 +68,7 @@ export class CalendarsManagementComponent  implements OnInit {
   changeIsActiveState(id: number) {
     this.calendarService.changeIsActiveState(id).subscribe({
       next: () => {
-        window.location.reload(); // Recharge la page pour mettre à jour les données affichées
+        this.reloadPage();
       },
       error: (err) => {
         console.error(`Error changing state of calendar with ID ${id}:`, err);

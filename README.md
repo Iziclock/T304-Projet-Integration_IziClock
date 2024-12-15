@@ -38,11 +38,14 @@ Types de commits :
 * Créer un nouveau service : ```ionic generate service services/<serviceName>```
 * Créer un nouveau pipe : ```ionic generate pipe pipes/<pipeName>```
 * Démarrer l'application : ```ionic serve```
+* Run les tests Jasmine : 
+    * Tous les tests ```ng test```
+    * Seulement une page/component : ```ng test --include="<PATH>"```
+    * Avec coverage : ```ng test --code-coverage```
 * Build l'application :
     * ```npm install```
-    * ```ionic build```
+    * ```ionic build --prod```
     * ```npx cap add android```
-    * ```ionic cap synx```
     * ```npx cap sync```
     * ```npx cap open android```
     * ```Build > Build Bundle(s)/APK(s) > Build APK(s)```

@@ -11,4 +11,9 @@ export class LoginGoogleService {
   getLogin(){
     return this.http.get(`${environment.api}/calendars/login`,{ responseType: 'text' as 'json' })
   }
+
+  
+
 }
+
+

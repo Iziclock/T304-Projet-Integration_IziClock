@@ -14,22 +14,18 @@ export class MiddlewarePage implements OnInit {
   constructor(private http:HttpClient,private router:Router,private activeRoute: ActivatedRoute,private authService:AuthService) { }
 
   ngOnInit() {
-    let loggedIn:boolean = false
+    /*let loggedIn:boolean = false
     const code = this.activeRoute.snapshot.queryParamMap.get("code");
     if (code){
       console.log("code=",code);
       const token = this.authService.retrieveTokenLazy(code.trim());
       this.router.navigate(["/calendars"]);
-      /*if (localStorage.getItem("access_token")!= undefined){
-        console.log("trouve ça:",localStorage.getItem("access_token"))
-        
-      }*/
+      
 
     }
     else{
       console.log("not valided")
-    }
+    }*/
   }
- 
 
 }

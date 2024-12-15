@@ -2,6 +2,7 @@ export interface Alarm{
     id: number;
     calendarId: string;
     name: string;
+    description: string;
     ringDate: Date;
     createdAt: Date;
     locationStart: string;

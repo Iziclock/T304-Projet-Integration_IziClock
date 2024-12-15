@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlarmService } from 'src/app/services/alarm.service';
-import { Alarm, AlarmData } from 'src/app/interfaces/alarms';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { ActivatedRoute } from '@angular/router';
+import { Alarm, AlarmData } from 'src/app/interfaces/alarms';
+import { AlarmService } from 'src/app/services/alarm.service';
 @Component({
   selector: 'app-edit-alarm',
   templateUrl: './edit-alarm.page.html',
@@ -21,6 +20,12 @@ export class EditAlarmePage implements OnInit {
     private alarmService: AlarmService
   ) {}
 
+  doRefresh(event: any) {
+    window.location.reload();
+
+    event.target.complete();
+  }
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -29,7 +34,6 @@ export class EditAlarmePage implements OnInit {
     }
     this.minDate = this.getCurrentDate();
 
-    console.log('Test: ', this.alarmDetails);
     this.alarmForm = new FormGroup({
       name: new FormControl(this.alarmDetails.Name, [
         Validators.required, 
@@ -37,7 +41,6 @@ export class EditAlarmePage implements OnInit {
       ]),
       ringDate: new FormControl(this.alarmDetails.RingDate, [
         Validators.required,
-        
       ]),
       locationStart: new FormControl(this.alarmDetails.LocationStart, [
         Validators.maxLength(100)
@@ -45,6 +48,7 @@ export class EditAlarmePage implements OnInit {
       locationEnd: new FormControl(this.alarmDetails.LocationEnd, [
         Validators.maxLength(100)
       ]),
+      transport: new FormControl('drive'),
       active: new FormControl(this.alarmDetails.IsActive),
     });
   }
@@ -53,12 +57,12 @@ export class EditAlarmePage implements OnInit {
     return this.alarmForm.get('name');
   }
 
-getAlarmDetails(id: number) {
+  getAlarmDetails(id: number) {
     this.alarmService.getAlarmById(id).subscribe(
       (data: AlarmData) => {
-        this.alarmDetails = data;
-        this.updateFormValues(data);
-        console.log('Alarm details:', this.alarmDetails);
+          this.alarmDetails = data;
+          this.updateFormValues(data);
+          //console.log('Alarm details:', this.alarmDetails);
       },
       (error) => {
         console.error('Error fetching alarm details', error);
@@ -68,14 +72,14 @@ getAlarmDetails(id: number) {
 
   updateFormValues(data: any) {
     this.alarmForm.patchValue({
-      name: data.Name,
-      ringDate: data.RingDate,
-      locationStart: data.LocationStart,
-      locationEnd: data.LocationEnd,
-      active: data.IsActive,
+      name: data.Name ? data.Name : '',
+      ringDate: data.ringDate ? (new Date(data.RingDate).toISOString()) : new Date().toISOString(),
+      locationStart: data.LocationStart ? data.LocationStart : '',
+      locationEnd: data.LocationEnd ? data.LocationEnd : '',
+      transport: data.Transport ? data.Transport : 'drive',
+      active: data.IsActive ? data.IsActive : false,
     });
   }
-
 
   getCurrentDate(): string {
     const today = new Date();
@@ -83,22 +87,23 @@ getAlarmDetails(id: number) {
   }
 
   onSubmit() {
-    console.log('Form submitted:', this.alarmForm.value);
+    //console.log('Form submitted:', this.alarmForm.value);
     // Utilisez un objet temporaire pour stocker les valeurs du formulaire
     const updatedAlarmDetails: AlarmData = {
       Description: '',
       ID: this.alarmDetails.ID,
       CalendarID: this.alarmDetails.CalendarID,
       Name: this.alarmForm.value.name,
-      RingDate: String(new Date(this.alarmForm.value.ringDate).toISOString()),
+      RingDate: new Date(this.alarmForm.value.ringDate).toISOString(),
       CreatedAt: String(this.alarmDetails.CreatedAt),
       LocationStart: this.alarmForm.value.locationStart,
       LocationEnd: this.alarmForm.value.locationEnd,
       Ringtone: this.alarmDetails.Ringtone,
+      Transport: this.alarmForm.value.transport,
       IsActive: this.alarmForm.value.active,
     };
 
-    console.log('Updated alarm details:', updatedAlarmDetails);
+    //console.log('Updated alarm details:', updatedAlarmDetails);
 
     this.alarmService.updateAlarmDetails(updatedAlarmDetails).subscribe(
       (data: AlarmData) => {

@@ -5,6 +5,11 @@
     margin-top: 5px;
     text-align: center;
   }
+
+  ion-back-button {
+    color: black;
+    margin-left: 20px;
+}
   
   /* Styles pour centrer le formulaire */
   form {
@@ -18,12 +23,19 @@
   ion-item {
     width: 100%;
     max-width: 500px;
+    margin-bottom: 1rem; /* Add space between ion-item components */
   }
   
   ion-button {
-    margin-top: 20px;
+    margin-top: 1rem; /* Add space above the ion-button */
     width: 100%;
     max-width: 500px;
+    font-size: 1.2em;
+  }
+  
+  ion-segment {
+    margin-top: 1rem; /* Add space above the ion-segment */
+    margin-bottom: 1rem; /* Add space below the ion-segment */
   }
   
   /* Styles pour rendre le formulaire responsive */

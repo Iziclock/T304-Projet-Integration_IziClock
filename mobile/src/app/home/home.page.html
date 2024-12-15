@@ -1,5 +1,10 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/ringtones">
+        <img src="../../assets/icon/ringtone.png" alt="Ringtones" class="ringtone-icon">
+      </ion-button>
+    </ion-buttons>
     <ion-buttons slot="end">
       <ion-button routerLink="/calendars">
         <img src="../../assets/icon/calendar.png" alt="Calendars" class="calendar-icon">
@@ -12,5 +17,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <app-alarms-list></app-alarms-list>
 </ion-content>

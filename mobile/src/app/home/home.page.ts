@@ -9,4 +9,9 @@ export class HomePage {
 
   constructor() {}
 
+  doRefresh(event: any) {
+    window.location.reload();
+
+    event.target.complete();
+  }
 }

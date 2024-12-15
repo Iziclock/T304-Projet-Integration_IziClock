@@ -19,5 +19,6 @@ type Alarm struct {
 	LastUpdate    time.Time `gorm:"autoUpdateTime"`
 	LocationStart string    `gorm:"size:255; not null"`
 	LocationEnd   string    `gorm:"size:255; not null"`
+	Transport     string    `gorm:"size:255; not null"`
 	IsActive      bool      `gorm:"default:false"`
 }

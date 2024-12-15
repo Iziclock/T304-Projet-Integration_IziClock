@@ -14,6 +14,12 @@ export class AlarmDetailsPage implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private alarmService: AlarmService) {}
 
+  doRefresh(event: any) {
+    window.location.reload();
+
+    event.target.complete();
+  }
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {

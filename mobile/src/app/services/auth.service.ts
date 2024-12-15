@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Token } from '@angular/compiler';
-import { HttpHeaders } from '@angular/common/http';
-import { HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -46,7 +42,4 @@ export class AuthService {
 
     //return this.http.post('https://oauth2.googleapis.com/token', JSON.stringify(body));
   }*/
-
-
-
 }

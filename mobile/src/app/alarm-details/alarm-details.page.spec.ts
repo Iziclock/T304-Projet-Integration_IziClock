@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlarmDetailsPage } from './alarm-details.page';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AlarmDetailsPage', () => {
   let component: AlarmDetailsPage;
@@ -9,6 +10,7 @@ describe('AlarmDetailsPage', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AlarmDetailsPage],
+      imports: [HttpClientTestingModule],
       providers: [
         {
           provide: ActivatedRoute,

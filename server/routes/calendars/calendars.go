@@ -170,7 +170,7 @@ func get_calendar_api(c *gin.Context) {
 			ShowDeleted(false).
 			SingleEvents(true).
 			TimeMin(t).
-			MaxResults(10).
+			MaxResults(20).
 			OrderBy("startTime").Do()
 
 		if err != nil {

@@ -10,6 +10,7 @@ import { ringtone } from 'src/app/classes/ringtones';
 })
 export class RingtonesListComponent implements OnInit {
   ringtones: Ringtone[] = [];
+  filteredRingtones: Ringtone[] = [];
   currentAudio: HTMLAudioElement | null = null;
   currentIndex: number | null = null;
   errorMessage: string = '';
@@ -20,9 +21,16 @@ export class RingtonesListComponent implements OnInit {
     this.ringtoneService.getRingtones().subscribe((data: any) => {
       for (let ringtoneData of data) {
         const newRingtone: Ringtone = new ringtone(ringtoneData);
-        newRingtone.isEditing = false; // Ajouter une propriété pour l'état de modification
+        newRingtone.isEditing = false; 
         this.ringtones.push(newRingtone);
       }
+      this.filterRingtones();
+    });
+  }
+
+  filterRingtones(){
+    this.filteredRingtones = this.ringtones.filter(ringtone => {
+      return ringtone.id != 1;
     });
   }
 

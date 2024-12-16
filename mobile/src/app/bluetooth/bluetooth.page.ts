@@ -11,6 +11,9 @@ export class BluetoothPage implements OnInit {
   isScanning = false;
   bluetoothConnectedDevice?: ScanResult;
 
+  ssid = '';
+  password = '';
+
   SERVICE_UUID = '12345678-1234-5678-1234-56789abcdef0';
   CHARACTERISTIC_UUID = '12345678-1234-5678-1234-56789abcdef1';
 
@@ -78,6 +81,33 @@ export class BluetoothPage implements OnInit {
       alert(`Disconnected from device ${deviceName}`);
     } catch (error) {
       console.error('Error disconnecting from device', error);
+    }
+  }
+
+  async sendWifiCredentials(ssid: string, password: string): Promise<void> {
+    if (!this.bluetoothConnectedDevice?.device.deviceId) {
+      alert('No device connected');
+      throw new Error('No device connected');
+    }
+
+    try {
+      const credentials = JSON.stringify({ ssid, password });
+      const encoded = new TextEncoder().encode(credentials);
+
+      await BleClient.write(
+        this.bluetoothConnectedDevice?.device.deviceId,
+        this.SERVICE_UUID,
+        this.CHARACTERISTIC_UUID,
+        new DataView(encoded.buffer)
+      );
+
+      alert('WiFi credentials sent successfully');
+      console.log('WiFi credentials sent successfully');
+    } catch (error) {
+      alert(`Error sending WiFi credentials ${error}`);
+    
+      console.error('Error sending WiFi credentials:', error);
+      throw error;
     }
   }
 

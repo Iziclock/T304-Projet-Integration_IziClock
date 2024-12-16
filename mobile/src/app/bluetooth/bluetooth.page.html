@@ -46,4 +46,16 @@
       </ion-card-content>
     </ion-card>
   </div>
+
+  <form (ngSubmit)="sendWifiCredentials(this.ssid, this.password)">
+    <ion-item>
+      <ion-label>Wi-Fi</ion-label>
+      <ion-input [(ngModel)]="ssid" name="ssid"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mot de passe</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
+    </ion-item>
+    <ion-button expand="block" type="submit">Envoyer les informations Wi-Fi</ion-button>
+  </form>
 </ion-content>

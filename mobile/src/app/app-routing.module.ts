@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'bluetooth',
     pathMatch: 'full'
   },
   {
@@ -30,6 +30,10 @@ const routes: Routes = [
   {
     path: 'middleware',
     loadChildren: () => import('./middleware/middleware.module').then( m => m.MiddlewarePageModule)
+  },
+  {
+    path: 'bluetooth',
+    loadChildren: () => import('./bluetooth/bluetooth.module').then( m => m.BluetoothPageModule)
   },
 ];
 

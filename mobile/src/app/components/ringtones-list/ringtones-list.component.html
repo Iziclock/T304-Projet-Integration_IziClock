@@ -1,11 +1,20 @@
-<h1>Mes sonneries</h1>
-<div *ngFor="let ringtone of filteredRingtones; index as i" class="audio-container">
-  <audio #audioPlayer [src]="ringtone.url"></audio>
-  <button (click)="toggleAudio(audioPlayer, i)" class="play-button">
-    <ion-icon [name]="ringtone.isPlaying ? 'pause' : 'play'"></ion-icon>
+<h1>Sonneries par défaut</h1>
+<div *ngFor="let defaultRingtone of defaultRingtones; index as i" class="audio-container">
+  <audio #audioPlayer [src]="defaultRingtone.url"></audio>
+  <button (click)="toggleAudio(audioPlayer, i, true)" class="play-button">
+    <ion-icon [name]="defaultRingtone.isPlaying ? 'pause' : 'play'"></ion-icon>
   </button>
-  <span *ngIf="!ringtone.isEditing">{{ ringtone.name }}</span>
-  <input *ngIf="ringtone.isEditing" [(ngModel)]="ringtone.name" />
-  <button (click)="updateRingtoneName(ringtone.id)" class="update-ringtone-name">{{ ringtone.isEditing ? 'Enregistrer' : 'Modifier' }}</button>
+  <span>{{ defaultRingtone.name }}</span>
+</div>
+
+<h1>Mes sonneries</h1>
+<div *ngFor="let userRingtone of userRingtones; index as i" class="audio-container">
+  <audio #audioPlayer [src]="userRingtone.url"></audio>
+  <button (click)="toggleAudio(audioPlayer, i, false)" class="play-button">
+    <ion-icon [name]="userRingtone.isPlaying ? 'pause' : 'play'"></ion-icon>
+  </button>
+  <span *ngIf="!userRingtone.isEditing">{{ userRingtone.name }}</span>
+  <input *ngIf="userRingtone.isEditing" [(ngModel)]="userRingtone.name" />
+  <button (click)="updateRingtoneName(userRingtone.id)" class="update-ringtone-name">{{ userRingtone.isEditing ? 'Enregistrer' : 'Modifier' }}</button>
 </div>
 <p class="error-message">{{ errorMessage }}</p>

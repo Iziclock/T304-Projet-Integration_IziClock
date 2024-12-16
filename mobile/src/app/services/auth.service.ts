@@ -24,8 +24,23 @@ export class AuthService {
     this.user = await GoogleAuth.signIn();
     return await this.user;
   }
-  
 
+  checkLoggedIn() {
+    GoogleAuth.refresh()
+        .then((data) => {
+            if (data.accessToken) {
+              console.log(data.accessToken)
+                //localStorage.setItem("access",data.accessToken);
+            }
+        })
+        .catch((error) => {
+            if (error.type === 'userLoggedOut') {
+                this.googleSignIn()
+            }
+        });
+}
+  
+/*
   retrieveTokenLazy(code:string){
     this.http.get(`${environment.api}/calendars/api?code=${code}`,{ responseType: 'json' }).subscribe({
       next: (response) => {
@@ -39,7 +54,7 @@ export class AuthService {
       }
     })
 
-  }
+  }*/
 
   initializeApp() {
     this.platform.ready().then(() => {

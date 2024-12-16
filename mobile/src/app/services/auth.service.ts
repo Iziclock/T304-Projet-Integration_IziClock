@@ -5,6 +5,9 @@ import { Token } from '@angular/compiler';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { Platform } from '@ionic/angular';
+import { isPlatform } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +16,20 @@ export class AuthService {
   //private clientId = '"225023011540-dt7tsd29djafhnfd3p84k3rk4dlja0pi.apps.googleusercontent.com"';
   //private clientSecret = "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";
   //private redirectUri = 'http://localhost:8100/middleware';
+  user:any;
+  constructor(private http: HttpClient,private platform: Platform) {
+    if(!isPlatform('capacitor')){
+      this.initializeApp();
+    }
+    this.initializeApp();
+  }
 
-  constructor(private http: HttpClient) {}
+  async googleSignIn() {
+    this.user = await GoogleAuth.signIn();
+    return await this.user;
+  }
+  
+
   retrieveTokenLazy(code:string){
     this.http.get(`${environment.api}/calendars/api?code=${code}`,{ responseType: 'json' }).subscribe({
       next: (response) => {
@@ -29,6 +44,13 @@ export class AuthService {
     })
 
   }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      GoogleAuth.initialize()
+    })
+  }
+
   /*exchangeCodeForToken(code: string): Observable<any> {
     const token={"web":{"client_id":"225023011540-dt7tsd29djafhnfd3p84k3rk4dlja0pi.apps.googleusercontent.com","project_id":"iziclock-438816","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["http://localhost:8100/middleware"]}};
     const body = {

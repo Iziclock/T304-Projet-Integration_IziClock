@@ -21,7 +21,8 @@ func Routes(route *gin.Engine) {
 func get_alarms(context *gin.Context) {
 	var alarms []models.Alarm
 
-	if err := initializers.DB.Preload("Calendar").Joins("JOIN calendars ON calendars.id = alarms.calendar_id").Where("calendars.is_active = true").Order("ring_date asc").Find(&alarms).Error; err != nil {
+	// Précharge le calendrier et le ringtone associé pour chaque alarme.
+	if err := initializers.DB.Preload("Calendar").Preload("Ringtone").Joins("JOIN calendars ON calendars.id = alarms.calendar_id").Where("calendars.is_active = true").Order("ring_date asc").Find(&alarms).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

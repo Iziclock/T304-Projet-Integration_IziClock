@@ -1,5 +1,5 @@
 <h1>Mes sonneries</h1>
-<div *ngFor="let ringtone of ringtones; index as i" class="audio-container">
+<div *ngFor="let ringtone of filteredRingtones; index as i" class="audio-container">
   <audio #audioPlayer [src]="ringtone.url"></audio>
   <button (click)="toggleAudio(audioPlayer, i)" class="play-button">
     <ion-icon [name]="ringtone.isPlaying ? 'pause' : 'play'"></ion-icon>

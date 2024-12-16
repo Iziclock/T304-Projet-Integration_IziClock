@@ -32,29 +32,29 @@ describe('RingtonesListComponent', () => {
 
   it('should pause audio if already playing', () => {
     const mockAudio = jasmine.createSpyObj('HTMLAudioElement', ['play', 'pause']);
-    component.ringtones = [
+    component.defaultRingtones = [
       { id: 1, name: 'Test Ringtone', url: '', createdAt: new Date(), isPlaying: true, isEditing: false },
     ];
     component.currentAudio = mockAudio as HTMLAudioElement;
     component.currentIndex = 0;
 
-    component.toggleAudio(mockAudio as HTMLAudioElement, 0);
+    component.toggleAudio(mockAudio as HTMLAudioElement, 0, true);
 
     expect(mockAudio.pause).toHaveBeenCalled();
-    expect(component.ringtones[0].isPlaying).toBeFalse();
+    expect(component.defaultRingtones[0].isPlaying).toBeFalse();
   });
 
   it('should play audio and update isPlaying', () => {
     const audioMock = jasmine.createSpyObj('HTMLAudioElement', ['play', 'pause']);
-    component.ringtones = [
+    component.defaultRingtones = [
       { id: 1, name: 'Ringtone 1', url: '', createdAt: new Date(), isPlaying: false, isEditing: false },
       { id: 2, name: 'Ringtone 2', url: '', createdAt: new Date(), isPlaying: false, isEditing: false },
     ];
 
-    component.toggleAudio(audioMock, 0);
+    component.toggleAudio(audioMock, 0, true);
 
     expect(audioMock.play).toHaveBeenCalled();
-    expect(component.ringtones[0].isPlaying).toBeTrue();
+    expect(component.defaultRingtones[0].isPlaying).toBeTrue();
     expect(component.currentAudio).toBe(audioMock);
     expect(component.currentIndex).toBe(0);
   });
@@ -110,7 +110,7 @@ describe('RingtonesListComponent', () => {
     const mockAudio1 = jasmine.createSpyObj('HTMLAudioElement', ['play', 'pause']);
     const mockAudio2 = jasmine.createSpyObj('HTMLAudioElement', ['play', 'pause']);
 
-    component.ringtones = [
+    component.defaultRingtones = [
       { id: 1, name: 'Ringtone 1', url: '', createdAt: new Date(), isPlaying: false, isEditing: false },
       { id: 2, name: 'Ringtone 2', url: '', createdAt: new Date(), isPlaying: false, isEditing: false },
     ];
@@ -118,12 +118,32 @@ describe('RingtonesListComponent', () => {
     component.currentAudio = mockAudio1 as HTMLAudioElement;
     component.currentIndex = 0;
 
-    component.toggleAudio(mockAudio2, 1);
+    component.toggleAudio(mockAudio2, 1, true);
 
     expect(mockAudio1.pause).toHaveBeenCalled();
     expect(mockAudio2.play).toHaveBeenCalled();
     expect(component.currentAudio).toBe(mockAudio2);
     expect(component.currentIndex).toBe(1);
+  });
+
+  it('should stop all ringtones and reset currentAudio and currentIndex', () => {
+    component.defaultRingtones = [
+      { id: 1, name: 'Default Ringtone', url: '', createdAt: new Date(), isPlaying: true, isEditing: false },
+    ];
+    component.userRingtones = [
+      { id: 4, name: 'User Ringtone', url: '', createdAt: new Date(), isPlaying: true, isEditing: false },
+    ];
+    const mockAudio = jasmine.createSpyObj('HTMLAudioElement', ['pause']);
+    component.currentAudio = mockAudio;
+    component.currentIndex = 0;
+  
+    component.stopAllRingtones();
+  
+    expect(mockAudio.pause).toHaveBeenCalled();
+    expect(component.defaultRingtones[0].isPlaying).toBeFalse();
+    expect(component.userRingtones[0].isPlaying).toBeFalse();
+    expect(component.currentAudio).toBeNull();
+    expect(component.currentIndex).toBeNull();
   });
 });
 
@@ -188,4 +208,6 @@ describe('RingtoneService', () => {
     expect(req.request.body).toEqual({ name: newName });
     req.flush(mockResponse);
   });
+
+  
 });

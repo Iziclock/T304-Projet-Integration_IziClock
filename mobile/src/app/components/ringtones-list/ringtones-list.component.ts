@@ -9,8 +9,8 @@ import { ringtone } from 'src/app/classes/ringtones';
   styleUrls: ['./ringtones-list.component.scss'],
 })
 export class RingtonesListComponent implements OnInit {
-  ringtones: Ringtone[] = [];
-  filteredRingtones: Ringtone[] = [];
+  defaultRingtones: Ringtone[] = [];
+  userRingtones: Ringtone[] = [];
   currentAudio: HTMLAudioElement | null = null;
   currentIndex: number | null = null;
   errorMessage: string = '';
@@ -19,46 +19,69 @@ export class RingtonesListComponent implements OnInit {
 
   getRingtones() {
     this.ringtoneService.getRingtones().subscribe((data: any) => {
+      const ringtones: Ringtone[] = [];
       for (let ringtoneData of data) {
         const newRingtone: Ringtone = new ringtone(ringtoneData);
         newRingtone.isEditing = false; 
-        this.ringtones.push(newRingtone);
+        newRingtone.isPlaying = false; 
+        ringtones.push(newRingtone);
       }
-      this.filterRingtones();
+      this.filterUserRingtones(ringtones);
+      this.filterDefaultRingtones(ringtones);
     });
   }
 
-  filterRingtones(){
-    this.filteredRingtones = this.ringtones.filter(ringtone => {
-      return ringtone.id != 1;
-    });
+  filterUserRingtones(ringtones: Ringtone[]) {
+    this.userRingtones = ringtones.filter(ringtone => ringtone.id > 3);
   }
 
-  ngOnInit() {
-    this.getRingtones();
+  filterDefaultRingtones(ringtones: Ringtone[]) {
+    this.defaultRingtones = ringtones.filter(ringtone => ringtone.id < 4);
   }
 
-  toggleAudio(audio: HTMLAudioElement, index: number) {
-    if (this.currentAudio && this.currentAudio !== audio) {
+  stopAllRingtones() {
+    this.defaultRingtones.forEach(ringtone => ringtone.isPlaying = false);
+    this.userRingtones.forEach(ringtone => ringtone.isPlaying = false);
+    if (this.currentAudio) {
       this.currentAudio.pause();
-      if (this.currentIndex !== null) {
-        this.ringtones[this.currentIndex].isPlaying = false;
-      }
+      this.currentAudio = null;
+      this.currentIndex = null;
     }
+  }
 
-    if (this.ringtones[index].isPlaying) {
-      audio.pause();
+  toggleAudio(audio: HTMLAudioElement, index: number, isDefault: boolean) {
+    if (this.currentAudio && this.currentAudio === audio) {
+      if (audio.paused) {
+        audio.play();
+        if (isDefault) {
+          this.defaultRingtones[index].isPlaying = true;
+        } else {
+          this.userRingtones[index].isPlaying = true;
+        }
+      } else {
+        audio.pause();
+        if (isDefault) {
+          this.defaultRingtones[index].isPlaying = false;
+        } else {
+          this.userRingtones[index].isPlaying = false;
+        }
+      }
     } else {
-      audio.play();
+      this.stopAllRingtones();
+
       this.currentAudio = audio;
       this.currentIndex = index;
+      audio.play();
+      if (isDefault) {
+        this.defaultRingtones[index].isPlaying = true;
+      } else {
+        this.userRingtones[index].isPlaying = true;
+      }
     }
-
-    this.ringtones[index].isPlaying = !this.ringtones[index].isPlaying;
   }
 
   updateRingtoneName(id: number) {
-    const ringtone = this.ringtones.find(r => r.id === id);
+    const ringtone = this.userRingtones.find(r => r.id === id);
     if (ringtone) {
       if (ringtone.isEditing) {
         this.ringtoneService.updateRingtoneName(id, ringtone.name).subscribe({
@@ -74,4 +97,9 @@ export class RingtonesListComponent implements OnInit {
       ringtone.isEditing = !ringtone.isEditing;
     }
   }
+
+  ngOnInit() {
+    this.getRingtones();
+  }
+
 }

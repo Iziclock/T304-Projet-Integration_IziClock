@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { RingtonesPageRoutingModule } from './ringtones-routing.module';
 
 import { RingtonesPage } from './ringtones.page';
-import { DefaultRingtonesComponent } from '../components/default-ringtones/default-ringtones.component';
 import { AddRingtoneComponent } from '../components/add-ringtone/add-ringtone.component';
 import { RingtonesListComponent } from '../components/ringtones-list/ringtones-list.component';
 
@@ -18,6 +17,6 @@ import { RingtonesListComponent } from '../components/ringtones-list/ringtones-l
     IonicModule,
     RingtonesPageRoutingModule
   ],
-  declarations: [RingtonesPage, DefaultRingtonesComponent, RingtonesListComponent, AddRingtoneComponent]
+  declarations: [RingtonesPage, RingtonesListComponent, AddRingtoneComponent]
 })
 export class RingtonesPageModule {}

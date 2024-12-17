@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BleClient, ScanResult } from '@capacitor-community/bluetooth-le';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bluetooth',
@@ -17,7 +18,7 @@ export class BluetoothPage implements OnInit {
   SERVICE_UUID = '12345678-1234-5678-1234-56789abcdef0';
   CHARACTERISTIC_UUID = '12345678-1234-5678-1234-56789abcdef1';
 
-  constructor() { }
+  constructor(private router: Router) {}
 
   async scanForDevices() {
     try {
@@ -117,16 +118,37 @@ export class BluetoothPage implements OnInit {
         new DataView(encoded.buffer)
       );
 
+      // Ajouter un délai pour donner le temps au Raspberry Pi de répondre
+      await new Promise(resolve => setTimeout(resolve, 2000)); 
+
       alert('WiFi credentials sent successfully');
-      console.log('WiFi credentials sent successfully');
+
+      try {
+        const value = await BleClient.read(
+          this.bluetoothConnectedDevice.device.deviceId,
+          this.SERVICE_UUID,
+          this.CHARACTERISTIC_UUID
+        );
+    
+        const ssid_read = new TextDecoder().decode(value.buffer);
+    
+        if (this.ssid === ssid_read) {
+          this.router.navigate(['/home']);
+        } else {
+          alert('Les SSID ne correspondent pas');
+        }
+    
+      } catch (error) {
+        console.error('Erreur lors de la lecture du SSID', error);
+        alert('Erreur lors de la lecture du SSID');
+      }
+
     } catch (error) {
       alert(`Error sending WiFi credentials ${error}`);
-    
-      console.error('Error sending WiFi credentials:', error);
       throw error;
     }
   }
-
+  
   ngOnInit() {
   }
 

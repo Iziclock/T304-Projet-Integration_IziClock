@@ -14,6 +14,9 @@
     <ion-icon slot="start" name="bluetooth"></ion-icon>
     Scanner les appareils Bluetooth
   </ion-button>
+  <div *ngIf="bluetoothErrorMessage" class="error-message">
+    {{ bluetoothErrorMessage }}
+  </div>
 
   <ion-list *ngIf="bluetoothDevices.length > 0">
     <ion-item *ngFor="let device of bluetoothDevices">
@@ -57,5 +60,7 @@
       <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
     </ion-item>
     <ion-button expand="block" type="submit">Envoyer les informations Wi-Fi</ion-button>
+    <!-- <ion-button expand="block" (click)="verif()">Vérifier les SSID</ion-button> -->
+
   </form>
 </ion-content>

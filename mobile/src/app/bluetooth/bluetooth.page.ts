@@ -62,8 +62,24 @@ export class BluetoothPage implements OnInit {
 
       const deviceName = device.name ?? device.deviceId;
       alert(`Connected to device ${deviceName}`);
+      setInterval(() => this.maintainConnection(), 2000); // Ping toutes les 2 secondes
     } catch (error) {
       console.error('Error connecting to device', error);
+    }
+  }
+
+  async maintainConnection() {
+    if (!this.bluetoothConnectedDevice?.device.deviceId) return;
+  
+    try {
+      const value = await BleClient.read(
+        this.bluetoothConnectedDevice.device.deviceId,
+        this.SERVICE_UUID,
+        this.CHARACTERISTIC_UUID
+      );
+      console.log('Maintaining connection, value read:', new TextDecoder().decode(value.buffer));
+    } catch (error) {
+      console.error('Error maintaining connection:', error);
     }
   }
 

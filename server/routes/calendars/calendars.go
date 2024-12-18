@@ -201,15 +201,19 @@ func get_calendar_api(c *gin.Context) {
 				log.Print("Calendrier actuel de la boucle:", calendarItem.Id)
 				log.Print("calndar:", calendar)
 				log.Print("calendar.ID:", calendar.ID)
+
+				user := models.User{}
+				initializers.DB.First(&user, 1)
 				event := models.Alarm{
 					CalendarID:    calendar.ID,
-					RingtoneID:    1,
+					RingtoneID:    user.RingtoneID,
 					Name:          item.Summary,
 					Description:   item.Description,
 					RingDate:      date,
 					LocationStart: "",
 					LocationEnd:   item.Location,
 					IsActive:      true,
+					PreparationTime: uint(user.PreparationTime),
 				}
 				errA := initializers.DB.Create(&event).Error
 				if errA != nil {

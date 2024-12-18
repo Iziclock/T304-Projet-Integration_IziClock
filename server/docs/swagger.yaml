@@ -70,6 +70,21 @@ definitions:
       url:
         type: string
     type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      preparationTime:
+        type: integer
+      ringtone:
+        $ref: '#/definitions/models.Ringtone'
+      ringtoneID:
+        type: integer
+    type: object
   raspberry.AlarmResponse:
     properties:
       id:
@@ -412,4 +427,65 @@ paths:
       summary: Sauvegarde un token envoyé dans la requête
       tags:
       - Calendriers
+  /users/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update the details of a user with a fixed ID (currently hardcoded
+        as ID=1).
+      parameters:
+      - description: Updated User Info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: User Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update user
+      tags:
+      - Users
+  /users/first:
+    get:
+      description: Retrieve the first user from the database, ordered by creation
+        date.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get the first user
+      tags:
+      - Users
 swagger: "2.0"

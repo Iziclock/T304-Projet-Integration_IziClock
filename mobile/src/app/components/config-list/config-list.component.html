@@ -1,0 +1,30 @@
+<div class="form-container">
+  <ion-list>
+    <!-- Entrée pour définir le temps par défaut -->
+    <ion-item>
+      <ion-label position="stacked">Temps par défaut (minutes)</ion-label>
+      <ion-input
+        type="number"
+        [(ngModel)]="defaultTime"
+        (ngModelChange)="validateTime()"
+        placeholder="Entrez le temps"
+      ></ion-input>
+    </ion-item>
+    <p class="error-message" *ngIf="timeError">
+      Le temps doit être supérieur à 0 minutes.
+    </p>
+  
+    <!-- Liste déroulante pour sélectionner une sonnerie -->
+    <ion-item>
+      <ion-label position="stacked">Sonnerie</ion-label>
+      <ion-select [(ngModel)]="selectedRingtone" [value]="selectedRingtone">
+        <ion-select-option *ngFor="let ringtone of ringtones" [value]="ringtone">
+          {{ ringtone.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  
+  <!-- Bouton pour sauvegarder -->
+  <ion-button expand="full" (click)="saveSettings()">Sauvegarder</ion-button>
+</div>

@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Ringtone représente le modèle d'une sonnerie
+// User représente le modèle d'une sonnerie
 type Ringtone struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement"`
 	Name      string    `gorm:"size:255; not null; unique"`

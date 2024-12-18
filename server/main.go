@@ -11,6 +11,7 @@ import (
 	"server/routes/ping"
 	"server/routes/raspberry"
 	"server/routes/ringtones"
+	users "server/routes/user"
 
 	"server/mocks"
 
@@ -26,6 +27,7 @@ func init() {
 	initializers.ConnectDB()
 	initializers.SyncDB()
 	mocks.InsertMockedRingtones()
+	mocks.InsertMockedUser()
 	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
 	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
@@ -47,6 +49,7 @@ func main() {
 	calendars.Routes(router)
 	logincalendargoogle.Routes(router)
 	ringtones.Routes(router)
+	users.Routes(router)
 	raspberry.Routes(router)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

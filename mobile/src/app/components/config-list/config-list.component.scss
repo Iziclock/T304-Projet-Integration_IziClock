@@ -1,0 +1,19 @@
+.form-container {
+  width: 60%; /* Définit la largeur à 60% de l'écran */
+  max-width: 400px; /* Limite la largeur maximale pour les écrans larges */
+  margin: 20px auto; /* Centre horizontalement */
+  padding: 20px; /* Ajoute de l'espace autour du contenu */
+  background-color: white; /* Fond blanc pour contraster */
+  border-radius: 8px; /* Arrondit les bords */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre subtile */
+}
+
+ion-button {
+  margin-top: 20px; /* Espace au-dessus du bouton */
+}
+
+.error-message {
+  color: #e74c3c; /* Rouge pour signaler l'erreur */
+  font-size: 14px; /* Taille du texte */
+  margin: 5px 0 0 0; /* Espacement au-dessus */
+}

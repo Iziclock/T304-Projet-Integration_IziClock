@@ -52,6 +52,15 @@ def prochaine_alarme(cursor):
     print(f"Debug: Result from prochaine_alarme = {result}")
     return result
 
+def update_active_alarme(cursor , id):
+    cursor.execute("""
+        UPDATE Alarm
+        SET IsActive = FALSE
+        WHERE ID = ?
+    """, (id,))
+    print(id)
+
+    return cursor.rowcount
 
 def name_audio(ringtone_url):
     match = re.search(r'https://www\.iziclock\.be/audio/(.+)', ringtone_url)
@@ -74,6 +83,8 @@ def main():
         temps_a_attendre = (date_heure_alarme_dt - maintenant).total_seconds()
         if date_heure_alarme_dt < maintenant :
             if os.path.exists(f"/home/iziclockAdmin/audio/{name_audio(chemin_audio)}"):
+                update_active_alarme(cursor, alarme_id)
+                conn.commit()
                 jouer_audio(f"/home/iziclockAdmin/audio/{name_audio(chemin_audio)}")
             else:
                 print(f"Fichier audio non trouvé : {name_audio(chemin_audio)}")

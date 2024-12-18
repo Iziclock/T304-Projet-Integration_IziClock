@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'bluetooth',
     pathMatch: 'full'
   },
   {
@@ -24,15 +24,14 @@ const routes: Routes = [
     loadChildren: () => import('./ringtones/ringtones.module').then( m => m.RingtonesPageModule)
   }, 
   {
-    path: 'edit-alarm/:id', //route pour edit-alarm
+    path: 'edit-alarm/:id', 
     loadChildren: () => import('./edit-alarm/edit-alarm.module').then(m => m.EditAlarmePageModule)
   },
   
   {
-    path: 'settings',
-    loadChildren: () => import('./conf-menu/conf-menu.module').then( m => m.ConfMenuPageModule)
+    path: 'bluetooth',
+    loadChildren: () => import('./bluetooth/bluetooth.module').then( m => m.BluetoothPageModule)
   },
-
 ];
 
 @NgModule({

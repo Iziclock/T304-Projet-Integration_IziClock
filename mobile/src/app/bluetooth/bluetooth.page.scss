@@ -1,0 +1,118 @@
+.div-logo {
+    display: flex;
+    justify-content: center;
+}
+  
+.logo {
+    max-width: 200px;
+    max-height: 200px;
+    margin-right: 55px;
+}
+
+ion-content ion-button {
+    --border-radius: 15px;
+    --background: darkblue;
+    margin: 15px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ion-list {
+    margin: 0 15px;
+}
+
+ion-item {
+    --background: #f9f9f9;
+    --border-radius: 8px;
+    margin: 5px 15px;
+}
+
+ion-button[slot="end"] {
+    --border-radius: 5px;
+    --background: darkblue;
+    color: white;
+    width: 110px;
+    height: 35px;
+}
+
+.scanning-indicator {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.connected-device ion-card {
+    --background: #eef5ff;
+    --border-radius: 10px;
+    margin: 10px 35px;
+}
+
+.connected-device ion-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+.connected-device ion-card-content h2 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.connected-device ion-button {
+    color: white;
+    margin: 20px 10px 5px;
+}
+
+form {
+    margin: 20px 15px;
+}
+
+form ion-item {
+    --background: white;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+ion-item ion-label {
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap; 
+    max-width: 100px;
+}
+
+ion-item ion-input {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    color: #666;
+    --background: white;
+}
+
+form ion-button {
+    margin: 20px 15px;
+    --background: #10dc60;
+    color: white;
+    --border-radius: 15px;
+    font-weight: bold;
+}
+
+ion-header {
+    --background: white;
+}
+
+.home-button {
+    --background: transparent;
+    --border-radius: 15px;
+    margin-left: 15px;
+}
+
+ion-icon {
+    color: white;
+}
+
+.home-button ion-icon {
+    color: black;
+    height: 40px;
+}

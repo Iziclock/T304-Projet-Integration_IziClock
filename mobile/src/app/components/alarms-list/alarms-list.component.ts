@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Alarm } from '../../interfaces/alarms';
 import { AlarmService } from 'src/app/services/alarm.service';
 import { alarm } from 'src/app/classes/alarms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-alarms-list',
   templateUrl: './alarms-list.component.html',
   styleUrls: ['./alarms-list.component.scss']
 })
-export class AlarmsListComponent implements OnInit {
+export class AlarmsListComponent implements OnInit, OnDestroy {
   alarms: Alarm[] = [];
   filteredAlarms: Alarm[] = [];
   selectedDate: Date = new Date();
@@ -16,16 +17,27 @@ export class AlarmsListComponent implements OnInit {
   maxDate: Date = new Date();
   disablePrevious: boolean = false;
   disableNext: boolean = false;
+  subscription?: Subscription;
 
   constructor(private alarmService: AlarmService) {}
 
   setAlarms() {
-    this.alarmService.getAlarms().subscribe((data: any) => {
-      for (let alarmData of data) {
-        const newAlarm: Alarm = new alarm(alarmData);
-        this.alarms.push(newAlarm);
+    this.subscription = this.alarmService.alarms$.subscribe({
+      next: (alarms: any) => {
+        this.alarms= [];
+        console.log('Alarms received in component:', alarms);
+        for(let alarmData of alarms){
+          
+          const newAlarm = new alarm(alarmData);
+          //console.log(newAlarm);
+          this.alarms.push(newAlarm);
+        }  
+        this.filterAlarmsByDate();
+        console.log('Alarms Length:', this.alarms.length);
+      },
+      error: (err) => {
+        console.error('Error fetching alarms:', err);
       }
-      this.filterAlarmsByDate();
     });
   }
 
@@ -76,6 +88,18 @@ export class AlarmsListComponent implements OnInit {
 
   ngOnInit() {
     this.setAlarms();
+    setInterval(() => {
+      this.alarmService.getAlarms();
+      
+    }, 1000);
+    
     this.setMinMaxDates();
+    
+  }
+
+  ngOnDestroy() {
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }

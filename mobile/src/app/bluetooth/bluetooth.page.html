@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button class="home-button" (click)="goHome()">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div class="div-logo">
+      <img src="../../assets/logo/iziclock-logo.png" alt="Logo" class="logo">
+    </div>    
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-button (click)="scanForDevices()" [disabled]="isScanning">
+    <ion-icon slot="start" name="bluetooth"></ion-icon>
+    Scanner les appareils Bluetooth
+  </ion-button>
+  <div *ngIf="bluetoothErrorMessage" class="error-message">
+    {{ bluetoothErrorMessage }}
+  </div>
+
+  <ion-list *ngIf="bluetoothDevices.length > 0">
+    <ion-item *ngFor="let device of bluetoothDevices">
+      <ion-label>
+        <h2>{{ device.device.name ?? device.device.deviceId }}</h2>
+        <p>{{ device.device.deviceId }}</p>
+      </ion-label>
+      <ion-button 
+        fill="outline" 
+        slot="end" 
+        (click)="connectToDevice(device)">
+        Se connecter
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  
+  <div *ngIf="isScanning" class="scanning-indicator">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="bluetoothConnectedDevice" class="connected-device">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Appareil connecté</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <h2>{{ bluetoothConnectedDevice.device.name ?? bluetoothConnectedDevice.device.deviceId }}</h2>
+        <p>{{ bluetoothConnectedDevice.device.deviceId }}</p>
+        <ion-button (click)="disconnectDevice(bluetoothConnectedDevice)">Se déconnecter</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <form (ngSubmit)="sendWifiCredentials(this.ssid, this.password)">
+    <ion-item>
+      <ion-label>Wi-Fi</ion-label>
+      <ion-input [(ngModel)]="ssid" name="ssid"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mot de passe</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
+    </ion-item>
+    <ion-button expand="block" type="submit">Envoyer les informations Wi-Fi</ion-button>
+
+  </form>
+</ion-content>

@@ -1,0 +1,17 @@
+# Modifications de l’environnement du terminal
+
+## Extension : GitHub.copilot-chat
+
+Active l’utilisation de la commande « copilot-debug » dans le terminal.
+
+- `PATH=${env:PATH}:/Users/0ropo/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand`
+
+## Extension : vscode.git
+
+Active les fonctionnalités suivantes : git auth provider
+
+- `GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh`
+- `VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)`
+- `VSCODE_GIT_ASKPASS_EXTRA_ARGS=`
+- `VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js`
+- `VSCODE_GIT_IPC_HANDLE=/var/folders/2m/ygl87wls4pj327pyd7_bsx0c0000gn/T/vscode-git-6988d55b87.sock`

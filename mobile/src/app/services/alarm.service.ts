@@ -34,4 +34,10 @@ export class AlarmService {
       //tap(data => console.log('Fetched alarm:', data))
     );
   }
+
+  setAlarmsByDefault(): Observable<Alarm[]> {
+    return this.http.put<Alarm[]>(`${this.baseUrl}/default`, {}).pipe(
+      //tap(data => console.log('Set alarms by default:', data))
+    );
+  }
 }

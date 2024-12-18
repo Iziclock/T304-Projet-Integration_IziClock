@@ -15,6 +15,7 @@ func Routes(route *gin.Engine) {
 		alarms.PUT("/state/:id", update_alarm_state)
 		alarms.GET("/:id", get_alarm_by_id)
 		alarms.PUT("/:id", update_alarm_details)
+		alarms.PUT("/default", update_alarms_by_default)
 	}
 }
 
@@ -125,4 +126,38 @@ func update_alarm_details(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, alarm)
+}
+
+// update_alarms_by_default met à jour toutes les alarmes avec les paramètres par défaut de l'utilisateur
+// @Summary Met à jour les alarmes avec les paramètres par défaut
+// @Description Met à jour toutes les alarmes en appliquant les paramètres par défaut (sonnerie et temps de préparation) de l'utilisateur principal
+// @Tags Alarmes
+// @Produce json
+// @Success 200 {array} models.Alarm "Alarmes mises à jour avec succès"
+// @Failure 500 "Erreur interne du serveur"
+// @Router /alarms/update-defaults [put]
+func update_alarms_by_default(context *gin.Context) {
+	var alarms []models.Alarm
+	var user models.User
+
+	if err := initializers.DB.First(&user).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := initializers.DB.Find(&alarms).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	for _, alarm := range alarms {
+		alarm.RingtoneID = user.RingtoneID
+		alarm.PreparationTime = uint(user.PreparationTime)
+		if err := initializers.DB.Save(&alarm).Error; err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	context.JSON(http.StatusOK, alarms)
 }

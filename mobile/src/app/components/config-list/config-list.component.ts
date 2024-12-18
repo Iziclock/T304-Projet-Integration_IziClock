@@ -5,6 +5,7 @@ import { RingtoneService} from 'src/app/services/ringtone.service'
 import { UserService } from 'src/app/services/user.service';
 import { user } from 'src/app/classes/user';
 import { User, UserData } from 'src/app/interfaces/users';
+import { AlarmService } from 'src/app/services/alarm.service';
 
 @Component({
   selector: 'app-config-list',
@@ -17,7 +18,7 @@ export class ConfigListComponent{
   ringtones: Ringtone[] = []; 
   timeError: boolean = false;
 
-  constructor(private ringtoneService: RingtoneService, private userService: UserService) {
+  constructor(private ringtoneService: RingtoneService, private userService: UserService, private AlarmService: AlarmService) {
     this.ringtoneService.getRingtones().subscribe((data: any) => {
       console.log(data);
       for (let ringtoneData of data) {
@@ -46,8 +47,11 @@ export class ConfigListComponent{
         PreparationTime: this.defaultTime,
         RingtoneID: this.selectedRingtone?.id
       }).subscribe((data: any) => {
-        window.location.reload();
         console.log(data);
+      });
+
+      this.AlarmService.setAlarmsByDefault().subscribe((data: any) => {
+        console.log("Alarms set by default");
       });
     } else {
       console.log('Erreur de temps');

@@ -27,6 +27,7 @@ const routes: Routes = [
     path: 'edit-alarm/:id', //route pour edit-alarm
     loadChildren: () => import('./edit-alarm/edit-alarm.module').then(m => m.EditAlarmePageModule)
   },
+  
   {
     path: 'settings',
     loadChildren: () => import('./conf-menu/conf-menu.module').then( m => m.ConfMenuPageModule)

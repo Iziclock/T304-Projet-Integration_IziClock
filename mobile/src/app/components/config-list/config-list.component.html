@@ -1,5 +1,8 @@
 <div class="form-container">
   <ion-list>
+    <p class="success-message" *ngIf="requestState==1">Les changements ont bien été établis.</p>
+    <p class="error-message" *ngIf="requestState==2">Une erreur est survenue. Veuillez réessayer.</p>
+
     <!-- Entrée pour définir le temps par défaut -->
     <ion-item>
       <ion-label position="stacked">Temps par défaut (minutes)</ion-label>
@@ -11,7 +14,7 @@
       ></ion-input>
     </ion-item>
     <p class="error-message" *ngIf="timeError">
-      Le temps doit être supérieur à 0 minutes.
+      Le temps doit être supérieur à 0 minutes et inférieur à 120 minutes.
     </p>
   
     <!-- Liste déroulante pour sélectionner une sonnerie -->

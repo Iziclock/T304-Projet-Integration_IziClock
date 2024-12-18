@@ -46,7 +46,7 @@ export class EditAlarmePage implements OnInit {
       preparationTime: new FormControl(this.alarmDetails.PreparationTime, [
         Validators.required,
         Validators.min(0),
-        Validators.max(60)
+        Validators.max(120)
       ]),
       locationStart: new FormControl(this.alarmDetails.LocationStart, [
         Validators.maxLength(100)

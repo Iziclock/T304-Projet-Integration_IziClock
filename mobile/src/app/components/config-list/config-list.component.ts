@@ -17,6 +17,7 @@ export class ConfigListComponent{
   selectedRingtone: Ringtone | undefined; 
   ringtones: Ringtone[] = []; 
   timeError: boolean = false;
+  requestState: number = 0;
 
   constructor(private ringtoneService: RingtoneService, private userService: UserService, private AlarmService: AlarmService) {
     this.ringtoneService.getRingtones().subscribe((data: any) => {
@@ -38,7 +39,8 @@ export class ConfigListComponent{
   }
 
   validateTime() {
-    this.timeError = this.defaultTime < 0;
+    const TIME_MAX = 120; // en minutes
+    this.timeError = (this.defaultTime < 0 || this.defaultTime > TIME_MAX);
   }
 
   saveSettings() {
@@ -53,8 +55,11 @@ export class ConfigListComponent{
       this.AlarmService.setAlarmsByDefault().subscribe((data: any) => {
         console.log("Alarms set by default");
       });
+
+      this.requestState = 1;
     } else {
       console.log('Erreur de temps');
+      this.requestState = 2;
     }
   }
 }

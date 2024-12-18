@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/" text="" icon="chevron-back-outline"></ion-back-button>
+      <ion-button class="home-button" (click)="goHome()">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <div class="div-logo">
       <img src="../../assets/logo/iziclock-logo.png" alt="Logo" class="logo">
@@ -9,11 +11,19 @@
   </ion-toolbar>
 </ion-header>
 
+
+
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-button (click)="scanForDevices()" [disabled]="isScanning">
     <ion-icon slot="start" name="bluetooth"></ion-icon>
     Scanner les appareils Bluetooth
   </ion-button>
+  <div *ngIf="bluetoothErrorMessage" class="error-message">
+    {{ bluetoothErrorMessage }}
+  </div>
 
   <ion-list *ngIf="bluetoothDevices.length > 0">
     <ion-item *ngFor="let device of bluetoothDevices">
@@ -57,5 +67,6 @@
       <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
     </ion-item>
     <ion-button expand="block" type="submit">Envoyer les informations Wi-Fi</ion-button>
+
   </form>
 </ion-content>

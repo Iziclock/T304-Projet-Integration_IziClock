@@ -31,9 +31,10 @@ export class LoginGoogleComponent  implements OnInit {
 
     if(this.user){
       localStorage.setItem("access_token",this.user.authentication.accessToken);
-      this.http.post(`${environment.api}/calendars/token`,JSON.stringify(this.user.authentication.accessToken), {headers: { 'Content-Type': 'application/json'}}).subscribe({
+
+     this.calendars.postToken(this.user.authentication.accessToken).subscribe({
         next: (response) => {
-          console.log('Réponse du serveur:', response);
+        console.log('Réponse du serveur:', response);
         },
         error: (err) => {
           console.error('Erreur:', err);
@@ -41,7 +42,7 @@ export class LoginGoogleComponent  implements OnInit {
       })
       this.calendars.getCalendarsAPI().subscribe({
         next: () => {
-          window.location.reload(); // Recharge la page pour mettre à jour les données affichées
+          window.location.reload();
         },
         error: (err) => {
           console.error(`Error API calendars:`, err);
@@ -52,7 +53,6 @@ export class LoginGoogleComponent  implements OnInit {
   }
 
   ngOnInit() {
-    //let link = this.getLoginGoogle()
-    //console.log(link)
+    
   }
 }

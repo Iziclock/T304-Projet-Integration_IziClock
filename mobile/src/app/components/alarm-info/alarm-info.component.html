@@ -13,11 +13,20 @@
     <span class="value">{{ alarmDetails.active ? 'Oui ' : 'Non ' }}</span>
   </div>
   <div class="detail">
-    <span class="label">Transport :</span>
-    <ion-icon class="value" [name]="getTransportIcon() ? getTransportIcon() : 'car'"></ion-icon>
+    <span class="label">Transport : </span>
+    <div  class="estimated-time" *ngIf="estimatedTime">{{estimatedTime | time}}~</div>
+    <ion-icon [name]="getTransportIcon() ? getTransportIcon() : 'car'"></ion-icon>
   </div>
   <div class="detail">
-    <span class="label">Sonne le :</span>
-    <span class="value">{{ alarmDetails.ringDate | date:'fullDate' }} à {{ alarmDetails.ringDate | date:'shortTime' }}</span>
+    <span id="prepTime" class="label">Temps de préparation :</span>
+    <span class="value">{{ alarmDetails.preparationTime }} minutes</span>
+  </div>
+  <div class="detail">
+    <span class="label">Date et heure :</span>
+    <span class="value">{{ alarmDetails.ringDate | ringdate }}</span>
+  </div>
+  <div class="detail">
+    <span class="label">Sonne à :</span>
+    <span class="value" *ngIf="ringTime">{{ ringTime | ringdate }}</span>
   </div>
 </div>

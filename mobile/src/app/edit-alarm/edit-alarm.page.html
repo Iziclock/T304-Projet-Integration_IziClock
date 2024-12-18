@@ -36,6 +36,10 @@
       <ion-label position="floating">Date de sonnerie</ion-label>
       <ion-datetime name="ringDate" [min]="minDate" formControlName="ringDate"></ion-datetime>
     </ion-item>
+    <ion-item>
+      <ion-label position="floating">Temps de préparation <span style="color: red;">*</span></ion-label>
+      <ion-input type="number" name="preparationTime" formControlName="preparationTime"></ion-input>
+    </ion-item>
     <ion-segment name="transport" formControlName="transport" color="primary">
       <ion-segment-button value="drive">
         <ion-icon name="car"></ion-icon>

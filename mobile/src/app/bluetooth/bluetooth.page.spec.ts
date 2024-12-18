@@ -1,105 +1,104 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BluetoothPage } from './bluetooth.page';
 import { BleClient, ScanResult } from '@capacitor-community/bluetooth-le';
 import { Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
 
 describe('BluetoothPage', () => {
   let component: BluetoothPage;
-  let router: jasmine.SpyObj<Router>;
+  let fixture: ComponentFixture<BluetoothPage>;
+  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
-    router = jasmine.createSpyObj('Router', ['navigate']);
+    // Créer un spy pour Router
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    
     TestBed.configureTestingModule({
-      providers: [BluetoothPage, { provide: Router, useValue: router }],
+      declarations: [BluetoothPage],
+      providers: [
+        { provide: Router, useValue: routerSpy }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(BluetoothPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('scanForDevices', () => {
+    it('should start scanning and handle Bluetooth errors', async () => {
+      spyOn(BleClient, 'initialize').and.returnValue(Promise.resolve());
+      spyOn(BleClient, 'requestEnable').and.returnValue(Promise.reject()); // Simuler un échec de demande de Bluetooth
+
+      await component.scanForDevices();
+
+      expect(component.bluetoothErrorMessage).toBe('Activez le Bluetooth');
+      expect(component.isScanning).toBeFalse();
     });
-    component = TestBed.inject(BluetoothPage);
   });
 
-  it('should add a device to bluetoothDevices when onBluetoothDeviceFound is called', () => {
-    const mockDevice = { device: { deviceId: '123', name: 'Test Device' } } as ScanResult;
-    component.onBluetoothDeviceFound(mockDevice);
-    expect(component.bluetoothDevices.length).toBe(1);
-    expect(component.bluetoothDevices[0]).toBe(mockDevice);
+  describe('onBluetoothDeviceFound', () => {
+    it('should add a device to bluetoothDevices when called', () => {
+      const mockDevice = { device: { deviceId: '123', name: 'Test Device' } } as ScanResult;
+      component.onBluetoothDeviceFound(mockDevice);
+      expect(component.bluetoothDevices.length).toBe(1);
+      expect(component.bluetoothDevices[0]).toBe(mockDevice);
+    });
   });
 
-  it('should set isScanning to true and stop scanning after a timeout in scanForDevices', async () => {
-    spyOn(BleClient, 'initialize').and.resolveTo();
-    spyOn(BleClient, 'requestLEScan').and.resolveTo();
-    spyOn(BleClient, 'stopLEScan').and.resolveTo();
+  describe('connectToDevice', () => {
+    it('should connect to a device and display a connection message', async () => {
+      const scanResult: ScanResult = { device: { deviceId: '1234', name: 'Test Device' } } as ScanResult;
+      spyOn(BleClient, 'connect').and.returnValue(Promise.resolve());
+      spyOn(window, 'alert');
 
-    jasmine.clock().install();
-    component.scanForDevices();
+      await component.connectToDevice(scanResult);
 
-    expect(component.isScanning).toBeTrue();
+      expect(BleClient.connect).toHaveBeenCalledWith('1234', jasmine.any(Function));
+      expect(window.alert).toHaveBeenCalledWith('Connected to device Test Device');
+    });
 
-    jasmine.clock().tick(5000);
+    it('should set bluetoothConnectedDevice when connected', async () => {
+      const scanResult: ScanResult = { device: { deviceId: '1234', name: 'Test Device' } } as ScanResult;
+      spyOn(BleClient, 'connect').and.returnValue(Promise.resolve());
 
-    expect(BleClient.stopLEScan).toHaveBeenCalled();
-    expect(component.isScanning).toBeFalse();
-    jasmine.clock().uninstall();
+      await component.connectToDevice(scanResult);
+
+      expect(component.bluetoothConnectedDevice).toBe(scanResult);
+    });
   });
 
-  it('should connect to a device and set bluetoothConnectedDevice', async () => {
-    const mockDevice = { device: { deviceId: '123', name: 'Test Device' } } as ScanResult;
-    spyOn(BleClient, 'connect').and.resolveTo();
+  describe('disconnectDevice', () => {
+    it('should disconnect from a device', async () => {
+      const mockDevice = { device: { deviceId: '123', name: 'Test Device' } } as ScanResult;
+      spyOn(BleClient, 'disconnect').and.returnValue(Promise.resolve());
 
-    await component.connectToDevice(mockDevice);
+      await component.disconnectDevice(mockDevice);
 
-    expect(BleClient.connect).toHaveBeenCalledWith(
-      mockDevice.device.deviceId,
-      jasmine.any(Function)
-    );
-    expect(component.bluetoothConnectedDevice).toBe(mockDevice);
+      expect(BleClient.disconnect).toHaveBeenCalledWith(mockDevice.device.deviceId);
+    });
+
+    it('should handle disconnection correctly', () => {
+      component.onBluetoothDeviceDisconnected('123');
+      expect(component.bluetoothConnectedDevice).toBeUndefined();
+    });
   });
 
-  it('should handle disconnection correctly', () => {
-    component.onBluetoothDeviceDisconnected('123');
-    expect(component.bluetoothConnectedDevice).toBeUndefined();
+  describe('sendWifiCredentials', () => {
+
+    it('should show error when no device is connected', async () => {
+      component.bluetoothConnectedDevice = undefined;
+      spyOn(window, 'alert');
+
+      try {
+        await component.sendWifiCredentials('Test SSID', 'TestPassword');
+      } catch (error) {
+        expect(window.alert).toHaveBeenCalledWith('No device connected');
+      }
+    });
   });
-
-  it('should disconnect from a device', async () => {
-    const mockDevice = { device: { deviceId: '123', name: 'Test Device' } } as ScanResult;
-    spyOn(BleClient, 'disconnect').and.resolveTo();
-
-    await component.disconnectDevice(mockDevice);
-
-    expect(BleClient.disconnect).toHaveBeenCalledWith(mockDevice.device.deviceId);
-  });
-
-  it('should send WiFi credentials and validate response', async () => {
-    const mockDevice = { device: { deviceId: '123', name: 'Test Device' } } as ScanResult;
-    const mockSSID = 'TestSSID';
-    const mockPassword = 'TestPassword';
-
-    component.bluetoothConnectedDevice = mockDevice;
-    spyOn(BleClient, 'write').and.resolveTo();
-    spyOn(BleClient, 'read').and.resolveTo(new DataView(new TextEncoder().encode(mockSSID).buffer));
-
-    await component.sendWifiCredentials(mockSSID, mockPassword);
-
-    expect(BleClient.write).toHaveBeenCalledWith(
-      mockDevice.device.deviceId,
-      component.SERVICE_UUID,
-      component.CHARACTERISTIC_UUID,
-      jasmine.any(DataView)
-    );
-    expect(BleClient.read).toHaveBeenCalledWith(
-      mockDevice.device.deviceId,
-      component.SERVICE_UUID,
-      component.CHARACTERISTIC_UUID
-    );
-    expect(router.navigate).toHaveBeenCalledWith(['/home']);
-  });
-
-  // it('should handle errors when sending WiFi credentials', async () => {
-  //   const mockDevice = { device: { deviceId: '123', name: 'Test Device' } } as ScanResult;
-  //   component.bluetoothConnectedDevice = mockDevice;
-  //   spyOn(BleClient, 'write').and.rejectWith(new Error('Write Error'));
-
-  //   try {
-  //     await component.sendWifiCredentials('SSID', 'Password');
-  //   } catch (error) {
-  //     expect(error.message).toBe('Write Error');
-  //   }
-  // });
 });

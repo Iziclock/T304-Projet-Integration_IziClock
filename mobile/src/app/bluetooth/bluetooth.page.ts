@@ -21,6 +21,12 @@ export class BluetoothPage implements OnInit {
 
   constructor(private router: Router) {}
 
+  doRefresh(event: any) {
+    window.location.reload();
+
+    event.target.complete();
+  }
+
   async scanForDevices() {
     try {
       this.bluetoothErrorMessage = ''; // Réinitialiser le message d'erreur

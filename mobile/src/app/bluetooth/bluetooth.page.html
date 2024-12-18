@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-button (click)="scanForDevices()" [disabled]="isScanning">
     <ion-icon slot="start" name="bluetooth"></ion-icon>
     Scanner les appareils Bluetooth
@@ -60,7 +63,6 @@
       <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
     </ion-item>
     <ion-button expand="block" type="submit">Envoyer les informations Wi-Fi</ion-button>
-    <!-- <ion-button expand="block" (click)="verif()">Vérifier les SSID</ion-button> -->
 
   </form>
 </ion-content>

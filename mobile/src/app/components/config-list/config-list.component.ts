@@ -37,7 +37,7 @@ export class ConfigListComponent{
   }
 
   validateTime() {
-    this.timeError = this.defaultTime <= 0;
+    this.timeError = this.defaultTime < 0;
   }
 
   saveSettings() {

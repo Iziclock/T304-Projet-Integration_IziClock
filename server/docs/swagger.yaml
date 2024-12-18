@@ -1,5 +1,10 @@
 basePath: /
 definitions:
+  calendars.Token:
+    properties:
+      access_token:
+        type: string
+    type: object
   models.Alarm:
     properties:
       calendar:
@@ -28,6 +33,8 @@ definitions:
         $ref: '#/definitions/models.Ringtone'
       ringtoneID:
         type: integer
+      transport:
+        type: string
       update:
         type: string
     type: object
@@ -94,6 +101,29 @@ info:
   title: IziClock API Documentation
   version: "1.0"
 paths:
+  /alarms:
+    get:
+      description: Récupère une alarme depuis la DB à partir de son ID
+      parameters:
+      - description: Alarm ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Alarm send successfully
+          schema:
+            $ref: '#/definitions/models.Alarm'
+        "404":
+          description: Alarm not found
+        "500":
+          description: Internal Server Error
+      summary: Récupère une alarme
+      tags:
+      - Alarmes
   /alarms/{id}:
     put:
       consumes:
@@ -135,45 +165,30 @@ paths:
       - Alarmes
   /alarms/state/{id}:
     put:
-      responses: {}
-  /calendar:
-    get:
-      consumes:
-      - application/json
-      description: Récupère une liste des événements à venir depuis le calendrier
-        Google de l'utilisateur.
+      description: Modifie l'état d'activité d'une alarme en DB à partir de son ID
       parameters:
-      - description: Code d'autorisation pour l'API Google
-        in: query
-        name: code
+      - description: Alarm ID
+        in: path
+        name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: Liste des événements
+          description: Alarm updated successfully
           schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Requête incorrecte
-          schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/models.Alarm'
+        "404":
+          description: Alarm not found
         "500":
-          description: Erreur interne du serveur
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Récupère les événements du calendrier
+          description: Internal Server Error
+      summary: Modifie l'état d'activité d'une alarme
       tags:
-      - Calendrier
+      - Alarmes
   /calendars:
     get:
-      description: Récupère une liste de toutes les alarmes depuis la DB
+      description: Récupère une liste de tous les calendriers depuis la DB
       produces:
       - application/json
       responses:
@@ -209,6 +224,24 @@ paths:
         "500":
           description: Internal Server Error
       summary: Efface un calendrier
+      tags:
+      - Calendriers
+  /calendars/api:
+    get:
+      description: Récupère tous les calendriers associés à l'utilisateur via l'API
+        Google Calendar, ainsi que leurs événements à venir.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calendriers et événements récupérés avec succès
+          schema:
+            type: string
+        "400":
+          description: Erreur dans la récupération des données
+        "500":
+          description: Erreur interne du serveur
+      summary: Récupère les calendriers et leurs événements
       tags:
       - Calendriers
   /calendars/state/{id}:
@@ -352,4 +385,31 @@ paths:
       summary: Upload une sonnerie
       tags:
       - Sonneries
+  /token:
+    post:
+      consumes:
+      - application/json
+      description: Récupère un token sous format JSON envoyé dans la requête et l'enregistre
+        dans un fichier local "token.json".
+      parameters:
+      - description: Token à enregistrer
+        in: body
+        name: token
+        required: true
+        schema:
+          $ref: '#/definitions/calendars.Token'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token sauvegardé avec succès
+          schema:
+            type: string
+        "400":
+          description: Erreur de traitement du token
+        "500":
+          description: Erreur lors de l'enregistrement du token
+      summary: Sauvegarde un token envoyé dans la requête
+      tags:
+      - Calendriers
 swagger: "2.0"

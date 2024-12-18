@@ -1,20 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable,BehaviorSubject } from 'rxjs';
 import { Alarm, AlarmData } from '../interfaces/alarms';
 import { environment } from 'src/environments/environment';
-import { tap } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlarmService {
   private baseUrl = `${environment.api}/alarms`;
-
+  private alarmsSubject = new BehaviorSubject<Alarm[]>([]);
+  alarms$ = this.alarmsSubject.asObservable();
   constructor(private http: HttpClient) {}
 
-  getAlarms(): Observable<Alarm[]> {
-    return this.http.get<Alarm[]>(this.baseUrl);
+  getAlarms(){
+    this.http.get<Alarm[]>(`${this.baseUrl}`).subscribe({
+      next: (alarms) => {
+        console.log('Fetched alarms:', alarms);
+        this.alarmsSubject.next(alarms);  
+      },
+      error: (err) => {
+        console.error('Error fetching alarms:', err);
+      }
+    });
   }
 
   updateAlarmState(alarm: Alarm): Observable<Alarm> {

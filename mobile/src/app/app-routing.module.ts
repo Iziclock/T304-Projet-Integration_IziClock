@@ -24,12 +24,8 @@ const routes: Routes = [
     loadChildren: () => import('./ringtones/ringtones.module').then( m => m.RingtonesPageModule)
   }, 
   {
-    path: 'edit-alarm/:id', //route pour edit-alarm
+    path: 'edit-alarm/:id', 
     loadChildren: () => import('./edit-alarm/edit-alarm.module').then(m => m.EditAlarmePageModule)
-  },
-  {
-    path: 'middleware',
-    loadChildren: () => import('./middleware/middleware.module').then( m => m.MiddlewarePageModule)
   },
   {
     path: 'bluetooth',

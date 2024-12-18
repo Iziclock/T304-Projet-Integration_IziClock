@@ -15,9 +15,74 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/alarms": {
+            "get": {
+                "description": "Récupère une alarme depuis la DB à partir de son ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Alarmes"
+                ],
+                "summary": "Récupère une alarme",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Alarm ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Alarm send successfully",
+                        "schema": {
+                            "$ref": "#/definitions/models.Alarm"
+                        }
+                    },
+                    "404": {
+                        "description": "Alarm not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/alarms/state/{id}": {
             "put": {
-                "responses": {}
+                "description": "Modifie l'état d'activité d'une alarme en DB à partir de son ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Alarmes"
+                ],
+                "summary": "Modifie l'état d'activité d'une alarme",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Alarm ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Alarm updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/models.Alarm"
+                        }
+                    },
+                    "404": {
+                        "description": "Alarm not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
             }
         },
         "/alarms/{id}": {
@@ -79,60 +144,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/calendar": {
-            "get": {
-                "description": "Récupère une liste des événements à venir depuis le calendrier Google de l'utilisateur.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Calendrier"
-                ],
-                "summary": "Récupère les événements du calendrier",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Code d'autorisation pour l'API Google",
-                        "name": "code",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Liste des événements",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "Requête incorrecte",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erreur interne du serveur",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/calendars": {
             "get": {
-                "description": "Récupère une liste de toutes les alarmes depuis la DB",
+                "description": "Récupère une liste de tous les calendriers depuis la DB",
                 "produces": [
                     "application/json"
                 ],
@@ -152,6 +166,32 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/calendars/api": {
+            "get": {
+                "description": "Récupère tous les calendriers associés à l'utilisateur via l'API Google Calendar, ainsi que leurs événements à venir.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calendriers"
+                ],
+                "summary": "Récupère les calendriers et leurs événements",
+                "responses": {
+                    "200": {
+                        "description": "Calendriers et événements récupérés avec succès",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur dans la récupération des données"
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
                     }
                 }
             }
@@ -402,9 +442,57 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/token": {
+            "post": {
+                "description": "Récupère un token sous format JSON envoyé dans la requête et l'enregistre dans un fichier local \"token.json\".",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calendriers"
+                ],
+                "summary": "Sauvegarde un token envoyé dans la requête",
+                "parameters": [
+                    {
+                        "description": "Token à enregistrer",
+                        "name": "token",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/calendars.Token"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token sauvegardé avec succès",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur de traitement du token"
+                    },
+                    "500": {
+                        "description": "Erreur lors de l'enregistrement du token"
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "calendars.Token": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Alarm": {
             "type": "object",
             "properties": {
@@ -446,6 +534,9 @@ const docTemplate = `{
                 },
                 "ringtoneID": {
                     "type": "integer"
+                },
+                "transport": {
+                    "type": "string"
                 },
                 "update": {
                     "type": "string"

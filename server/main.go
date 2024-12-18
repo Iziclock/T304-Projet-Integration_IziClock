@@ -12,10 +12,11 @@ import (
 	"server/routes/raspberry"
 	"server/routes/ringtones"
 
+	"server/mocks"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
-	"server/mocks"
 )
 
 func init() {

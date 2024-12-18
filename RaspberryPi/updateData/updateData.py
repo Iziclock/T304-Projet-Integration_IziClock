@@ -12,7 +12,7 @@ import re
 handler = RotatingFileHandler('update_data.log', maxBytes=5*1024*1024, backupCount=3)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', handlers=[handler])
 
-API_URL = "http://192.168.129.52:8080/raspberry"
+API_URL = "https://www.iziclock.be/raspberry"
 DB_NAME = "/home/iziclockAdmin/update/database/iziclock.db"
 AUDIO_DIR = "/home/iziclockAdmin/audio"
 DEFAULT_RINGTONE_ID = 1
@@ -83,7 +83,7 @@ def update_database(data):
             
             for alarm in data:
                 print('test1')
-                if not all(key in alarm for key in ["ID", "Name", "RingDate", "IsActive", "RingtoneID", "Ringtone"]):
+                if not all(key in alarm for key in ["ID", "Name", "RingDate", "IsActive","PreparationTime" , "LocationStart", "LocationEnd" ,"RingtoneID", "Ringtone"]):
                     log_error(f"Données manquantes dans l'alarme : {alarm}")
                     continue
                 print('test2')
@@ -111,13 +111,13 @@ def update_database(data):
                 cursor.execute("SELECT ID FROM Alarm WHERE ID = ?", (alarm["ID"],))
                 if cursor.fetchone():
                     cursor.execute(
-                        "UPDATE Alarm SET Name = ?, RingDate = ?, IsActive = ?, RingtoneID = ? WHERE ID = ?",
-                        (alarm["Name"], alarm["RingDate"], alarm["IsActive"], ringtone["ID"], alarm["ID"])
+                        "UPDATE Alarm SET Name = ?, RingDate = ?, IsActive = ?, RingtoneID = ?  ,PreparationTime = ? , LocationStart = ? , LocationEnd = ? WHERE ID = ?",
+                        (alarm["Name"], alarm["RingDate"], alarm["IsActive"], alarm["PreparationTime"], alarm["LocationStart"], alarm["LocationEnd"], ringtone["ID"], alarm["ID"])
                     )
                 else:
                     cursor.execute(
-                        "INSERT INTO Alarm (ID, Name, RingDate, IsActive, RingtoneID) VALUES (?, ?, ?, ?, ?)",
-                        (alarm["ID"], alarm["Name"], alarm["RingDate"], alarm["IsActive"], ringtone["ID"])
+                        "INSERT INTO Alarm (ID, Name, RingDate, IsActive, PreparationTime , LocationStart, LocationEnd, RingtoneID  ) VALUES (?, ?, ?, ?, ? , ? , ? , ?)",
+                        (alarm["ID"], alarm["Name"], alarm["RingDate"], alarm["IsActive"] , alarm["PreparationTime"], alarm["LocationStart"], alarm["LocationEnd"] , ringtone["ID"])
                     )
                 print('fini')
 

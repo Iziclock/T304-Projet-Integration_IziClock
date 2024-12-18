@@ -5,7 +5,6 @@ import re
 import subprocess
 
 
-
 def format_temps_restant(temps_en_secondes):
     delta = timedelta(seconds=temps_en_secondes)
     jours, secondes = delta.days, delta.seconds
@@ -38,7 +37,7 @@ def jouer_audio(chemin):
 
 def prochaine_alarme(cursor):
     maintenant_iso = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
-
+    
     cursor.execute("""
        SELECT Alarm.ID, Alarm.Name, Alarm.RingDate, Ringtones.Url
        FROM Alarm
@@ -78,7 +77,7 @@ def main():
     if alarme:
         alarme_id, nom_alarme, date_heure_alarme, chemin_audio = alarme
         print(f"Prochaine alarme ID: {alarme_id}, '{nom_alarme}', prévue pour : {date_heure_alarme}")
-        date_heure_alarme_dt = datetime.strptime(date_heure_alarme, '%Y-%m-%dT%H:%M:%S.%fZ')
+        date_heure_alarme_dt = datetime.strptime(date_heure_alarme, '%Y-%m-%dT%H:%M:%SZ')
         maintenant = datetime.now()
         temps_a_attendre = (date_heure_alarme_dt - maintenant).total_seconds()
         if date_heure_alarme_dt < maintenant :

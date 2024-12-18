@@ -80,4 +80,14 @@ describe('AlarmService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockAlarmData);  
   });
+
+  it('should call PUT API to set alarms by default', () => {
+    service.setAlarmsByDefault().subscribe((data) => {
+      expect(data).toEqual(mockAlarms);
+    });
+
+    const req = httpMock.expectOne(`${baseUrl}/default`);
+    expect(req.request.method).toBe('PUT');
+    req.flush(mockAlarms); // Simule une réponse avec les données mockées
+  });
 });

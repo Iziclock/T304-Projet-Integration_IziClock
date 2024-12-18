@@ -76,13 +76,20 @@ export class EditAlarmePage implements OnInit {
     );
   }
 
+  toIsoDateTime(dateTimeString: Date): string {
+    const year = dateTimeString.getFullYear();
+    const month = (dateTimeString.getMonth() + 1).toString().padStart(2, '0');
+    const dateOfMonth = dateTimeString.getDate().toString().padStart(2, '0');
+    const hour = dateTimeString.getHours().toString().padStart(2, '0');
+    const minute = dateTimeString.getMinutes().toString().padStart(2, '0');
+  
+    return `${year}-${month}-${dateOfMonth}T${hour}:${minute}:00.000`;
+  }
+
   updateFormValues(data: any) {
-    const ringDate = data.RingDate ? new Date(data.RingDate) : new Date();
-    const ringDateInGMTPlusOne = new Date(ringDate.getTime() + 60 * 60 * 1000); 
-    this.initialRingDate = ringDateInGMTPlusOne;
     this.alarmForm.patchValue({
       name: data.Name ? data.Name : '',
-      ringDate: ringDateInGMTPlusOne.toISOString(),
+      ringDate: this.toIsoDateTime(data.RingDate ? new Date(data.RingDate) : new Date()),
       preparationTime: data.PreparationTime ? data.PreparationTime : 0,
       locationStart: data.LocationStart ? data.LocationStart : '',
       locationEnd: data.LocationEnd ? data.LocationEnd : '',
@@ -93,22 +100,16 @@ export class EditAlarmePage implements OnInit {
 
   getCurrentDate(): string {
     const today = new Date();
-    return today.toISOString().split('T')[0]; // Retourne la date au format ISO (YYYY-MM-DD)
+    return today.toISOString().split('T')[0]; 
   }
 
   onSubmit() {
-    let ringDate = new Date(this.alarmForm.value.ringDate);
-
-    if (ringDate.getTime() == this.initialRingDate.getTime()) {
-      ringDate = new Date(ringDate.setHours(ringDate.getHours() - 1));
-    }
-  
     const updatedAlarmDetails: AlarmData = {
       Description: '',
       ID: this.alarmDetails.ID,
       CalendarID: this.alarmDetails.CalendarID,
       Name: this.alarmForm.value.name,
-      RingDate: ringDate.toISOString(),
+      RingDate: new Date(this.alarmForm.value.ringDate).toISOString(),
       PreparationTime: this.alarmForm.value.preparationTime,
       CreatedAt: String(this.alarmDetails.CreatedAt),
       LocationStart: this.alarmForm.value.locationStart,

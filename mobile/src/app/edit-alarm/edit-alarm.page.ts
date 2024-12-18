@@ -12,6 +12,7 @@ export class EditAlarmePage implements OnInit {
   alarmId: number = 0;
   alarmDetails: AlarmData = {} as AlarmData;
   minDate: string = '';
+  initialRingDate: Date = new Date();
 
   alarmForm!: FormGroup;
   
@@ -42,6 +43,11 @@ export class EditAlarmePage implements OnInit {
       ringDate: new FormControl(this.alarmDetails.RingDate, [
         Validators.required,
       ]),
+      preparationTime: new FormControl(this.alarmDetails.PreparationTime, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(60)
+      ]),
       locationStart: new FormControl(this.alarmDetails.LocationStart, [
         Validators.maxLength(100)
       ]),
@@ -71,9 +77,13 @@ export class EditAlarmePage implements OnInit {
   }
 
   updateFormValues(data: any) {
+    const ringDate = data.RingDate ? new Date(data.RingDate) : new Date();
+    const ringDateInGMTPlusOne = new Date(ringDate.getTime() + 60 * 60 * 1000); 
+    this.initialRingDate = ringDateInGMTPlusOne;
     this.alarmForm.patchValue({
       name: data.Name ? data.Name : '',
-      ringDate: data.ringDate ? (new Date(data.RingDate).toISOString()) : new Date().toISOString(),
+      ringDate: ringDateInGMTPlusOne.toISOString(),
+      preparationTime: data.PreparationTime ? data.PreparationTime : 0,
       locationStart: data.LocationStart ? data.LocationStart : '',
       locationEnd: data.LocationEnd ? data.LocationEnd : '',
       transport: data.Transport ? data.Transport : 'drive',
@@ -87,14 +97,19 @@ export class EditAlarmePage implements OnInit {
   }
 
   onSubmit() {
-    //console.log('Form submitted:', this.alarmForm.value);
-    // Utilisez un objet temporaire pour stocker les valeurs du formulaire
+    let ringDate = new Date(this.alarmForm.value.ringDate);
+
+    if (ringDate.getTime() == this.initialRingDate.getTime()) {
+      ringDate = new Date(ringDate.setHours(ringDate.getHours() - 1));
+    }
+  
     const updatedAlarmDetails: AlarmData = {
       Description: '',
       ID: this.alarmDetails.ID,
       CalendarID: this.alarmDetails.CalendarID,
       Name: this.alarmForm.value.name,
-      RingDate: new Date(this.alarmForm.value.ringDate).toISOString(),
+      RingDate: ringDate.toISOString(),
+      PreparationTime: this.alarmForm.value.preparationTime,
       CreatedAt: String(this.alarmDetails.CreatedAt),
       LocationStart: this.alarmForm.value.locationStart,
       LocationEnd: this.alarmForm.value.locationEnd,
@@ -103,7 +118,7 @@ export class EditAlarmePage implements OnInit {
       IsActive: this.alarmForm.value.active,
     };
 
-    //console.log('Updated alarm details:', updatedAlarmDetails);
+    console.log('Updated alarm details:', updatedAlarmDetails);
 
     this.alarmService.updateAlarmDetails(updatedAlarmDetails).subscribe(
       (data: AlarmData) => {

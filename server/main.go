@@ -26,8 +26,8 @@ func init() {
 	initializers.ConnectDB()
 	initializers.SyncDB()
 	mocks.InsertMockedRingtones()
-	// mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
-	// mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation

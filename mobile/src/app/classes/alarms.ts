@@ -6,6 +6,7 @@ export class alarm implements Alarm{
     name: string;
     description: string;
     ringDate: Date;
+    preparationTime: number;
     createdAt: Date;
     locationStart: string;
     locationEnd: string;
@@ -19,6 +20,7 @@ export class alarm implements Alarm{
         this.name = alarmData.Name;
         this.description = alarmData.Description
         this.ringDate = new Date(alarmData.RingDate);
+        this.preparationTime = alarmData.PreparationTime;
         this.createdAt = new Date(alarmData.CreatedAt);
         this.locationStart = alarmData.LocationStart;
         this.locationEnd = alarmData.LocationEnd;

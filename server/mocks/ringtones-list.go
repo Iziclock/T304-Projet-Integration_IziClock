@@ -18,7 +18,7 @@ func InsertMockedRingtones() { // VALEURS MOCKEES : A RETIRER EN PROD !!!
 	for _, ringtone := range ringtones {
 		err := initializers.DB.Create(&ringtone).Error
 		if err != nil {
-			log.Fatal("Could not create ringtone :", err)
+			log.Print("Could not create ringtone :", err)
 		}
 	}
 }

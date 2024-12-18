@@ -102,3 +102,19 @@ form ion-button {
     --border-radius: 15px;
     font-weight: bold;
 }
+
+ion-header {
+    --background: white;
+}
+
+.home-button {
+    --background: transparent;
+    --border-radius: 15px;
+    margin-left: 20px;
+}
+
+ion-icon {
+    color: black;
+}
+
+

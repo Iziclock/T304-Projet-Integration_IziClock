@@ -1,13 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/" text="" icon="chevron-back-outline"></ion-back-button>
+      <ion-button class="home-button" (click)="goHome()">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <div class="div-logo">
       <img src="../../assets/logo/iziclock-logo.png" alt="Logo" class="logo">
     </div>    
   </ion-toolbar>
 </ion-header>
+
+
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">

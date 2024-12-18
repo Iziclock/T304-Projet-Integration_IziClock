@@ -27,6 +27,10 @@ export class BluetoothPage implements OnInit {
     event.target.complete();
   }
 
+  goHome() {
+    this.router.navigate(['/home']);  // Redirige vers la page home
+  }
+
   async scanForDevices() {
     try {
       this.bluetoothErrorMessage = ''; // Réinitialiser le message d'erreur

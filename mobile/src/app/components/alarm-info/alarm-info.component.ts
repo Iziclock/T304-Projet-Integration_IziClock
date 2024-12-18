@@ -5,11 +5,12 @@ import { alarm } from 'src/app/classes/alarms';
 import { GeoapifyService } from 'src/app/services/geoapify.service';
 import { Coordinates } from 'src/app/types/coordinates';
 import { combineLatestWith, Observable } from 'rxjs';
+import { RingdatePipe } from 'src/app/pipes/ringdate.pipe';
 
 @Component({
   selector: 'app-alarm-info',
   templateUrl: './alarm-info.component.html',
-  styleUrls: ['./alarm-info.component.scss'],
+  styleUrls: ['./alarm-info.component.scss']
 })
 
 export class AlarmInfoComponent implements OnInit {
@@ -22,6 +23,7 @@ export class AlarmInfoComponent implements OnInit {
     approximated_transit: 'subway',
   };
   estimatedTime: number | null = null;
+  ringTime: Date | null = null;
 
   constructor(private alarmService: AlarmService, private geoapifyService: GeoapifyService) {}
 
@@ -29,38 +31,50 @@ export class AlarmInfoComponent implements OnInit {
     this.getAlarmDetails(this.alarmId);
   }
 
-  getAlarmDetails(id: number) {
-    this.alarmService.getAlarmById(id).subscribe(
-      (data: any) => {
-        const newAlarm: Alarm = new alarm(data);
-        if (newAlarm.locationStart && newAlarm.locationEnd) {
-          const coordinatesStart: Observable<any> = this.geoapifyService.getCoordinates(newAlarm.locationStart);
-          const coordinatesEnd: Observable<any> = this.geoapifyService.getCoordinates(newAlarm.locationEnd);
-          coordinatesStart.pipe(combineLatestWith(coordinatesEnd)).subscribe(([start, end]) => {
-            //console.log(start['results'][0], end['results'][0]);
-            const startFormatted: Coordinates = {
-              lat: start['results'][0]['lat'],
-              lon: start['results'][0]['lon']
-            };
-            const endFormatted: Coordinates = {
-              lat: end['results'][0]['lat'],
-              lon: end['results'][0]['lon']
-            };
-            this.geoapifyService.getRoute(startFormatted, endFormatted, newAlarm.transport? newAlarm.transport : 'drive').subscribe(time => {
-              this.estimatedTime = time['features'][0]['properties']['time'];
-            });
-          });
-        }
-        this.alarmDetails=(newAlarm);
-      },
-      (error) => {
-        console.error('Error fetching alarm details', error);
+  async getAlarmDetails(id: number) {
+    try {
+      const data: any = await this.alarmService.getAlarmById(id).toPromise();
+      const newAlarm: Alarm = new alarm(data);
+
+      this.alarmDetails = newAlarm;
+  
+      if (newAlarm.locationStart && newAlarm.locationEnd) {
+        const coordinatesStart: any = await this.geoapifyService.getCoordinates(newAlarm.locationStart).toPromise();
+        const coordinatesEnd: any = await this.geoapifyService.getCoordinates(newAlarm.locationEnd).toPromise();
+  
+        const startFormatted: Coordinates = {
+          lat: coordinatesStart['results'][0]['lat'],
+          lon: coordinatesStart['results'][0]['lon']
+        };
+        const endFormatted: Coordinates = {
+          lat: coordinatesEnd['results'][0]['lat'],
+          lon: coordinatesEnd['results'][0]['lon']
+        };
+  
+        const route: any = await this.geoapifyService.getRoute(startFormatted, endFormatted, newAlarm.transport ? newAlarm.transport : 'drive').toPromise();
+        this.estimatedTime = route['features'][0]['properties']['time'];
       }
-    );
+  
+      this.ringTime = this.calculateRingingTime(newAlarm.ringDate, newAlarm.preparationTime, this.estimatedTime);
+    } catch (error) {
+      console.error('Error fetching alarm details', error);
+    }
   }
 
   getTransportIcon(): string {
     //console.log(this.transportModes[this.alarmDetails.transport]);
     return this.transportModes[this.alarmDetails.transport];
+  }
+
+  calculateRingingTime(ringDate: Date, preparationTime: number, estimatedTime: number | null): Date {
+    const ringTime = new Date(ringDate);
+    ringTime.setMinutes(ringTime.getMinutes() - preparationTime);
+  
+    if (estimatedTime !== null) {
+      const estimatedTimeInMinutes = estimatedTime / 60;
+      ringTime.setMinutes(ringTime.getMinutes() - estimatedTimeInMinutes);
+    }
+  
+    return ringTime;
   }
 }

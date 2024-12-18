@@ -26,7 +26,6 @@ func Routes(route *gin.Engine) {
 	{
 		calendars.GET("", get_calendars)
 		calendars.GET("/api", get_calendar_api)
-		//calendars.GET("/login", get_login)
 		calendars.DELETE("/:id", delete_calendar)
 		calendars.PUT("/state/:id", change_IsActive_state)
 		calendars.POST("/token", get_token)
@@ -35,7 +34,7 @@ func Routes(route *gin.Engine) {
 
 // get_calendars récupère et retourne tous les calendriers de la base de données
 // @Summary Récupère tous les calendriers
-// @Description Récupère une liste de toutes les alarmes depuis la DB
+// @Description Récupère une liste de tous les calendriers depuis la DB
 // @Tags Calendriers
 // @Produce json
 // @Success 200 {array} models.Calendar "Calendars send successfully"
@@ -117,6 +116,15 @@ func change_IsActive_state(context *gin.Context) {
 	context.JSON(http.StatusOK, calendar)
 }
 
+// get_calendar_api récupère la liste des calendriers de l'utilisateur et leurs événements à partir de l'API Google Calendar
+// @Summary Récupère les calendriers et leurs événements
+// @Description Récupère tous les calendriers associés à l'utilisateur via l'API Google Calendar, ainsi que leurs événements à venir.
+// @Tags Calendriers
+// @Produce json
+// @Success 200 {object} string "Calendriers et événements récupérés avec succès"
+// @Failure 400 "Erreur dans la récupération des données"
+// @Failure 500 "Erreur interne du serveur"
+// @Router /calendars/api [get]
 func get_calendar_api(c *gin.Context) {
 	var calendars []models.Calendar
 	ctx := context.Background()
@@ -228,6 +236,17 @@ type Token struct {
 	Access_token string `json:access_token`
 }
 
+// get_token récupère un token JSON envoyé dans la requête et le sauvegarde dans un fichier local
+// @Summary Sauvegarde un token envoyé dans la requête
+// @Description Récupère un token sous format JSON envoyé dans la requête et l'enregistre dans un fichier local "token.json".
+// @Tags Calendriers
+// @Accept  json
+// @Produce json
+// @Param token body Token true "Token à enregistrer"
+// @Success 200 {string} string "Token sauvegardé avec succès"
+// @Failure 400 "Erreur de traitement du token"
+// @Failure 500 "Erreur lors de l'enregistrement du token"
+// @Router /token [post]
 func get_token(c *gin.Context) {
 	token := Token{Access_token: ""}
 	if err := c.BindJSON(&token.Access_token); err != nil {

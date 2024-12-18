@@ -12,6 +12,7 @@ export class EditAlarmePage implements OnInit {
   alarmId: number = 0;
   alarmDetails: AlarmData = {} as AlarmData;
   minDate: string = '';
+  initialRingDate: Date = new Date();
 
   alarmForm!: FormGroup;
   
@@ -42,6 +43,11 @@ export class EditAlarmePage implements OnInit {
       ringDate: new FormControl(this.alarmDetails.RingDate, [
         Validators.required,
       ]),
+      preparationTime: new FormControl(this.alarmDetails.PreparationTime, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(60)
+      ]),
       locationStart: new FormControl(this.alarmDetails.LocationStart, [
         Validators.maxLength(100)
       ]),
@@ -70,10 +76,21 @@ export class EditAlarmePage implements OnInit {
     );
   }
 
+  toIsoDateTime(dateTimeString: Date): string {
+    const year = dateTimeString.getFullYear();
+    const month = (dateTimeString.getMonth() + 1).toString().padStart(2, '0');
+    const dateOfMonth = dateTimeString.getDate().toString().padStart(2, '0');
+    const hour = dateTimeString.getHours().toString().padStart(2, '0');
+    const minute = dateTimeString.getMinutes().toString().padStart(2, '0');
+  
+    return `${year}-${month}-${dateOfMonth}T${hour}:${minute}:00.000`;
+  }
+
   updateFormValues(data: any) {
     this.alarmForm.patchValue({
       name: data.Name ? data.Name : '',
-      ringDate: data.ringDate ? (new Date(data.RingDate).toISOString()) : new Date().toISOString(),
+      ringDate: this.toIsoDateTime(data.RingDate ? new Date(data.RingDate) : new Date()),
+      preparationTime: data.PreparationTime ? data.PreparationTime : 0,
       locationStart: data.LocationStart ? data.LocationStart : '',
       locationEnd: data.LocationEnd ? data.LocationEnd : '',
       transport: data.Transport ? data.Transport : 'drive',
@@ -83,18 +100,17 @@ export class EditAlarmePage implements OnInit {
 
   getCurrentDate(): string {
     const today = new Date();
-    return today.toISOString().split('T')[0]; // Retourne la date au format ISO (YYYY-MM-DD)
+    return today.toISOString().split('T')[0]; 
   }
 
   onSubmit() {
-    //console.log('Form submitted:', this.alarmForm.value);
-    // Utilisez un objet temporaire pour stocker les valeurs du formulaire
     const updatedAlarmDetails: AlarmData = {
       Description: '',
       ID: this.alarmDetails.ID,
       CalendarID: this.alarmDetails.CalendarID,
       Name: this.alarmForm.value.name,
       RingDate: new Date(this.alarmForm.value.ringDate).toISOString(),
+      PreparationTime: this.alarmForm.value.preparationTime,
       CreatedAt: String(this.alarmDetails.CreatedAt),
       LocationStart: this.alarmForm.value.locationStart,
       LocationEnd: this.alarmForm.value.locationEnd,
@@ -103,7 +119,7 @@ export class EditAlarmePage implements OnInit {
       IsActive: this.alarmForm.value.active,
     };
 
-    //console.log('Updated alarm details:', updatedAlarmDetails);
+    console.log('Updated alarm details:', updatedAlarmDetails);
 
     this.alarmService.updateAlarmDetails(updatedAlarmDetails).subscribe(
       (data: AlarmData) => {

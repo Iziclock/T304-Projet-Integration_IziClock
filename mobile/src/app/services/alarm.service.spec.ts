@@ -11,11 +11,11 @@ describe('AlarmService', () => {
   const baseUrl = `${environment.api}/alarms`;
 
   const mockAlarms: Alarm[] = [
-    { id: 1, calendarId: 'calendar1', name: 'Alarm 1', description: 'Test Alarm 1', ringDate: new Date(), createdAt: new Date(), locationStart: 'Home', locationEnd: 'Office', ringtone: 'Classic', transport: 'Car', active: true },
-    { id: 2, calendarId: 'calendar2', name: 'Alarm 2', description: 'Test Alarm 2', ringDate: new Date(), createdAt: new Date(), locationStart: 'Home', locationEnd: 'School', ringtone: 'Beep', transport: 'Bus', active: false }
+    { id: 1, calendarId: 'calendar1', name: 'Alarm 1', description: 'Test Alarm 1', ringDate: new Date(), preparationTime: 0, createdAt: new Date(), locationStart: 'Home', locationEnd: 'Office', ringtone: 'Classic', transport: 'Car', active: true },
+    { id: 2, calendarId: 'calendar2', name: 'Alarm 2', description: 'Test Alarm 2', ringDate: new Date(), preparationTime: 0, createdAt: new Date(), locationStart: 'Home', locationEnd: 'School', ringtone: 'Beep', transport: 'Bus', active: false }
   ];
 
-  const mockAlarmData: AlarmData = { ID: 1, CalendarID: 'calendar1', Name: 'Alarm 1', Description: 'Test Alarm 1', RingDate: '2024-12-15T07:00:00', CreatedAt: '2024-12-01T00:00:00', LocationStart: 'Home', LocationEnd: 'Office', Ringtone: 'Classic', Transport: 'Car', IsActive: true };
+  const mockAlarmData: AlarmData = { ID: 1, CalendarID: 'calendar1', Name: 'Alarm 1', Description: 'Test Alarm 1', RingDate: '2024-12-15T07:00:00', PreparationTime: 0, CreatedAt: '2024-12-01T00:00:00', LocationStart: 'Home', LocationEnd: 'Office', Ringtone: 'Classic', Transport: 'Car', IsActive: true };
 
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -4,7 +4,9 @@ import (
 	"server/initializers"
 	"server/models"
 	"time"
-    //"fmt"
+    "fmt"
+    "log"
+    "regexp"
 	"github.com/gin-gonic/gin"
 )
 
@@ -46,7 +48,7 @@ func get_update_data(context *gin.Context) {
     if err := initializers.DB.
         Preload("Ringtone").
         Table("alarms").
-        Select("alarms.id, alarms.name, alarms.ring_date, alarms.is_active, alarms.ringtone_id, alarms.last_update,ringtones.id as ringtone_id, ringtones.name as ringtone_name, ringtones.url as ringtone_url").
+        Select("alarms.id, alarms.name, (alarms.ring_date + INTERVAL '1 hour') AS ring_date, alarms.is_active, alarms.ringtone_id, alarms.last_update,ringtones.id as ringtone_id, ringtones.name as ringtone_name, ringtones.url as ringtone_url").
         Joins("JOIN ringtones ON ringtones.id = alarms.ringtone_id").
         Where("update != last_update OR ring_date BETWEEN NOW() - INTERVAL '1 minute' AND NOW() + INTERVAL '10 minute'").
         Where("ring_date BETWEEN NOW() - INTERVAL '1 day' AND NOW() + INTERVAL '1 day'").
@@ -56,11 +58,28 @@ func get_update_data(context *gin.Context) {
         return
     }
 
-
     if len(alarms) == 0 {
         context.JSON(http.StatusOK, gin.H{"message": "Aucune mise à jour trouvée"})
         return
     }
+    
+
+    re := regexp.MustCompile(`\+.*`)
+
+    for i := range alarms {
+        ringDateStr := alarms[i].RingDate.Format("2006-01-02T15:04:05.999999Z07:00")
+        modifiedRingDateStr := re.ReplaceAllString(ringDateStr, "Z")
+    
+        layout := "2006-01-02T15:04:05.999999Z07:00" 
+        modifiedRingDate, err := time.Parse(layout, modifiedRingDateStr)
+        if err != nil {
+            log.Fatal(err)
+        }
+        alarms[i].RingDate = modifiedRingDate
+    
+        fmt.Println("Modified RingDate:", alarms[i].RingDate)
+    }
+    
 
     for _, alarm := range alarms {
         if err := initializers.DB.
@@ -89,7 +108,5 @@ func get_update_data(context *gin.Context) {
         })
     }
 
-    context.JSON(http.StatusOK,response)
+    context.JSON(http.StatusOK, response)
 }
-
-

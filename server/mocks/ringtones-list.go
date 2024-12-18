@@ -8,9 +8,9 @@ import (
 
 // RINGTONE_LIST contient les valeurs mockées pour les sonneries
 var RINGTONE_LIST = []models.Ringtone{
-	{Name: "Booba", Url: "https://example.com/ringtones1"},
-	{Name: "Kaaris", Url: "https://example.com/ringtones2"},
-	{Name: "Vacra", Url: "https://example.com/ringtones3"},
+	{ID : 2 , Name: "Kalash", Url: "https://www.iziclock.be/audio/kalash.mp3"},
+	{ID : 3 , Name: "Le Navire", Url: "https://www.iziclock.be/audio/le_navire_booba.mp3"},
+	// {ID : 4 , Name: "Vacra", Url: "https://example.com/ringtones3"},
 }
 
 func InsertMockedRingtones() { // VALEURS MOCKEES : A RETIRER EN PROD !!!

@@ -37,7 +37,7 @@ def jouer_audio(chemin):
 
 def prochaine_alarme(cursor):
     maintenant_iso = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
-    
+
     cursor.execute("""
        SELECT Alarm.ID, Alarm.Name, Alarm.RingDate, Ringtones.Url
        FROM Alarm
@@ -71,28 +71,28 @@ def name_audio(ringtone_url):
 def main():
     conn = sqlite3.connect('/home/iziclockAdmin/update/database/iziclock.db')
     cursor = conn.cursor()
+    try:
+        alarme = prochaine_alarme(cursor)
 
-    alarme = prochaine_alarme(cursor)
-
-    if alarme:
-        alarme_id, nom_alarme, date_heure_alarme, chemin_audio = alarme
-        print(f"Prochaine alarme ID: {alarme_id}, '{nom_alarme}', prévue pour : {date_heure_alarme}")
-        date_heure_alarme_dt = datetime.strptime(date_heure_alarme, '%Y-%m-%dT%H:%M:%SZ')
-        maintenant = datetime.now()
-        temps_a_attendre = (date_heure_alarme_dt - maintenant).total_seconds()
-        if date_heure_alarme_dt < maintenant :
-            if os.path.exists(f"/home/iziclockAdmin/audio/{name_audio(chemin_audio)}"):
-                update_active_alarme(cursor, alarme_id)
-                conn.commit()
-                jouer_audio(f"/home/iziclockAdmin/audio/{name_audio(chemin_audio)}")
+        if alarme:
+            alarme_id, nom_alarme, date_heure_alarme, chemin_audio = alarme
+            print(f"Prochaine alarme ID: {alarme_id}, '{nom_alarme}', prévue pour : {date_heure_alarme}")
+            date_heure_alarme_dt = datetime.strptime(date_heure_alarme, '%Y-%m-%dT%H:%M:%SZ')
+            maintenant = datetime.now()
+            temps_a_attendre = (date_heure_alarme_dt - maintenant).total_seconds()
+            if date_heure_alarme_dt < maintenant :
+                if os.path.exists(f"/home/iziclockAdmin/audio/{name_audio(chemin_audio)}"):
+                    update_active_alarme(cursor, alarme_id)
+                    conn.commit()
+                    jouer_audio(f"/home/iziclockAdmin/audio/{name_audio(chemin_audio)}")
+                else:
+                    print(f"Fichier audio non trouvé : {name_audio(chemin_audio)}")
             else:
-                print(f"Fichier audio non trouvé : {name_audio(chemin_audio)}")
+                print(f"Aucune alarme imminente. Temps restant : {format_temps_restant(temps_a_attendre)}")
         else:
-            print(f"Aucune alarme imminente. Temps restant : {format_temps_restant(temps_a_attendre)}")
-    else:
-        print("Aucune alarme à venir.")
-
-    conn.close()
+            print("Aucune alarme à venir.")
+    finally:
+        conn.close()
 
 
 if __name__ == '__main__':

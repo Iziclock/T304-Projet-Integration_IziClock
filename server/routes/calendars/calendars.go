@@ -130,24 +130,24 @@ func get_calendar_api(c *gin.Context) {
 	ctx := context.Background()
 	b, err := os.ReadFile("credentials.json")
 	if err != nil {
-		log.Fatalf("Unable to read client secret file: %v", err)
+		log.Printf("Unable to read client secret file: %v", err)
 	}
 
 	config, err := google.ConfigFromJSON(b, calendar.CalendarReadonlyScope)
 	if err != nil {
-		log.Fatalf("Unable to parse client secret file to config: %v", err)
+		log.Printf("Unable to parse client secret file to config: %v", err)
 	}
 	//code := c.Query("code")
 	client := middleware.GetClient(config)
 
 	srv, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
-		log.Fatalf("Unable to retrieve Calendar client: %v", err)
+		log.Printf("Unable to retrieve Calendar client: %v", err)
 	}
 
 	calendarList, err := srv.CalendarList.List().Do()
 	if err != nil {
-		log.Fatalf("Unable to retrieve calendar list: %v", err)
+		log.Printf("Unable to retrieve calendar list: %v", err)
 	}
 	t := time.Now().Format(time.RFC3339)
 	var allEvents []models.Alarm
@@ -258,7 +258,7 @@ func get_token(c *gin.Context) {
 	log.Print("jsonToken:", jsonToken)
 	err := os.WriteFile("token.json", []byte(jsonToken), 0666)
 	if err != nil {
-		log.Fatal("Could not write token :", err)
+		log.Print("Could not write token :", err)
 	}
 	fmt.Println("Token saved successfully")
 }

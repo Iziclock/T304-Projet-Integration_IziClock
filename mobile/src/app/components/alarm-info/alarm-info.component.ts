@@ -5,11 +5,12 @@ import { alarm } from 'src/app/classes/alarms';
 import { GeoapifyService } from 'src/app/services/geoapify.service';
 import { Coordinates } from 'src/app/types/coordinates';
 import { combineLatestWith, Observable } from 'rxjs';
+import { RingdatePipe } from 'src/app/pipes/ringdate.pipe';
 
 @Component({
   selector: 'app-alarm-info',
   templateUrl: './alarm-info.component.html',
-  styleUrls: ['./alarm-info.component.scss'],
+  styleUrls: ['./alarm-info.component.scss']
 })
 
 export class AlarmInfoComponent implements OnInit {

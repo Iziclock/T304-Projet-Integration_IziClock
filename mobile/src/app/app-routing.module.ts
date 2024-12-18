@@ -32,6 +32,11 @@ const routes: Routes = [
     path: 'bluetooth',
     loadChildren: () => import('./bluetooth/bluetooth.module').then( m => m.BluetoothPageModule)
   },
+
+  {
+    path: 'settings',
+    loadChildren: () => import('./conf-menu/conf-menu.module').then( m => m.ConfMenuPageModule)
+  }
 ];
 
 @NgModule({

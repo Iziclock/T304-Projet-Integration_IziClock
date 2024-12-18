@@ -6,15 +6,10 @@
 .logo {
     max-width: 200px;
     max-height: 200px;
-    margin-right: 50px;
+    margin-right: 55px;
 }
 
-ion-back-button {
-    color: black;
-    margin-left: 20px;
-}
-
-ion-button {
+ion-content ion-button {
     --border-radius: 15px;
     --background: darkblue;
     margin: 15px 30px;
@@ -110,11 +105,14 @@ ion-header {
 .home-button {
     --background: transparent;
     --border-radius: 15px;
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 ion-icon {
-    color: black;
+    color: white;
 }
 
-
+.home-button ion-icon {
+    color: black;
+    height: 40px;
+}

@@ -12,10 +12,11 @@ import (
 	"server/routes/raspberry"
 	"server/routes/ringtones"
 
+	"server/mocks"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
-	// "server/mocks"
 )
 
 func init() {
@@ -24,9 +25,9 @@ func init() {
 	}
 	initializers.ConnectDB()
 	initializers.SyncDB()
-	// mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
-	// mocks.InsertMockedRingtones() // VALEURS MOCKEES : A RETIRER EN PROD !!!
-	// mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedRingtones()
+	mocks.InsertMockedCalendars() // VALEURS MOCKEES : A RETIRER EN PROD !!!
+	mocks.InsertMockedAlarms()    // VALEURS MOCKEES : A RETIRER EN PROD !!!
 }
 
 // @title IziClock API Documentation

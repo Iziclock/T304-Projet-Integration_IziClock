@@ -6,13 +6,17 @@ import { IonicModule } from '@ionic/angular';
 import { AlarmDetailsPageRoutingModule } from './alarm-details-routing.module';
 import { AlarmDetailsPage } from './alarm-details.page';
 import { AlarmInfoComponent } from '../components/alarm-info/alarm-info.component';
+import { TimePipe } from '../pipes/time.pipe';
+import { RingdatePipe } from '../pipes/ringdate.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AlarmDetailsPageRoutingModule
+    AlarmDetailsPageRoutingModule,
+    TimePipe,
+    RingdatePipe
   ],
   declarations: [AlarmDetailsPage, AlarmInfoComponent]
 })

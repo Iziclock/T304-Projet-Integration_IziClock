@@ -2,7 +2,9 @@ export interface Alarm{
     id: number;
     calendarId: string;
     name: string;
+    description: string;
     ringDate: Date;
+    preparationTime: number;
     createdAt: Date;
     locationStart: string;
     locationEnd: string;
@@ -17,6 +19,7 @@ export interface AlarmData{
     Name: string;
     Description: string;
     RingDate: string;
+    PreparationTime: number;
     CreatedAt: string;
     LocationStart: string;
     LocationEnd: string;

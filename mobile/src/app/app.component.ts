@@ -23,7 +23,7 @@ export class AppComponent implements OnInit{
             console.error(`Error API calendars:`, err);
           }
         });
-      },1000);
+      },1000 * 30);
   }
 }
 }

@@ -240,9 +240,8 @@ if __name__ == "__main__":
         current_view = "view_1"
         scroll_offset = 0  # Offset initial pour le texte défilant
         has_alarm = False
-        next_alarm = ""
-        alarm_name = "Securité Réseau"
-        alarm_location = "1348 Louvain-La-Neuve, Avenue du Ciseau"
+        alarm_name = ""
+        alarm_location = ""
         while True:
             if GPIO.input(BUTTON_BT_PIN) == GPIO.LOW:
                if bluetooth_status:
@@ -272,14 +271,13 @@ if __name__ == "__main__":
                     oled.clear()
                     current_view = "view_1"
                     has_alarm = False
-                    next_alarm = ""
                     alarm_name = ""
                     alarm_location = ""
                 if not is_audio_active():
                     oled.clear()
                     current_view = "view_1"
                     has_alarm = False
-                    next_alarm = ""
+        
                     alarm_name = ""
                     alarm_location = ""
             # Vue 2 : Affichage temporaire du volume si les boutons + ou - sont appuyés

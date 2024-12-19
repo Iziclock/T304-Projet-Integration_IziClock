@@ -1,25 +1,44 @@
-<ion-header>
+<ion-header id="main-content">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button routerLink="/ringtones">
-        <img src="../../assets/icon/ringtone.png" alt="Ringtones" class="ringtone-icon">
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="start">
-      <ion-button routerLink="/settings">
-        <img src="../../assets/icon/setting.png" alt="Settings" class="setting-icon">
-      </ion-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button routerLink="/calendars">
-        <img src="../../assets/icon/calendar.png" alt="Calendars" class="calendar-icon">
+        <img src="../../assets/icon/calendar.png" alt="Icon calendar" class="calendar-icon">
       </ion-button>
     </ion-buttons>
     <div class="div-logo">
-      <img src="../../assets/logo/iziclock-logo.png" alt="Logo" class="logo">
+      <img src="../../assets/logo/iziclock-logo.png" alt="Logo Iziclock" class="logo">
     </div>    
   </ion-toolbar>
 </ion-header>
+
+<ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <div class="div-logo">
+        <img src="../../assets/logo/iziclock-logo.png" alt="Logo" class="logo">
+      </div>    
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item routerLink="/settings">
+        <img src="../../assets/icon/setting.png" alt="Settings Icon" class="menu-icon">
+        <ion-label>Paramètres par défaut</ion-label>
+      </ion-item>
+      <ion-item routerLink="/calendars">
+        <img src="../../assets/icon/calendar.png" alt="Calendars Icon" class="menu-icon">
+        <ion-label>Calendriers</ion-label>
+      </ion-item>
+      <ion-item routerLink="/ringtones">
+        <img src="../../assets/icon/ringtone.png" alt="Ringtones Icon" class="menu-icon">
+        <ion-label>Sonneries</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
 
 <ion-content [fullscreen]="true">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">

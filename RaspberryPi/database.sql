@@ -13,5 +13,6 @@ CREATE TABLE Alarm (
     PreparationTime UINT NOT NULL,
     LocationStart STRING NOT NULL,
     LocationEnd STRING NOT NULL,
+    Transport STRING NOT NULL,
     FOREIGN KEY (RingtoneID) REFERENCES Ringtones(ID) ON DELETE CASCADE
 );

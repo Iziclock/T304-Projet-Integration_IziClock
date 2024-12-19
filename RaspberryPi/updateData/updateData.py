@@ -101,7 +101,7 @@ def update_database(data):
 
             for alarm in data:
                 print(alarm)
-                if not all(key in alarm for key in ["ID", "Name", "RingDate", "IsActive","PreparationTime" , "LocationStart", "LocationEnd" ,"RingtoneID", "Ringtone"]):
+                if not all(key in alarm for key in ["ID", "Name", "RingDate", "IsActive","PreparationTime" , "LocationStart", "LocationEnd" ,"RingtoneID", "Ringtone", "Transport"]):
                     log_error(f"Données manquantes dans l'alarme : {alarm}")
                     print('test 54')
                     continue
@@ -133,12 +133,12 @@ def update_database(data):
                     print('update')
                     cursor.execute(
                         "UPDATE Alarm SET Name = ?, RingDate = ?, IsActive = ?, RingtoneID = ?  ,PreparationTime = ? , LocationStart = ? , LocationEnd = ? WHERE ID = ?",
-                        (alarm["Name"], time_final(alarm["RingDate"], alarm["LocationStart"], alarm["LocationEnd"], "drive", alarm["PreparationTime"]), alarm["IsActive"], ringtone["ID"] ,alarm["PreparationTime"], alarm["LocationStart"], alarm["LocationEnd"],alarm["ID"])
+                        (alarm["Name"], time_final(alarm["RingDate"], alarm["LocationStart"], alarm["LocationEnd"], alarm["Transport"], alarm["PreparationTime"]), alarm["IsActive"], ringtone["ID"] ,alarm["PreparationTime"], alarm["LocationStart"], alarm["LocationEnd"],alarm["ID"])
                     )
                 else:
                     cursor.execute(
                         "INSERT INTO Alarm (ID, Name, RingDate, IsActive, PreparationTime , LocationStart, LocationEnd, RingtoneID  ) VALUES (?, ?, ?, ?, ? , ? , ? , ?)",
-                        (alarm["ID"], alarm["Name"], time_final(alarm["RingDate"], alarm["LocationStart"], alarm["LocationEnd"], "drive", alarm["PreparationTime"]), alarm["IsActive"] , alarm["PreparationTime"], alarm["LocationStart"], alarm["LocationEnd"] , ringtone["ID"])
+                        (alarm["ID"], alarm["Name"], time_final(alarm["RingDate"], alarm["LocationStart"], alarm["LocationEnd"], alarm["Transport"], alarm["PreparationTime"]), alarm["IsActive"] , alarm["PreparationTime"], alarm["LocationStart"], alarm["LocationEnd"] , ringtone["ID"])
                     )
                     print('test fin')
                 print('fini')
